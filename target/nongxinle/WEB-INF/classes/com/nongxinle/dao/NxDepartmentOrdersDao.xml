@@ -29,6 +29,9 @@
             <if test="goodsType != null">
                 and  dor.nx_DO_goods_type = #{goodsType}
             </if>
+            <if test="applyDate != null">
+                and  dor.nx_DO_apply_date &gt; #{applyDate}
+            </if>
 
         </where>
 
@@ -119,7 +122,6 @@
         <result property="nxGoodsStandardname" column="nx_goods_standardname"/>
         <result property="nxGoodsFatherId" column="nx_goods_father_id"/>
         <result property="nxGoodsStandardAmount" column="nx_goods_standard_amount"/>
-        <result property="nxGoodsDetail" column="nx_goods_detail"/>
         <result property="nxGoodsPinyin" column="nx_goods_pinyin"/>
         <result property="nxGoodsPy" column="nx_goods_py"/>
     </resultMap>

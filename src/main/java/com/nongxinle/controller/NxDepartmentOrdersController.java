@@ -41,9 +41,27 @@ public class NxDepartmentOrdersController {
 
 
 
+    /**
+     * 9-11
+     * DISTRIBUTER
+     * 保存订单的金额和数量
+     * @param depOrders 订单
+     * @return ok
+     */
+    @RequestMapping(value = "/saveToFillContent", method = RequestMethod.POST)
+    @ResponseBody
+    public R saveToFillContent (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
+
+        for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
+            ordersEntity.setNxDoStatus(2);
+            nxDepartmentOrdersService.update(ordersEntity);
+        }
+        return R.ok();
+    }
+
 
     /**
-     * 9.13
+     * 9-11
      * DISTRIBUTER
      * 获取需要填写数量和价格的订单
      * @param depFatherId 群id
@@ -54,7 +72,7 @@ public class NxDepartmentOrdersController {
     public R getToFillDepOrders(Integer depFatherId) {
         Map<String, Object> map = new HashMap<>();
         map.put("depFatherId", depFatherId);
-        map.put("type", 0);
+        map.put("goodsType", 0);
         map.put("status", 3);
 
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
@@ -308,19 +326,6 @@ public class NxDepartmentOrdersController {
       }
 
 
-
-     @RequestMapping(value = "/saveDepartmentOrderFillContent", method = RequestMethod.POST)
-      @ResponseBody
-      public R saveDepartmentOrderFillContent (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
-
-         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
-             System.out.println(ordersEntity);
-             ordersEntity.setNxDoStatus(2);
-             nxDepartmentOrdersService.update(ordersEntity);
-
-         }
-        return R.ok();
-      }
 
 
 

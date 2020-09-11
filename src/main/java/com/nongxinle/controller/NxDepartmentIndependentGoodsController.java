@@ -9,9 +9,11 @@ package com.nongxinle.controller;
 
 import java.util.*;
 
+import com.nongxinle.entity.NxDepartmentOrdersEntity;
 import com.nongxinle.entity.NxGoodsEntity;
 import com.nongxinle.entity.NxLettersEntity;
 import com.nongxinle.service.NxDepartmentDisGoodsService;
+import com.nongxinle.service.NxDepartmentOrdersService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import com.nongxinle.service.NxDepartmentIndependentGoodsService;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
 
+import static com.nongxinle.utils.DateUtils.formatWhatDate;
+import static com.nongxinle.utils.DateUtils.formatWhatDay;
 import static com.nongxinle.utils.PinYin4jUtils.getHeadStringByString;
 import static com.nongxinle.utils.PinYin4jUtils.hanziToPinyin;
 
@@ -33,6 +37,9 @@ public class NxDepartmentIndependentGoodsController {
 
 	@Autowired
 	private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
+
+	@Autowired
+	private NxDepartmentOrdersService nxDepartmentOrdersService;
 
 
 	/**
@@ -76,8 +83,18 @@ public class NxDepartmentIndependentGoodsController {
 	@ResponseBody
 	@RequestMapping("/delete/{id}")
 	public R delete(@PathVariable  Integer id){
-		nxDepIndepenGoodsService.delete(id);
-		return R.ok();
+		Map<String, Object> map = new HashMap<>();
+		map.put("indGoodsId", id);
+		map.put("applyDate", formatWhatDay(-30));
+		System.out.println(formatWhatDay(-30) + "kkkkk30303030");
+		List<NxDepartmentOrdersEntity>  ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
+		if(ordersEntities.size() > 0){
+			return R.error(-1,"过一段时间才可删除，近期有订单。");
+		}else {
+			nxDepIndepenGoodsService.delete(id);
+			return R.ok();
+		}
+
 	}
 
 
