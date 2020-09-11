@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nongxinle.dao.NxDistributerPurchaseBatchDao">
+
+
+	<resultMap id="disGoods" type="NxDistributerGoodsEntity">
+		<id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
+		<result property="nxDgPullOff" column="nx_dg_pull_off"/>
+		<result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
+		<result property="nxDgNxGoodsId" column="nx_dg_nx_goods_id"/>
+		<result property="nxDgNxFatherId" column="nx_dg_nx_father_id"/>
+		<result property="nxDgGoodsName" column="nx_dg_goods_name"/>
+		<result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+		<result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
+		<result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
+		<result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
+	</resultMap>
+
+
+	<resultMap id="purchaseGoods" type="NxDistributerPurchaseGoodsEntity">
+		<id property="nxDistributerPurchaseGoodsId" column="nx_distributer_purchase_goods_id"/>
+		<result property="nxDpgQuantity" column="nx_DPG_quantity"/>
+		<result property="nxDpgStandard" column="nx_DPG_standard"/>
+		<result property="nxDpgBuyQuantity" column="nx_DPG_buy_quantity"/>
+		<result property="nxDpgBuyPrice" column="nx_DPG_buy_price"/>
+		<association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
+	</resultMap>
+
+	<resultMap id="pur" type="NxDistributerPurchaseBatchEntity">
+		<id property="nxDistributerPurchaseBatchId" column="nx_distributer_purchase_batch_id"/>
+		<result property="nxDpbDistributerId" column="nx_DPB_distributer_id"/>
+		<result property="nxDpbType" column="nx_DPB_type"/>
+		<result property="nxDpbTime" column="nx_DPB_time"/>
+
+		<collection property="nxDPGEntities" resultMap="purchaseGoods"/>
+	</resultMap>
+
+	<resultMap id="disUser" type="NxDistributerUserEntity">
+		<id property="nxDistributerUserId" column="nx_distributer_user_id"/>
+		<result property="nxDiuWxNickName" column="nx_DIU_wx_nick_name"/>
+		<result property="nxDiuWxAvartraUrl" column="nx_DIU_wx_avartra_url"/>
+	</resultMap>
+	<resultMap id="purchaseBatch" type="NxDistributerPurchaseBatchEntity">
+		<id property="nxDistributerPurchaseBatchId" column="nx_distributer_purchase_batch_id"/>
+		<result property="nxDpbDistributerId" column="nx_DPB_distributer_id"/>
+		<result property="nxDpbType" column="nx_DPB_type"/>
+		<result property="nxDpbTime" column="nx_DPB_time"/>
+		<result property="nxDpbDate" column="nx_DPB_date"/>
+		<result property="nxDpbHour" column="nx_DPB_hour"/>
+		<result property="nxDpbMinute" column="nx_DPB_minute"/>
+		<association property="nxDistributerUserEntity" resultMap="disUser"/>
+		<collection property="nxDPGEntities" resultMap="purchaseGoods"/>
+	</resultMap>
+
+	<select id="queryObject" resultMap="purchaseBatch">
+
+		select * from nx_distributer_purchase_batch as pb
+		left join nx_distributer_purchase_goods as pg on pb.nx_distributer_purchase_batch_id = pg.nx_DPG_batch_id
+		left join nx_distributer_goods as dg on pg.nx_DPG_dis_goods_id = dg.nx_distributer_goods_id
+		left join nx_distributer_user as du on pb.nx_DPB_pur_user_id = du.nx_distributer_user_id
+		where nx_distributer_purchase_batch_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.nongxinle.entity.NxDistributerPurchaseBatchEntity">
+		select * from nx_distributer_purchase_batch 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nx_distributer_purchase_batch 
+	</select>
+
+
+	<select id="queryDisPurchaseBatch" resultMap="purchaseBatch">
+		select * from nx_distributer_purchase_batch as dpb
+		left join nx_distributer_purchase_goods as dpg on dpg.nx_DPG_batch_id = dpb.nx_distributer_purchase_batch_id
+		left join nx_goods as g on g.nx_goods_id = dpg.nx_DPG_dis_goods_id
+		where nx_DPB_distributer_id = #{disId} and nx_DPB_status = #{status} order by nx_distributer_purchase_batch_id
+	</select>
+
+
+	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerPurchaseBatchEntity"
+			useGeneratedKeys="true" keyProperty="nxDistributerPurchaseBatchId">
+		insert into nx_distributer_purchase_batch
+		(
+			`nx_distributer_purchase_batch_id`,
+			`nx_DPB_status`, 
+			`nx_DPB_type`, 
+			`nx_DPB_time`, 
+			`nx_DPB_pur_user_id`,
+		 	`nx_DPB_distributer_id`,
+		 	`nx_DPB_date`,
+		 	`nx_DPB_hour`,
+		 	`nx_DPB_minute`
+
+		)
+		values
+		(
+			#{nxDistributerPurchaseBatchId},
+			#{nxDpbStatus}, 
+			#{nxDpbType}, 
+			#{nxDpbTime}, 
+			#{nxDpbPurUserId},
+		 	#{nxDpbDistributerId},
+		 	#{nxDpbDate},
+		 	#{nxDpbHour},
+		 	#{nxDpbMinute}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.nongxinle.entity.NxDistributerPurchaseBatchEntity">
+		update nx_distributer_purchase_batch 
+		<set>
+			<if test="nxDpbStatus != null">`nx_DPB_status` = #{nxDpbStatus}, </if>
+			<if test="nxDpbType != null">`nx_DPB_type` = #{nxDpbType}, </if>
+			<if test="nxDpbTime != null">`nx_DPB_time` = #{nxDpbTime}, </if>
+			<if test="nxDpbDistributerId != null">`nx_DPB_distributer_id` = #{nxDpbDistributerId}, </if>
+			<if test="nxDpbDate != null">`nx_DPB_date` = #{nxDpbDate}, </if>
+			<if test="nxDpbHour != null">`nx_DPB_hour` = #{nxDpbHour}, </if>
+			<if test="nxDpbMinute != null">`nx_DPB_minute` = #{nxDpbMinute}, </if>
+			<if test="nxDpbPurUserId != null">`nx_DPB_pur_user_id` = #{nxDpbPurUserId}</if>
+		</set>
+		where nx_distributer_purchase_batch_id = #{nxDistributerPurchaseBatchId}
+	</update>
+	
+	<delete id="delete">
+		delete from nx_distributer_purchase_batch where nx_distributer_purchase_batch_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nx_distributer_purchase_batch where nx_distributer_purchase_batch_id in
+		<foreach item="nxDistributerPurchaseBatchId" collection="array" open="(" separator="," close=")">
+			#{nxDistributerPurchaseBatchId}
+		</foreach>
+	</delete>
+    <delete id="delateBatchId">
+		delete from nx_distributer_purchase_batch where nx_distributer_purchase_batch_id = #{purchaseBatchId}
+	</delete>
+
+</mapper>
