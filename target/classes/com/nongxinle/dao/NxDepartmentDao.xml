@@ -192,15 +192,11 @@
 			   dis.nx_distributer_name , dis.nx_distributer_id,
 			   dis.nx_distributer_address, dis.nx_distributer_manager,
 			   dis.nx_distributer_phone, dis.nx_distributer_img
-# 			   diu.nx_distributer_user_id, diu.nx_DIU_wx_nick_name,
-# 			   diu.nx_DIU_wx_avartra_url, diu.nx_DIU_distributer_id,
-# 			   diu.nx_DIU_admin
 
 		from nx_department as d
 				 left join nx_department as f on d.nx_department_father_id = f.nx_department_id
 				 left join nx_department as subsd on subsd.nx_department_father_id = d.nx_department_id
 				 left join nx_distributer as dis on dis.nx_distributer_id = f.nx_department_dis_id
-# 				 left join nx_distributer_user as diu on diu.nx_DIU_distributer_id = dis.nx_distributer_id
 		where d.nx_department_id = #{nxDuDepartmentId}
 	</select>
 
@@ -218,7 +214,8 @@
 	</select>
 
 
-	<insert id="save" parameterType="com.nongxinle.entity.NxDepartmentEntity"
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxDepartmentEntity"
 			useGeneratedKeys="true" keyProperty="nxDepartmentId">
 		insert into nx_department
 		(

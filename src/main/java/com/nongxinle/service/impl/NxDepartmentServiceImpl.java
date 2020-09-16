@@ -32,17 +32,10 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 
 	@Override
-	public Map<String, Object> queryGroupAndUserInfo(Integer nxGroupUserId) {
-		//订货群信息
-		NxDepartmentUserEntity nxDepartmentUserEntity = nxDepartmentUserService.queryObject(nxGroupUserId);
-		//用户信息
-		Integer nxDuDepartmentId = nxDepartmentUserEntity.getNxDuDepartmentId();
-		NxDepartmentEntity nxDepartmentEntity = nxDepartmentDao.queryGroupInfo(nxDuDepartmentId);
-		//返回
-		Map<String, Object> map = new HashMap<>();
-		map.put("userInfo", nxDepartmentUserEntity);
-		map.put("depInfo", nxDepartmentEntity);
-		return  map;
+	public List<NxDepartmentEntity> queryGroupInfo(String openId) {
+		//采购员的全部店
+		List<NxDepartmentEntity> departmentEntities = nxDepartmentUserService.queryMultiDepartmentByWxOpenId(openId);
+		return  departmentEntities;
 	}
 
 	@Override
@@ -61,7 +54,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 
 	@Override
-	public Integer saveNewRestraunt(NxDepartmentEntity dep) {
+	public String saveNewRestraunt(NxDepartmentEntity dep) {
 
 		//1.保存餐馆
 		nxDepartmentDao.save(dep);
@@ -100,15 +93,15 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 			}
 		}
 
-		//3, 保存批发商客户
+		//3, 保存订货群的批发商
 		Integer nxDepartmentDisId = dep.getNxDepartmentDisId();
 		NxDistributerDepartmentEntity entity = new NxDistributerDepartmentEntity();
 		entity.setNxDdDistributerId(nxDepartmentDisId);
 		entity.setNxDdDepartmentId(nxDepartmentId);
 		nxDistributerDepartmentService.save(entity);
 
-		Integer nxDepartmentUserId = nxDepartmentUserEntity.getNxDepartmentUserId();
-		return nxDepartmentUserId;
+//		Integer nxDepartmentUserId = nxDepartmentUserEntity.getNxDepartmentUserId();
+		return openid;
 	}
 
 

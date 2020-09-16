@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nongxinle.entity.NxCommunityOrdersSubEntity;
-import com.nongxinle.entity.NxDepartmentOrdersEntity;
-import com.nongxinle.entity.NxDistributerPurchaseBatchEntity;
+import com.nongxinle.entity.*;
 import com.nongxinle.service.NxDepartmentOrdersService;
 import com.nongxinle.service.NxDistributerPurchaseBatchService;
 import net.sf.json.JSONArray;
@@ -23,7 +21,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.nongxinle.entity.NxDistributerPurchaseGoodsEntity;
 import com.nongxinle.service.NxDistributerPurchaseGoodsService;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
@@ -45,6 +42,59 @@ public class NxDistributerPurchaseGoodsController {
 	private NxDepartmentOrdersService  nxDepartmentOrdersService;
 
 
+
+
+	/**
+	 * DISTRIBUTE
+	 * 批发商获取进货商品列表
+	 * @param disId 批发商id
+	 * @return 进货商品列表
+	 */
+	@RequestMapping(value = "/getPurchaseGoods/{disId}")
+	@ResponseBody
+	public R getPurchaseGoodsAndPurchaseBatch(@PathVariable Integer disId) {
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("disId", disId);
+		map2.put("status", 3);
+
+		//1,查询采购商品
+		List<NxDistributerFatherGoodsEntity>  purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map2);
+
+		return R.ok().put("data", purchase);
+	}
+
+	/**
+	 * 添加进货商品
+	 * @param purchaseGoodsEntity 批发商商品
+	 * @return ok
+	 */
+	@RequestMapping(value = "/savePlanPurchase", method = RequestMethod.POST)
+	@ResponseBody
+	public R savePlanPurchase (@RequestBody NxDistributerPurchaseGoodsEntity purchaseGoodsEntity) {
+
+		purchaseGoodsEntity.setNxDpgStatus(0);
+		nxDisPurcGoodsService.save(purchaseGoodsEntity);
+
+		Integer nxDistributerPurchaseGoodsId = purchaseGoodsEntity.getNxDistributerPurchaseGoodsId();
+
+		List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities =
+				purchaseGoodsEntity.getNxDepartmentOrdersEntities();
+		if(nxDepartmentOrdersEntities.size() > 0){
+
+			for (NxDepartmentOrdersEntity order : nxDepartmentOrdersEntities) {
+				order.setNxDoPurchaseGoodsId(nxDistributerPurchaseGoodsId);
+				order.setNxDoStatus(1);
+				order.setNxDoBuyStatus(1);
+				nxDepartmentOrdersService.update(order);
+
+			}
+		}
+
+		return R.ok();
+	}
+
+
+//	////////////////////////////////////////////////
 
 
 	@RequestMapping(value = "/finishPruchaseGoodsStatus", method = RequestMethod.POST)
@@ -72,18 +122,6 @@ public class NxDistributerPurchaseGoodsController {
 	    return R.ok();
 	}
 
-	@RequestMapping(value = "/getPurchaseGoods/{disId}")
-	@ResponseBody
-	public R getPurchaseGoodsAndPurchaseBatch(@PathVariable Integer disId) {
-		Map<String, Object> map2 = new HashMap<>();
-		map2.put("disId", disId);
-		map2.put("status", 3);
-
-		//1,查询采购商品
-		List<NxDistributerPurchaseGoodsEntity>  purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map2);
-
-		return R.ok().put("data", purchase);
-	}
 
 
 
@@ -102,36 +140,6 @@ public class NxDistributerPurchaseGoodsController {
 
 
 
-	@RequestMapping(value = "/savePlanPurchase", method = RequestMethod.POST)
-	@ResponseBody
-	public R savePlanPurchase (@RequestBody NxDistributerPurchaseGoodsEntity purchaseGoodsEntity) {
-
-		purchaseGoodsEntity.setNxDpgStatus(0);
-		nxDisPurcGoodsService.save(purchaseGoodsEntity);
-
-		Integer nxDistributerPurchaseGoodsId = purchaseGoodsEntity.getNxDistributerPurchaseGoodsId();
-
-		List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities =
-				purchaseGoodsEntity.getNxDepartmentOrdersEntities();
-		System.out.println(nxDepartmentOrdersEntities + "ssssdfdkfa");
-		if(nxDepartmentOrdersEntities.size() > 0){
-
-			for (NxDepartmentOrdersEntity order : nxDepartmentOrdersEntities) {
-				order.setNxDoPurchaseGoodsId(nxDistributerPurchaseGoodsId);
-				order.setNxDoStatus(1);
-				order.setNxDoBuyStatus(1);
-				nxDepartmentOrdersService.update(order);
-
-			}
-		}
-
-
-
-
-
-		return R.ok();
-	}
-	
 	/**
 	 * 列表
 	 */

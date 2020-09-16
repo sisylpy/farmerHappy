@@ -96,6 +96,6 @@ public class NxDistributerGoodsEntity implements Serializable {
 
 	private Integer isDownload;
 
-//	private List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities; ;
+	private List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities; ;
 
 }

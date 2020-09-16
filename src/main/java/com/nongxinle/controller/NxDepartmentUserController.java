@@ -129,12 +129,11 @@ public class NxDepartmentUserController {
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
-		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
-		if(depUserEntities.size() > 0){
-			NxDepartmentUserEntity nxDistributerUserEntity = depUserEntities.get(0);
-			Integer nxGroupUserId = nxDistributerUserEntity.getNxDepartmentUserId();
-			Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(nxGroupUserId);
-			return R.ok().put("data", stringObjectMap);
+//		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
+		if(openId != null){
+
+			List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
+			return R.ok().put("data", departmentEntities);
 		}else {
 			return R.error(-1,"请进行注册");
 		}
@@ -175,9 +174,10 @@ public class NxDepartmentUserController {
 		   nxDepartmentUser.setNxDuJoinDate(formatWhatDay(0));
 		   nxDepartmentUserService.save(nxDepartmentUser);
 		   Integer nxDepartmentUserId = nxDepartmentUser.getNxDepartmentUserId();
-		   Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(nxDepartmentUserId);
+		   //todo
+		  List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
 
-		   return R.ok().put("data",stringObjectMap);
+		   return R.ok().put("data",departmentEntities);
 	   }
 	}
 
@@ -265,8 +265,9 @@ public class NxDepartmentUserController {
 	@RequestMapping(value = "/getDepAndUserInfo/{userid}")
 	@ResponseBody
 	public R getDepAndUserInfo(@PathVariable Integer userid) {
-//		Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(userid);
-		Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(userid);
+		//todo
+		Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(userid);
+//		Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(userid);
 		return R.ok().put("data", stringObjectMap);
 	}
 

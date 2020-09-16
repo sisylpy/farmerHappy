@@ -12,9 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nongxinle.entity.NxCommunityEntity;
 import com.nongxinle.entity.NxDepartmentUserEntity;
 //import com.nongxinle.service.NxDepartmentOrdersService;
+import com.nongxinle.utils.MyAPPIDConfig;
+import com.nongxinle.utils.WeChatUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,10 +69,18 @@ public class NxDepartmentController {
 	@ResponseBody
 	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
 		System.out.println(dep);
-		Integer integer = nxDepartmentService.saveNewRestraunt(dep);
+		String openId = nxDepartmentService.saveNewRestraunt(dep);
+		String nxDuCode = dep.getNxDepartmentUserEntity().getNxDuCode();
+
 //		Map<String, Object> map = nxDepartmentService.queryDepAndUserInfo(integer);
-		Map<String, Object> map = nxDepartmentService.queryGroupAndUserInfo(integer);
-		return R.ok().put("data", map);
+		if (openId != null){
+			System.out.println("00000" + nxDuCode);
+
+			System.out.println("openidididi" + openId);
+			List<NxDepartmentEntity>  entities= nxDepartmentService.queryGroupInfo(openId);
+			return R.ok().put("data", entities);
+		}
+		return R.error(-1,"cuowu");
 	}
 
 	/**

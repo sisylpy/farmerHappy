@@ -9,6 +9,7 @@ package com.nongxinle.service;
 
 import com.nongxinle.entity.NxDepartmentEntity;
 import com.nongxinle.entity.NxDepartmentOrdersEntity;
+import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public interface NxDepartmentOrdersService {
 	List<NxDepartmentEntity> queryDistributerTodayOrders(Integer disId);
 
 	void save(NxDepartmentOrdersEntity nxDepartmentOrders);
+
+	List<NxDistributerFatherGoodsEntity>  disGetUnPlanPurchaseApplys(Integer disId);
 
 
 //	////////
@@ -44,25 +47,19 @@ public interface NxDepartmentOrdersService {
 
 
 
-	List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseApplys(Integer disId);
 
-	List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId);
+//	List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId);
 
-//	Map<String, Object> queryDistributerIndexData(Integer disId);
 
     List<NxDepartmentOrdersEntity> queryToFillDepOrders(Map<String, Object> map);
 
 
-	List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId);
+//	List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId);
 
     Integer queryNewOrders(Integer nxDepartmentId);
 
 	Integer queryFatherNewOrders(Integer nxDepartmentId);
 
 
-	int queryDisOrdersTotal(Map<String, Object> map);
 
-    List<NxDepartmentOrdersEntity> queryIndependentOrdersByLimit(Map<String, Object> map);
-
-	int queryIndependentOrdersTotal(Map<String, Object> map);
 }

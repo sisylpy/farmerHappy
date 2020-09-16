@@ -1,5 +1,6 @@
 package com.nongxinle.service.impl;
 
+import com.nongxinle.entity.NxDepartmentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,12 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
     @Override
     public List<NxDepartmentUserEntity> queryGroupAdminUserAmount(Integer nxDuDepartmentId) {
 		return nxDepartmentUserDao.queryGroupAdminUserAmount(nxDuDepartmentId);
+    }
+
+    @Override
+    public List<NxDepartmentEntity> queryMultiDepartmentByWxOpenId(String openId) {
+
+		return nxDepartmentUserDao.queryMultiDepartmentByWxOpenId(openId);
     }
 
 }

@@ -99,6 +99,10 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 		}
 	}
 
+	@Override
+	public List<NxDistributerFatherGoodsEntity>  disGetUnPlanPurchaseApplys(Integer disId) {
+		return nxDepartmentOrdersDao.disGetUnPlanPurchaseApplys(disId);
+	}
 
 
 
@@ -151,116 +155,11 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	}
 
 
-	@Override
-	public List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseApplys(Integer disId) {
-		return nxDepartmentOrdersDao.disGetUnPlanPurchaseApplys(disId);
-	}
-
-	@Override
-	public List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId) {
-		return nxDepartmentOrdersDao.disGetUnPlanPurchaseGoodsByFatherGoodsId(nxGoodsId);
-	}
-
-//    @Override
-//    public List<NxDepartmentEntity> disGetUnPickerOrder(Integer disId) {
-//        return nxDepartmentOrdersDao.disGetUnPickerOrder(disId);
-//    }
 
 
 //	@Override
-//	public Map<String, Object> queryDistributerIndexData(Integer disId) {
-//
-//		List<NxDistributerUserEntity> listWeigh = new ArrayList<>();
-//		List<NxDistributerUserEntity> listPurchase = new ArrayList<>();
-//
-//		Map<String,Object> mapData = new HashMap<>();
-//
-//		//查询批发商的所有拣货员
-//		List<NxDistributerUserEntity> pickerUserEntities = new ArrayList<>();
-//		List<NxDistributerUserEntity> purchaserUserEntities = new ArrayList<>();
-//		List<NxDistributerUserEntity> userEntities = nxDistributerUserDao.queryUser(disId);
-//		for (NxDistributerUserEntity user : userEntities) {
-//			List<NxDistributerUserRoleEntity> roleEntities = user.getRoleEntities();
-//			System.out.println(roleEntities);
-//			System.out.println("roororororoorro");
-//			for(NxDistributerUserRoleEntity userRoleEntity :roleEntities){
-//				if(userRoleEntity.getNxDurRoleId().equals(3)){
-//					pickerUserEntities.add(user);
-//				}if(userRoleEntity.getNxDurRoleId().equals(5)){
-//					purchaserUserEntities.add(user);
-//				}
-//			}
-//		}
-//
-//		//查询所有分配称重订单
-//		Map<String, Object> map1 = new HashMap<>();
-//		map1.put("disId", disId);
-//		map1.put("status", 1);
-//		List<NxDepartmentOrdersEntity> ordersEntityList = nxDepartmentOrdersDao.queryOrders(map1);
-//		//组装拣货员的订单
-//		for (NxDistributerUserEntity user : pickerUserEntities) {
-//			List<NxDepartmentOrdersEntity> nxDepOrdersEntityList = new ArrayList<>();
-//
-//			for (NxDepartmentOrdersEntity orders :ordersEntityList) {
-//				if(user.getNxDistributerUserId().equals(orders.getNxDoPickUserId())){
-//					nxDepOrdersEntityList.add(orders);
-//				}
-//			}
-//
-//			//查询拣货员的客户数量
-//			TreeSet<NxDepartmentEntity> fatherDep = new TreeSet<>();
-//			for (NxDepartmentOrdersEntity  ordersEntity :nxDepOrdersEntityList) {
-//				Integer nxDoDepartmentFatherId = ordersEntity.getNxDoDepartmentFatherId();
-//				System.out.println(nxDoDepartmentFatherId + "fffff");
-//				NxDepartmentEntity nxDepartmentEntity = nxDepartmentService.queryObject(nxDoDepartmentFatherId);
-//				fatherDep.add(nxDepartmentEntity);
-//			}
-//
-//
-//			user.setOrderAmount(fatherDep.size());
-//			if (nxDepOrdersEntityList.size() > 0){
-//				listWeigh.add(user);
-//			}
-//
-//		}
-//		System.out.println(listWeigh);
-//		mapData.put("picker", JSON.toJSON(listWeigh));
-//
-//		//查询商品采购批次
-//		Map<String, Object> map2 = new HashMap<>();
-//		map2.put("disId", disId);
-//		map2.put("status", 1);
-//		List<NxDistributerPurchaseGoodsEntity> purchaseGoodsEntities = nxDPGService.queryDisPurchaseGoods(map2);
-//
-//		List<NxDistributerPurchaseGoodsEntity> purchaseGoodsEntityList = new ArrayList<>();
-//
-//		System.out.println(purchaserUserEntities.size() + "purchaserUserEntities");
-//		for (NxDistributerUserEntity purUser : purchaserUserEntities) {
-//			System.out.println(purUser.getNxDistributerUserId() + "<===getNxDistributerUserId");
-//
-//			for (NxDistributerPurchaseGoodsEntity purGoods : purchaseGoodsEntities) {
-//				System.out.println(purGoods.getNxDpgBuyUserId() + "<======getNxDpgBuyUserId");
-//				if(purUser.getNxDistributerUserId().equals(purGoods.getNxDpgBuyUserId())){
-//					purchaseGoodsEntityList.add(purGoods);
-//				}
-//			}
-//			purUser.setOrderAmount(purchaseGoodsEntityList.size());
-//			if (purchaseGoodsEntityList.size() > 0){
-//				listPurchase.add(purUser);
-//			}
-//		}
-//
-//		mapData.put("buyer", JSON.toJSON(listPurchase));
-//
-//
-//
-//		return mapData;
-//
-//	}
-
-//	@Override
-//	public List<NxDepartmentOrdersEntity> queryPickerOrders(Map<String, Object> map) {
-//		return nxDepartmentOrdersDao.queryPickerOrders(map);
+//	public List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId) {
+//		return nxDepartmentOrdersDao.disGetUnPlanPurchaseGoodsByFatherGoodsId(nxGoodsId);
 //	}
 
     @Override
@@ -269,60 +168,23 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 		return nxDepartmentOrdersDao.queryKindsOfOrders(map);
     }
 
-//    @Override
-//    public List<NxDepartmentOrdersEntity> queryDisOrderDepartments(Integer disId) {
-//
-//		return nxDepartmentOrdersDao.queryDisOrderDepartments(disId);
-//    }
+
 
 //	@Override
-//	public NxDepartmentEntity  queryPrintPickerData(Integer nxDepartmentId) {
-//		return nxDepartmentOrdersDao.queryPrintPickerData(nxDepartmentId);
+//	public List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId) {
+//		return nxDepartmentOrdersDao.queryDepartmentTodayOrders(depId);
 //	}
 
 
-
-//    @Override
-//    public List<NxDepartmentOrdersEntity> queryGroupTodayOrders(Integer nxDuDepartmentId) {
-//
-//		return nxDepartmentOrdersDao.queryGroupTodayOrders(nxDuDepartmentId);
-//    }
-
-	@Override
-	public List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId) {
-		return nxDepartmentOrdersDao.queryDepartmentTodayOrders(depId);
-	}
-
 //	@Override
-//	public List<NxDepartmentEntity> querySingleDepartmentOrders(Map<String, Object> map) {
-//		return nxDepartmentOrdersDao.querySingleDepartmentOrders(map);
-//	}
-
-	@Override
 	public Integer queryNewOrders(Integer nxDepartmentId) {
 		return nxDepartmentOrdersDao.queryNewOrders(nxDepartmentId);
 	}
-
-    @Override
+//
+//    @Override
     public Integer queryFatherNewOrders(Integer nxDepartmentId) {
 
 		return nxDepartmentOrdersDao.queryFatherNewOrders(nxDepartmentId);
-    }
-
-    @Override
-    public int queryDisOrdersTotal(Map<String, Object> map) {
-
-		return nxDepartmentOrdersDao.queryDisOrdersTotal(map);
-    }
-
-	@Override
-	public List<NxDepartmentOrdersEntity> queryIndependentOrdersByLimit(Map<String, Object> map) {
-		return nxDepartmentOrdersDao.queryIndependentOrdersByLimit(map);
-	}
-
-	@Override
-	public int queryIndependentOrdersTotal(Map<String, Object> map) {
-		return nxDepartmentOrdersDao.queryIndependentOrdersTotal(map);
 	}
 
 

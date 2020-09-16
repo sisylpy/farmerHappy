@@ -56,6 +56,8 @@ public class NxDepartmentEntity implements Serializable, Comparable {
 	private String  nxDepartmentPrintName;
 
 	private Integer nxDepartmentShowWeeks;
+
+
 	private NxDepartmentEntity fatherDepartmentEntity;
 
 	private NxDepartmentUserEntity nxDepartmentUserEntity;

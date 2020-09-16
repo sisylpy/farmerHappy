@@ -1,5 +1,6 @@
 package com.nongxinle.service.impl;
 
+import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,24 @@ import com.nongxinle.service.NxDistributerPurchaseGoodsService;
 public class NxDistributerPurchaseGoodsServiceImpl implements NxDistributerPurchaseGoodsService {
 	@Autowired
 	private NxDistributerPurchaseGoodsDao nxDistributerPurchaseGoodsDao;
-	
+
+
+	@Override
+	public List<NxDistributerFatherGoodsEntity> queryDisPurchaseGoods(Map<String, Object> map) {
+
+		return nxDistributerPurchaseGoodsDao.queryDisPurchaseGoods(map);
+	}
+
+
+
+
+//	//////////////
+
+
+
+
+
+
 	@Override
 	public NxDistributerPurchaseGoodsEntity queryObject(Integer nxDistributerPurchaseGoods){
 		return nxDistributerPurchaseGoodsDao.queryObject(nxDistributerPurchaseGoods);
@@ -52,11 +70,7 @@ public class NxDistributerPurchaseGoodsServiceImpl implements NxDistributerPurch
 		nxDistributerPurchaseGoodsDao.deleteBatch(nxDistributerPurchaseGoodss);
 	}
 
-    @Override
-    public List<NxDistributerPurchaseGoodsEntity> queryDisPurchaseGoods(Map<String, Object> map) {
 
-		return nxDistributerPurchaseGoodsDao.queryDisPurchaseGoods(map);
-    }
 
 //    @Override
 //    public List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByUUID(String uuid) {

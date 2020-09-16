@@ -7,6 +7,7 @@ package com.nongxinle.dao;
  * @date 06-24 11:45
  */
 
+import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 import com.nongxinle.entity.NxDistributerPurchaseGoodsEntity;
 
 import java.util.List;
@@ -15,7 +16,9 @@ import java.util.Map;
 
 public interface NxDistributerPurchaseGoodsDao extends BaseDao<NxDistributerPurchaseGoodsEntity> {
 
-    List<NxDistributerPurchaseGoodsEntity> queryDisPurchaseGoods(Map<String, Object> map);
+    List<NxDistributerFatherGoodsEntity> queryDisPurchaseGoods(Map<String, Object> map);
+
+//    /////////////////
 
 //    List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByUUID(String uuid);
 

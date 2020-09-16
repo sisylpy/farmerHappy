@@ -9,8 +9,6 @@ import java.util.*;
 
 import com.nongxinle.entity.*;
 import com.nongxinle.service.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +31,41 @@ public class NxDepartmentOrdersController {
     @Autowired
     private NxDepartmentService nxDepartmentService;
 
-//    @Autowired
-    private NxDistributerPurchaseGoodsService nxDisPurGoodsService;
 
     @Autowired
     private NxStandardService nxStandardService;
 
+
+
+    /**
+     * 批发商打印拣货单
+     * @param ordersEntities 订单
+     * @return ok
+     */
+    @RequestMapping(value = "/distributionWeighing", method = RequestMethod.POST)
+    @ResponseBody
+    public R distributionWeighing(@RequestBody List<NxDepartmentOrdersEntity> ordersEntities) {
+
+        for (NxDepartmentOrdersEntity orders : ordersEntities) {
+            orders.setNxDoStatus(1);
+            nxDepartmentOrdersService.update(orders);
+        }
+        return R.ok();
+    }
+
+
+    /**
+     * 批发商获取未进货的订单
+     * @param disId 批发商id
+     * @return 批发商父类商品
+     */
+    @RequestMapping(value = "/disGetToPlanPurchaseGoods/{disId}")
+    @ResponseBody
+    public R disGetToPlanPurchaseGoods(@PathVariable Integer disId) {
+        List<NxDistributerFatherGoodsEntity> fatherGoodsEntities = nxDepartmentOrdersService.disGetUnPlanPurchaseApplys(disId);
+
+        return R.ok().put("data", fatherGoodsEntities);
+    }
 
 
     /**
@@ -313,143 +340,35 @@ public class NxDepartmentOrdersController {
 //==========================================
 
 
-    @RequestMapping(value = "/departmentGetTodayOrders/{depId}")
-    @ResponseBody
-    public R departmentGetTodayOrders(@PathVariable Integer depId) {
-
-
-        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDepartmentTodayOrders(depId);
-        return R.ok().put("data", ordersEntities);
-    }
-
-
-
-
-
-
-
-     @RequestMapping(value = "/saveOrderArr", method = RequestMethod.POST)
-      @ResponseBody
-      public R saveOrderArr (@RequestBody List<NxDepartmentOrdersEntity> orders) {
-         System.out.println(orders);
-         for (NxDepartmentOrdersEntity ordersEntity : orders) {
-             nxDepartmentOrdersService.save(ordersEntity);
-         }
-
-
-        return R.ok();
-      }
-
-
-
-
-
-
-    /**
-     * 批发商首页接口
-     *
-     * @param
-     * @return 分配拣货员列表
-     */
-//    @RequestMapping(value = "/disGetIndexData/{disId}")
+//    @RequestMapping(value = "/departmentGetTodayOrders/{depId}")
 //    @ResponseBody
-//    public R disGetIndexData(@PathVariable Integer disId) {
-//        System.out.println(disId + "kkdkjfdka");
-//        Map<String, Object> list = nxDepartmentOrdersService.queryDistributerIndexData(disId);
-//        return R.ok().put("data", list);
+//    public R departmentGetTodayOrders(@PathVariable Integer depId) {
+//
+//
+//        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDepartmentTodayOrders(depId);
+//        return R.ok().put("data", ordersEntities);
 //    }
 
 
-    @RequestMapping(value = "/distributionWeighing", method = RequestMethod.POST)
-    @ResponseBody
-    public R distributionWeighing(@RequestBody List<NxDepartmentOrdersEntity> ordersEntities) {
-
-        for (NxDepartmentOrdersEntity orders : ordersEntities) {
-            orders.setNxDoStatus(1);
-            nxDepartmentOrdersService.update(orders);
-        }
-        return R.ok();
-    }
 
 
 
 
-
-    @RequestMapping(value = "/disGetToPlanPurchaseGoods/{disId}")
-    @ResponseBody
-    public R disGetToPlanPurchaseGoods(@PathVariable Integer disId) {
-
-
-        TreeSet<NxGoodsEntity> fatherEntityTreeSet = new TreeSet<>();
-        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.disGetUnPlanPurchaseApplys(disId);
-        List<Map<String, Object>> resultData = new ArrayList<>();
-
-
-        //1, 查询父级商品列表
-        for (NxDepartmentOrdersEntity order : ordersEntities) {
-            Integer nxDoNxGoodsId = order.getNxDoNxGoodsFatherId();
-            System.out.println(nxDoNxGoodsId + "fatherididiidid");
-            NxGoodsEntity fatherGoodsEntity = nxGoodsService.queryObject(nxDoNxGoodsId);
-            fatherEntityTreeSet.add(fatherGoodsEntity);
-        }
-
-        for (NxGoodsEntity fatherGoods : fatherEntityTreeSet) {
-            Map<String, Object> map = new HashMap<>();
-
-            Integer nxGoodsId = fatherGoods.getNxGoodsId();
-            String nxGoodsName = fatherGoods.getNxGoodsName();
-            map.put("fatherGoodsId", nxGoodsId);
-            map.put("fatherGoodsName", nxGoodsName);
-
-            List<Map<String, Object>> goodsList = new ArrayList<>();
-            List<Map<String, Object>> purList = new ArrayList<>();
-            TreeSet<NxGoodsEntity> nxGoodsEntityTreeSet = new TreeSet<>();
-            for (NxDepartmentOrdersEntity orders : ordersEntities) {
-                if (fatherGoods.getNxGoodsId().equals(orders.getNxDoNxGoodsFatherId())) {
-                    //todo
-//                    nxGoodsEntityTreeSet.add(orders.getNxGoodsEntity());
-                }
-            }
-
-            for (NxGoodsEntity goodsEntity : nxGoodsEntityTreeSet) {
-                Map<String, Object> mapSub = new HashMap<>();
+//
+//     @RequestMapping(value = "/saveOrderArr", method = RequestMethod.POST)
+//      @ResponseBody
+//      public R saveOrderArr (@RequestBody List<NxDepartmentOrdersEntity> orders) {
+//         System.out.println(orders);
+//         for (NxDepartmentOrdersEntity ordersEntity : orders) {
+//             nxDepartmentOrdersService.save(ordersEntity);
+//         }
+//
+//
+//        return R.ok();
+//      }
 
 
-                mapSub.put("goodsName", goodsEntity.getNxGoodsName());
-                mapSub.put("standardName", goodsEntity.getNxGoodsStandardname());
-                mapSub.put("goodsId", goodsEntity.getNxGoodsId());
 
-                Integer nxGoodsId1 = goodsEntity.getNxGoodsId();
-
-                List<NxStandardEntity> standardEntities = nxStandardService.queryList(nxGoodsId1);
-                mapSub.put("standardArr", standardEntities);
-                mapSub.put("selectAmount", 0);
-                List<Map<String, Object>> mapList = new ArrayList<>();
-                mapSub.put("purchaseQuantity",mapList);
-
-
-                List<NxDepartmentOrdersEntity> orders = nxDepartmentOrdersService.disGetUnPlanPurchaseGoodsByFatherGoodsId(nxGoodsId1);
-                mapSub.put("orders", orders);
-                goodsList.add(mapSub);
-
-                Map<String, Object> search = new HashMap<>();
-                map.put("disId", disId);
-                map.put("goodsId", goodsEntity.getNxGoodsId());
-
-//                List<NxDistributerPurchaseGoodsEntity> disPurGoodsEntities = nxDisPurGoodsService.queryPurchaseGoodsByGoodsId(map);
-//                mapSub.put("purchase",disPurGoodsEntities);
-
-
-            }
-            map.put("goodsList", goodsList);
-            map.put("purchaseList", purList);
-            resultData.add(map);
-
-        }
-
-
-        return R.ok().put("data", resultData);
-    }
 
 
 

@@ -50,8 +50,11 @@ public class NxDistributerPurchaseBatchController {
 	}
 
 
-
-
+	/**
+	 * 批发商获取进货商品列表
+	 * @param batchId
+	 * @return
+	 */
 	@RequestMapping(value = "/getPurchaseGoodsBatch/{batchId}")
 	@ResponseBody
 	public R getPurchaseGoodsBatch(@PathVariable Integer batchId) {

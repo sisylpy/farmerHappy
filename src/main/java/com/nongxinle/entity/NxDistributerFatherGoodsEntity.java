@@ -55,9 +55,16 @@ public class NxDistributerFatherGoodsEntity implements Serializable , Comparable
 	 */
 	private Integer nxDfgDistributerId;
 
-	List<NxDistributerFatherGoodsEntity> fatherGoodsEntities;
-	TreeSet<NxDistributerFatherGoodsEntity> treeSet;
-	List<NxDistributerGoodsEntity> nxDistributerGoodsEntities;
+	private Boolean isSelected = false;
+
+	private List<NxDistributerFatherGoodsEntity> fatherGoodsEntities;
+
+	private TreeSet<NxDistributerFatherGoodsEntity> treeSet;
+
+	private List<NxDistributerGoodsEntity> nxDistributerGoodsEntities;
+
+	private List<NxDistributerPurchaseGoodsEntity> nxDistributerPurchaseGoodsEntities;
+
 
 	@Override
 	public boolean equals(Object o) {
