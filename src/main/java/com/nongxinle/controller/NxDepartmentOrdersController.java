@@ -121,8 +121,23 @@ public class NxDepartmentOrdersController {
         map.put("status", 3);
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
         //按每天显示订单
-        Map<String, Object> stringObjectMap = showOrderByEveryDay((ordersEntities));
+        Map<String, Object> stringObjectMap = countSwiperHeight((ordersEntities));
         return R.ok().put("data", stringObjectMap);
+    }
+
+    private Map<String, Object> countSwiperHeight (List<NxDepartmentOrdersEntity> ordersEntities ){
+        Map<String, Object> map = new HashMap<>();
+        Integer countRemark = 0;
+        for (NxDepartmentOrdersEntity order : ordersEntities) {
+            String nxDoRemark = order.getNxDoRemark();
+            if (nxDoRemark.length() > 0){
+                countRemark = countRemark + 1;
+            }
+        }
+        map.put("remarkCount", countRemark);
+        map.put("orderArr", ordersEntities);
+
+        return map;
     }
 
     /**
@@ -248,7 +263,7 @@ public class NxDepartmentOrdersController {
     @ResponseBody
     public R purchaserFinishOrderContent (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
-            ordersEntity.setNxDoStatus(3);
+            ordersEntity.setNxDoStatus(4);
             nxDepartmentOrdersService.update(ordersEntity);
         }
         return R.ok();
@@ -497,7 +512,7 @@ public class NxDepartmentOrdersController {
             for (NxDepartmentOrdersEntity ordersEntity: ordersArr) {
                 if(ordersEntity.getNxDoApplyOnlyDate().equals(nxDoApplyOnlyDate)){
                     arr.add(ordersEntity);
-                    if(ordersEntity.getNxDoStatus() > 3 ){
+                    if(ordersEntity.getNxDoStatus() == 1 ){
                         complate = complate + 1;
                     }
                 }

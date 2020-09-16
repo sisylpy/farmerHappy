@@ -36,7 +36,7 @@ public class NxDepartmentEntity implements Serializable, Comparable {
 	/**
 	 *  订货部门类型
 	 */
-	private Integer nxDepartmentType;
+	private String nxDepartmentType;
 	/**
 	 *  订货部门子部门数量
 	 */

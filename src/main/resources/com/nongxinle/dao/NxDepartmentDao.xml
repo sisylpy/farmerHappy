@@ -43,7 +43,6 @@
 		<result property="nxDistributerPhone" column="nx_distributer_phone"/>
 		<result property="nxDistributerImg" column="nx_distributer_img"/>
 		<collection property="nxDistributerUserEntities" resultMap="disUser"/>
-
 	</resultMap>
 
 	<select id="queryList" resultType="com.nongxinle.entity.NxDepartmentEntity">
@@ -110,23 +109,40 @@
 		<result property="nxDepartmentDisId" column="d_nx_department_dis_id"/>
 		<association property="fatherDepartmentEntity" resultMap="fatherDep"/>
 		<association property="nxDistributerEntity" resultMap="distributer"/>
+<!--		<collection property="nxDepartmentEntities" resultMap="subDeps"/>-->
+	</resultMap>
+
+	<resultMap id="groupInfo" type="NxDepartmentEntity">
+		<id property="nxDepartmentId" column="d_nx_department_id"/>
+		<result property="nxDepartmentName" column="d_nx_department_name"/>
+		<result property="nxDepartmentFatherId" column="d_nx_department_father_id"/>
+		<result property="nxDepartmentIsGroupDep" column="d_nx_department_is_group_dep"/>
+		<result property="nxDepartmentSubAmount" column="d_nx_department_sub_amount"/>
+		<result property="nxDepartmentDisId" column="d_nx_department_dis_id"/>
+		<result property="nxDepartmentShowWeeks" column="d_nx_department_show_weeks"/>
+		<result property="nxDepartmentDisId" column="d_nx_department_dis_id"/>
+		<result property="nxDepartmentType" column="d_nx_department_type"/>
+<!--		<association property="fatherDepartmentEntity" resultMap="fatherDep"/>-->
+		<association property="nxDistributerEntity" resultMap="distributer"/>
 		<collection property="nxDepartmentEntities" resultMap="subDeps"/>
 	</resultMap>
 
 
-	<select id="queryGroupInfo" resultMap="depInfo">
+	<select id="queryGroupInfo" resultMap="groupInfo">
 		select d.nx_department_id 'd_nx_department_id',  d.nx_department_name 'd_nx_department_name',
 		       d.nx_department_father_id 'd_nx_department_father_id',
 		       d.nx_department_is_group_dep 'd_nx_department_is_group_dep',
 		       d.nx_department_dis_id 'd_nx_department_dis_id',
 		       d.nx_department_show_weeks 'd_nx_department_show_weeks',
 		       d.nx_department_sub_amount 'd_nx_department_sub_amount',
-		       f.nx_department_id 'f_nx_department_id',
-		       f.nx_department_name 'f_nx_department_name',
-		       f.nx_department_dis_id 'f_nx_department_dis_id',
-		       f.nx_department_show_weeks 'f_nx_department_show_weeks',
-		       f.nx_department_dis_id 'f_nx_department_dis_id',
-		       f.nx_department_sub_amount 'f_nx_department_sub_amount',
+		       d.nx_department_type 'd_nx_department_type',
+# 		       f.nx_department_id 'f_nx_department_id',
+# 		       f.nx_department_name 'f_nx_department_name',
+# 		       f.nx_department_dis_id 'f_nx_department_dis_id',
+# 		       f.nx_department_show_weeks 'f_nx_department_show_weeks',
+# 		       f.nx_department_dis_id 'f_nx_department_dis_id',
+# 		       f.nx_department_sub_amount 'f_nx_department_sub_amount',
+# 		       f.nx_department_type 'f_nx_department_type',
 		       subsd.nx_department_id 'subs_nx_department_id',
 		       subsd.nx_department_name 'subs_nx_department_name',
 		       subsd.nx_department_show_weeks 'subs_nx_department_show_weeks',
@@ -137,12 +153,13 @@
 			   dis.nx_distributer_name , dis.nx_distributer_id,
 		       dis.nx_distributer_address, dis.nx_distributer_manager,
 		       dis.nx_distributer_phone, dis.nx_distributer_img,
+		       dis.nx_distributer_img,
 		       diu.nx_distributer_user_id, diu.nx_DIU_wx_nick_name,
 		       diu.nx_DIU_wx_avartra_url, diu.nx_DIU_distributer_id,
 		       diu.nx_DIU_admin
 
 		from nx_department as d
-		left join nx_department as f on d.nx_department_father_id = f.nx_department_id
+# 		left join nx_department as f on d.nx_department_father_id = f.nx_department_id
 		left join nx_department as subsd on subsd.nx_department_father_id = d.nx_department_id
 		left join nx_distributer as dis on dis.nx_distributer_id = d.nx_department_dis_id
 		left join nx_distributer_user as diu on diu.nx_DIU_distributer_id = dis.nx_distributer_id
@@ -164,6 +181,7 @@
 			   f.nx_department_show_weeks 'f_nx_department_show_weeks',
 			   f.nx_department_dis_id 'f_nx_department_dis_id',
 			   f.nx_department_sub_amount 'f_nx_department_sub_amount',
+		       f.nx_department_type 'f_nx_department_type',
 			   subsd.nx_department_id 'subs_nx_department_id',
 			   subsd.nx_department_name 'subs_nx_department_name',
 			   subsd.nx_department_show_weeks 'subs_nx_department_show_weeks',
@@ -173,17 +191,17 @@
 			   subsd.nx_department_sub_amount 'subs_nx_department_sub_amount',
 			   dis.nx_distributer_name , dis.nx_distributer_id,
 			   dis.nx_distributer_address, dis.nx_distributer_manager,
-			   dis.nx_distributer_phone, dis.nx_distributer_img,
-			   diu.nx_distributer_user_id, diu.nx_DIU_wx_nick_name,
-			   diu.nx_DIU_wx_avartra_url, diu.nx_DIU_distributer_id,
-			   diu.nx_DIU_admin
+			   dis.nx_distributer_phone, dis.nx_distributer_img
+# 			   diu.nx_distributer_user_id, diu.nx_DIU_wx_nick_name,
+# 			   diu.nx_DIU_wx_avartra_url, diu.nx_DIU_distributer_id,
+# 			   diu.nx_DIU_admin
 
 		from nx_department as d
 				 left join nx_department as f on d.nx_department_father_id = f.nx_department_id
 				 left join nx_department as subsd on subsd.nx_department_father_id = d.nx_department_id
-				 left join nx_distributer as dis on dis.nx_distributer_id = d.nx_department_dis_id
-				 left join nx_distributer_user as diu on diu.nx_DIU_distributer_id = dis.nx_distributer_id
-		where d.nx_department_id = #{nxDuDepartmentId} and diu.nx_DIU_admin = 1
+				 left join nx_distributer as dis on dis.nx_distributer_id = f.nx_department_dis_id
+# 				 left join nx_distributer_user as diu on diu.nx_DIU_distributer_id = dis.nx_distributer_id
+		where d.nx_department_id = #{nxDuDepartmentId}
 	</select>
 
 

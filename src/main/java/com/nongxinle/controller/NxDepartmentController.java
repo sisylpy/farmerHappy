@@ -67,7 +67,8 @@ public class NxDepartmentController {
 	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
 		System.out.println(dep);
 		Integer integer = nxDepartmentService.saveNewRestraunt(dep);
-		Map<String, Object> map = nxDepartmentService.queryDepAndUserInfo(integer);
+//		Map<String, Object> map = nxDepartmentService.queryDepAndUserInfo(integer);
+		Map<String, Object> map = nxDepartmentService.queryGroupAndUserInfo(integer);
 		return R.ok().put("data", map);
 	}
 

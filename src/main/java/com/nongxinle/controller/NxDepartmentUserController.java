@@ -13,6 +13,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nongxinle.entity.NxDepartmentEntity;
+import com.nongxinle.entity.NxDepartmentOrdersEntity;
+import com.nongxinle.service.NxDepartmentOrdersService;
 import com.nongxinle.service.NxDepartmentService;
 import com.nongxinle.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class NxDepartmentUserController {
 
 	@Autowired
 	private NxDepartmentService nxDepartmentService;
+
+	@Autowired
+	private NxDepartmentOrdersService nxDepartmentOrdersService;
 
 
 	/**
@@ -248,7 +253,6 @@ public class NxDepartmentUserController {
 			return R.ok().put("data", stringObjectMap);
 		}else {
 			return R.error(-1,"用户不存在");
-
 		}
 	}
 
@@ -261,7 +265,8 @@ public class NxDepartmentUserController {
 	@RequestMapping(value = "/getDepAndUserInfo/{userid}")
 	@ResponseBody
 	public R getDepAndUserInfo(@PathVariable Integer userid) {
-		Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(userid);
+//		Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(userid);
+		Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(userid);
 		return R.ok().put("data", stringObjectMap);
 	}
 
@@ -370,6 +375,7 @@ public class NxDepartmentUserController {
 	public R deleteDepUser(@PathVariable Integer userId) {
 		NxDepartmentUserEntity nxDepartmentUserEntity = nxDepartmentUserService.queryObject(userId);
 		Integer nxDuAdmin = nxDepartmentUserEntity.getNxDuAdmin();
+		//删除采购员
 		if(nxDuAdmin.equals(1)){
 			Integer nxDuDepartmentId = nxDepartmentUserEntity.getNxDuDepartmentId();
 			List<NxDepartmentUserEntity> userEntities = nxDepartmentUserService.queryGroupAdminUserAmount(nxDuDepartmentId);
@@ -380,8 +386,18 @@ public class NxDepartmentUserController {
 				return R.ok();
 			}
 		}else{
-			nxDepartmentUserService.delete(userId);
-			return R.ok();
+			//删除订货员
+			Map<String, Object> map = new HashMap<>();
+			map.put("userId",userId);
+			map.put("status", 4);
+			List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
+			if(ordersEntities.size() > 0){
+				return  R.error(-1, "还有未完成订货，不能删除");
+			}else{
+				nxDepartmentUserService.delete(userId);
+				return R.ok();
+			}
+
 		}
 	}
 

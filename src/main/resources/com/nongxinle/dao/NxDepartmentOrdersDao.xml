@@ -32,6 +32,9 @@
             <if test="applyDate != null">
                 and  dor.nx_DO_apply_date &gt; #{applyDate}
             </if>
+            <if test="userId != null">
+                and  dor.nx_DO_order_user_id = {userId}
+            </if>
 
         </where>
 
