@@ -18,59 +18,67 @@ import com.nongxinle.service.NxDistributerFatherGoodsService;
 public class NxDistributerFatherGoodsServiceImpl implements NxDistributerFatherGoodsService {
 	@Autowired
 	private NxDistributerFatherGoodsDao nxDistributerFatherGoodsDao;
-	
+
 	@Override
-	public NxDistributerFatherGoodsEntity queryObject(Integer nxDistributerFatherGoodsId){
-		return nxDistributerFatherGoodsDao.queryObject(nxDistributerFatherGoodsId);
+	public List<NxDistributerFatherGoodsEntity> queryDistributerGoodsCata(Integer disId) {
+
+		return nxDistributerFatherGoodsDao.queryDisGoodsCata(disId);
 	}
-	
+
 	@Override
-	public List<NxDistributerFatherGoodsEntity> queryList(Map<String, Object> map){
-		return nxDistributerFatherGoodsDao.queryList(map);
+	public List<NxDistributerFatherGoodsEntity> queryHasDisFathersFather(Map<String, Object> map2) {
+
+		return nxDistributerFatherGoodsDao.queryHasDisFathersFather(map2);
 	}
-	
+
+
 	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDistributerFatherGoodsDao.queryTotal(map);
+	public List<NxDistributerFatherGoodsEntity> queryDisFatherGoodsByParams(Map<String, Object> map) {
+		return nxDistributerFatherGoodsDao.queryDisFathersGoodsByParams(map);
 	}
-	
+
 	@Override
 	public void save(NxDistributerFatherGoodsEntity nxDistributerFatherGoods){
 		nxDistributerFatherGoodsDao.save(nxDistributerFatherGoods);
 	}
-	
-	@Override
-	public void update(NxDistributerFatherGoodsEntity nxDistributerFatherGoods){
-		nxDistributerFatherGoodsDao.update(nxDistributerFatherGoods);
-	}
-	
 	@Override
 	public void delete(Integer nxDistributerFatherGoodsId){
 		nxDistributerFatherGoodsDao.delete(nxDistributerFatherGoodsId);
 	}
-	
+
 	@Override
-	public void deleteBatch(Integer[] nxDistributerFatherGoodsIds){
-		nxDistributerFatherGoodsDao.deleteBatch(nxDistributerFatherGoodsIds);
+	public void update(NxDistributerFatherGoodsEntity nxDistributerFatherGoods){
+		nxDistributerFatherGoodsDao.update(nxDistributerFatherGoods);
 	}
 
 
+//
+	@Override
+	public NxDistributerFatherGoodsEntity queryObject(Integer nxDistributerFatherGoodsId){
+		return nxDistributerFatherGoodsDao.queryObject(nxDistributerFatherGoodsId);
+	}
+//
+//	@Override
+//	public List<NxDistributerFatherGoodsEntity> queryList(Map<String, Object> map){
+//		return nxDistributerFatherGoodsDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDistributerFatherGoodsDao.queryTotal(map);
+//	}
+//
+//
+//
 
-    @Override
-    public List<NxDistributerFatherGoodsEntity> queryDistributerGoodsCata(Integer disId) {
 
-		return nxDistributerFatherGoodsDao.queryDisGoodsCata(disId);
-    }
+//
+//	@Override
+//	public void deleteBatch(Integer[] nxDistributerFatherGoodsIds){
+//		nxDistributerFatherGoodsDao.deleteBatch(nxDistributerFatherGoodsIds);
+//	}
 
-    @Override
-    public List<NxDistributerFatherGoodsEntity> queryHasDisGrandGoodsFather(Map<String, Object> map2) {
 
-		return nxDistributerFatherGoodsDao.queryHasDisGrandFather(map2);
-    }
 
-    @Override
-    public List<NxDistributerFatherGoodsEntity> queryHasDisGreatGrandGoodsFather(Map<String, Object> map3) {
-        return nxDistributerFatherGoodsDao.queryHasGreatGrandGoods(map3);
-    }
 
 }

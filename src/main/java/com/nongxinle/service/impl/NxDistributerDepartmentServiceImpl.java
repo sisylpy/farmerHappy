@@ -18,47 +18,51 @@ import com.nongxinle.service.NxDistributerDepartmentService;
 public class NxDistributerDepartmentServiceImpl implements NxDistributerDepartmentService {
 	@Autowired
 	private NxDistributerDepartmentDao nxDistributerDepartmentDao;
-	
-	@Override
-	public NxDistributerDepartmentEntity queryObject(Integer nxDistributerDepId){
-		return nxDistributerDepartmentDao.queryObject(nxDistributerDepId);
-	}
-	
-	@Override
-	public List<NxDistributerDepartmentEntity> queryList(Map<String, Object> map){
-		return nxDistributerDepartmentDao.queryList(map);
-	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDistributerDepartmentDao.queryTotal(map);
-	}
-	
-	@Override
-	public void save(NxDistributerDepartmentEntity nxDistributerDepartment){
-		nxDistributerDepartmentDao.save(nxDistributerDepartment);
-	}
-	
-	@Override
-	public void update(NxDistributerDepartmentEntity nxDistributerDepartment){
-		nxDistributerDepartmentDao.update(nxDistributerDepartment);
-	}
-	
-	@Override
-	public void delete(Integer nxDistributerDepId){
-		nxDistributerDepartmentDao.delete(nxDistributerDepId);
-	}
-	
-	@Override
-	public void deleteBatch(Integer[] nxDistributerDepIds){
-		nxDistributerDepartmentDao.deleteBatch(nxDistributerDepIds);
-	}
-
-
 
 	@Override
 	public List<NxDepartmentEntity> queryAllDisDepartments(Integer disId) {
 		return nxDistributerDepartmentDao.queryAllDisDepartments(disId);
 	}
+	@Override
+	public void save(NxDistributerDepartmentEntity nxDistributerDepartment){
+		nxDistributerDepartmentDao.save(nxDistributerDepartment);
+	}
+
+//
+//	@Override
+//	public NxDistributerDepartmentEntity queryObject(Integer nxDistributerDepId){
+//		return nxDistributerDepartmentDao.queryObject(nxDistributerDepId);
+//	}
+//
+//	@Override
+//	public List<NxDistributerDepartmentEntity> queryList(Map<String, Object> map){
+//		return nxDistributerDepartmentDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDistributerDepartmentDao.queryTotal(map);
+//	}
+//
+//
+//
+//	@Override
+//	public void update(NxDistributerDepartmentEntity nxDistributerDepartment){
+//		nxDistributerDepartmentDao.update(nxDistributerDepartment);
+//	}
+//
+//	@Override
+//	public void delete(Integer nxDistributerDepId){
+//		nxDistributerDepartmentDao.delete(nxDistributerDepId);
+//	}
+//
+//	@Override
+//	public void deleteBatch(Integer[] nxDistributerDepIds){
+//		nxDistributerDepartmentDao.deleteBatch(nxDistributerDepIds);
+//	}
+
+
+
+
 
 }

@@ -22,26 +22,30 @@ public interface NxDepartmentService {
 
 	void saveJustDepartment(NxDepartmentEntity nxDepartmentEntity);
 
+	List<NxDepartmentEntity> querySubDepartments(Integer depId);
 
-
-
+	void save(NxDepartmentEntity nxDepartment);
 
 	NxDepartmentEntity queryObject(Integer nxDepartmentId);
-	
-	List<NxDepartmentEntity> queryList(Map<String, Object> map);
-	
-	int queryTotal(Map<String, Object> map);
-	
-	void save(NxDepartmentEntity nxDepartment);
-	
+
 	void update(NxDepartmentEntity nxDepartment);
-	
-	void delete(Integer nxDepartmentId);
-	
-	void deleteBatch(Integer[] nxDepartmentIds);
 
 
-	List<NxDepartmentEntity> querySubDepartments(Integer depId);
+
+//
+//
+//
+//	List<NxDepartmentEntity> queryList(Map<String, Object> map);
+//
+//	int queryTotal(Map<String, Object> map);
+//
+//
+//
+//	void delete(Integer nxDepartmentId);
+//
+//	void deleteBatch(Integer[] nxDepartmentIds);
+
+
 
 
 

@@ -9,6 +9,7 @@ package com.nongxinle.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import lombok.ToString;
 
 @Setter@Getter@ToString
 
-public class NxDepartmentDisGoodsEntity implements Serializable {
+public class NxDepartmentDisGoodsEntity implements Serializable, Comparable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -64,6 +65,8 @@ public class NxDepartmentDisGoodsEntity implements Serializable {
 	private String nxDdgDepGoodsDetail;
 	private String nxDdgDepGoodsBrand;
 	private String nxDdgDepGoodsPlace;
+	private String nxDdgDepGoodsPrice;
+	private String nxDdgDepGoodsPriceDate;
 	/**
 	 *  
 	 */
@@ -75,4 +78,27 @@ public class NxDepartmentDisGoodsEntity implements Serializable {
 
 	private NxDistributerGoodsEntity nxDistributerGoodsEntity;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NxDepartmentDisGoodsEntity that = (NxDepartmentDisGoodsEntity) o;
+		return Objects.equals(nxDepartmentDisGoodsId, that.nxDepartmentDisGoodsId)
+				;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(nxDepartmentDisGoodsId);
+	}
+
+	@Override
+	public int compareTo(Object o) {
+
+		if (o instanceof NxDepartmentDisGoodsEntity) {
+			NxDepartmentDisGoodsEntity e = (NxDepartmentDisGoodsEntity) o;
+			return this.nxDepartmentDisGoodsId.compareTo(e.nxDepartmentDisGoodsId);
+		}
+		return 0;
+	}
 }

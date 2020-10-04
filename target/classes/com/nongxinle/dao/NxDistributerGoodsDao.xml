@@ -22,10 +22,18 @@
     <select id="queryDisGoodsByParams" resultMap="disGoodsWithStandards">
         select * from nx_distributer_goods as dg
         left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
-        where nx_dg_distributer_id = #{disId}
+        <where>
             <if test="fatherId != null">
                 and  nx_dg_dfg_goods_father_id = #{fatherId}
             </if>
+            <if test="disId != null">
+                and  nx_dg_distributer_id = #{disId}
+            </if>
+            <if test="goodsId != null">
+                and nx_dg_nx_goods_id = #{goodsId}
+            </if>
+        </where> order by nx_dg_goods_pinyin
+
             <if test="offset != null and limit != null">
                 limit #{offset}, #{limit}
             </if>
@@ -37,11 +45,11 @@
         and nx_dg_dfg_goods_father_id = #{fatherId}
     </select>
 
-    <select id="queryDisGoodsListByDisFatherId" resultMap="disGoodsWithStandards">
-        select * from nx_distributer_goods as dg
-        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
-        where nx_dg_dfg_goods_father_id = #{nxDgDfgGoodsFatherId} order by dg.nx_dg_goods_py
-    </select>
+<!--    <select id="queryDisGoodsListByDisFatherId" resultMap="disGoodsWithStandards">-->
+<!--        select * from nx_distributer_goods as dg-->
+<!--        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id-->
+<!--        where nx_dg_dfg_goods_father_id = #{nxDgDfgGoodsFatherId} order by dg.nx_dg_goods_py-->
+<!--    </select>-->
 
 
 
@@ -200,7 +208,8 @@
         <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
         <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
-        <result property="nxDgPullOff" column="nx_DG_pull_off"/>
+        <result property="nxDgPullOff" column="nx_dg_pull_off"/>
+        <result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
         <collection property="distributerStandardEntities" resultMap="disStandards"/>
     </resultMap>
 
@@ -295,10 +304,13 @@
          where nx_distributer_goods_id = #{nxDdgDisGoodsId}
     </select>
 
-
-
-
-
+    <select id="queryIfHasDisGoods" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
+            select * from nx_distributer_goods where nx_dg_nx_goods_id = #{nxGoodsId}
+                                                 and nx_dg_distributer_id = #{disId}
+    </select>
+    <select id="queryIfFatherHasOtherDisGoods" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
+        select * from nx_distributer_goods where nx_dg_dfg_goods_father_id = #{nxDgDfgGoodsFatherId}
+    </select>
 
 
     <insert id="save" parameterType="com.nongxinle.entity.NxDistributerGoodsEntity" useGeneratedKeys="true"
@@ -368,12 +380,15 @@
         where nx_distributer_goods_id = #{nxDistributerGoodsId}
     </update>
 
-    <delete id="delete">
+    <delete id="delete" >
         delete
         from nx_distributer_goods
         where nx_distributer_goods_id = #{value}
     </delete>
-
+<!--    <delete id="deleteDisGoods">-->
+<!--        delete from nx_distributer_goods where nx_dg_distributer_id = #{disId}-->
+<!--                                           and nx_dg_nx_goods_id = #{goodsId}-->
+<!--    </delete>-->
 
 
 </mapper>

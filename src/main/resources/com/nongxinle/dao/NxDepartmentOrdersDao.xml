@@ -46,7 +46,14 @@
                 and  dor.nx_DO_order_user_id = {userId}
             </if>
 
+
         </where>
+        <if test="orderBy != null and orderBy == 'time'" >
+            order by  dor.nx_DO_apply_only_time DESC
+        </if>
+        <if test="orderBy == null">
+        order by dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
+        </if>
 
     </select>
 
@@ -71,6 +78,7 @@
                 dor.nx_DO_department_id,
                 dor.nx_DO_distributer_id,
                 dor.nx_DO_is_agent,
+                dor.nx_DO_purchase_goods_id,
                 dg.nx_distributer_goods_id,
                 dg.nx_dg_goods_name,
                 dg.nx_dg_goods_brand,
@@ -89,7 +97,7 @@
                  left join nx_department_independent_goods as ndig on ndig.nx_department_independent_goods_id = dor.nx_DO_ind_goods_id
                  left join nx_department as ds on ds.nx_department_id = dor.nx_DO_department_id
         where nx_DO_distributer_id = #{disId}
-          and nx_DO_status &lt; 3 order by dg.nx_distributer_goods_id
+          and nx_DO_status &lt; 3 order by dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
     </select>
 
 
@@ -211,6 +219,7 @@
         <result property="nxDoOperationTime" column="nx_DO_operation_time"/>
         <result property="nxDoApplyWhatDay" column="nx_DO_apply_what_day"/>
         <result property="nxDoIsAgent" column="nx_DO_is_agent"/>
+        <result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
         <association property="nxDepIndependentGoodsEntity" resultMap="inDepGoods"/>
         <association property="nxDepartmentUserEntity" resultMap="orderUser"/>
         <association property="nxDistributerGoodsEntity" resultMap="disGoods"/>

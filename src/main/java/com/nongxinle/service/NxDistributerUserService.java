@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface NxDistributerUserService {
-	
+
+	List<NxDistributerUserEntity> getAllUserByDisId(Integer disId);
+
 	NxDistributerUserEntity queryObject(Integer nxDistributerUserId);
 	
 	List<NxDistributerUserEntity> queryList(Map<String, Object> map);

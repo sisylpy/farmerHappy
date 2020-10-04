@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nongxinle.entity.NxDistributerUserRoleEntity;
+import com.nongxinle.utils.MyAPPIDConfig;
+import com.nongxinle.utils.WeChatUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,59 +34,81 @@ public class NxDistributerUserController {
 
 
 
-//
-//	@RequestMapping(value = "/disGetUserByRole", method = RequestMethod.POST)
-//	@ResponseBody
-//	public R disGetUser (Integer disId, Integer roleNumber) {
-//
-//		List<NxDistributerUserEntity> userEntities =  nxDistributerUserService.queryUser(disId);
-//		System.out.println(userEntities);
-//		List<NxDistributerUserEntity> result = new ArrayList<>();
-//		for (NxDistributerUserEntity user : userEntities) {
-//			List<NxDistributerUserRoleEntity> roleEntities = user.getRoleEntities();
-//			for (NxDistributerUserRoleEntity roleEntity: roleEntities) {
-//				if (roleEntity.getNxDurRoleId().equals(roleNumber)){
-//					result.add(user);
-//				}
-//			}
-//		}
-//		return R.ok().put("data", result);
-//	}
+	@RequestMapping(value = "/getDisUsers/{disId}")
+	@ResponseBody
+	public R getDisUsers(@PathVariable Integer disId) {
+	   List<NxDistributerUserEntity> userEntities = nxDistributerUserService.getAllUserByDisId(disId);
+	    return R.ok().put("data", userEntities);
+	}
+
+	/**
+	 * 批发商登陆
+	 * @param distributerUserEntity 批发商
+	 * @return 批发商
+	 */
+	@RequestMapping(value = "/disLogin", method = RequestMethod.POST)
+	@ResponseBody
+	public R disLogin (@RequestBody NxDistributerUserEntity distributerUserEntity ) {
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getCaidiAppID() + "&secret=" +
+				myAPPIDConfig.getCaidiScreat() + "&js_code=" + distributerUserEntity.getNxDiuCode() +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		List<NxDistributerUserEntity> distributerUserEntities = nxDistributerUserService.queryUserByOpenId(openid);
+		if(distributerUserEntities.size() > 0){
+			NxDistributerUserEntity nxDistributerUserEntity = distributerUserEntities.get(0);
+			Integer nxDistributerUserId = nxDistributerUserEntity.getNxDistributerUserId();
+			NxDistributerUserEntity nxDistributerEntity = nxDistributerUserService.queryUserInfo(nxDistributerUserId);
+
+			return R.ok().put("data", nxDistributerEntity);
+		}else {
+			return R.error(-1,"用户不存在");
+		}
+	}
 
 
 	/**
-	 * 列表
+	 * 批发商新管理者注册
+	 * @param distributerUserEntity 批发商用户
+	 * @return 批发商
 	 */
+	@RequestMapping(value = "/disUserSave", method = RequestMethod.POST)
 	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxdistributeruser:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxDistributerUserEntity> nxDistributerUserList = nxDistributerUserService.queryList(map);
-		int total = nxDistributerUserService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxDistributerUserList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
+	public R disUserSave (@RequestBody NxDistributerUserEntity distributerUserEntity ) {
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getCaidiAppID() + "&secret=" +
+				myAPPIDConfig.getCaidiScreat() + "&js_code=" + distributerUserEntity.getNxDiuCode() +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		List<NxDistributerUserEntity> distributerUserEntities = nxDistributerUserService.queryUserByOpenId(openid);
+		if(distributerUserEntities.size() > 0){
+			return R.error(-1, "用户已存在，请直接登陆");
+		}else {
+
+			distributerUserEntity.setNxDiuWxOpenId(openid);
+			nxDistributerUserService.save(distributerUserEntity);
+			Integer nxDistributerUserId = distributerUserEntity.getNxDistributerUserId();
+			NxDistributerUserEntity nxDistributerEntity = nxDistributerUserService.queryUserInfo(nxDistributerUserId);
+
+			return  R.ok().put("data", nxDistributerEntity);
+		}
 	}
-	
-	
-	/**
-	 * 信息
-	 */
-	@ResponseBody
-	@RequestMapping("/info/{distUserId}")
-	@RequiresPermissions("nxdistributeruser:info")
-	public R info(@PathVariable("distUserId") Integer distUserId){
-		NxDistributerUserEntity nxDistributerUser = nxDistributerUserService.queryObject(distUserId);
-		
-		return R.ok().put("nxDistributerUser", nxDistributerUser);
-	}
-	
+
+
 	/**
 	 * 保存
 	 */
@@ -97,29 +122,6 @@ public class NxDistributerUserController {
 
 		return R.ok().put("data", nxDistributerUserEntity);
 	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxdistributeruser:update")
-	public R update(@RequestBody NxDistributerUserEntity nxDistributerUser){
-		nxDistributerUserService.update(nxDistributerUser);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxdistributeruser:delete")
-	public R delete(@RequestBody Integer[] distUserIds){
-		nxDistributerUserService.deleteBatch(distUserIds);
-		
-		return R.ok();
-	}
+
 	
 }

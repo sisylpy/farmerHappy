@@ -62,21 +62,17 @@ public class NxDepartmentController {
 	/**
 	 * PURCHASE
 	 * 采购员注册
-	 * @param dep 订货客户
-	 * @return 客户信息
+	 * @param dep 订货群
+	 * @return 群信息
 	 */
 	@RequestMapping(value = "/restrauntRegist", method = RequestMethod.POST)
 	@ResponseBody
 	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
-		System.out.println(dep);
+
+
 		String openId = nxDepartmentService.saveNewRestraunt(dep);
-		String nxDuCode = dep.getNxDepartmentUserEntity().getNxDuCode();
 
-//		Map<String, Object> map = nxDepartmentService.queryDepAndUserInfo(integer);
 		if (openId != null){
-			System.out.println("00000" + nxDuCode);
-
-			System.out.println("openidididi" + openId);
 			List<NxDepartmentEntity>  entities= nxDepartmentService.queryGroupInfo(openId);
 			return R.ok().put("data", entities);
 		}
@@ -162,12 +158,12 @@ public class NxDepartmentController {
 	/**
 	 * 保存
 	 */
-	@ResponseBody
-	@RequestMapping("/save")
-	public R save(@RequestBody NxDepartmentEntity nxDepartment){
-		nxDepartmentService.save(nxDepartment);
-		return R.ok();
-	}
+//	@ResponseBody
+//	@RequestMapping("/save")
+//	public R save(@RequestBody NxDepartmentEntity nxDepartment){
+//		nxDepartmentService.save(nxDepartment);
+//		return R.ok();
+//	}
 
 
 	

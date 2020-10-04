@@ -26,36 +26,40 @@ public class NxDepartmentIndependentGoodsServiceImpl implements NxDepartmentInde
 	public List<NxDepartmentIndependentGoodsEntity> queryList(Map<String, Object> map){
 		return nxDepartmentIndependentGoodsDao.queryList(map);
 	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDepartmentIndependentGoodsDao.queryTotal(map);
-	}
-	
 	@Override
 	public void save(NxDepartmentIndependentGoodsEntity nxDepartmentIndependentGoods){
 		nxDepartmentIndependentGoodsDao.save(nxDepartmentIndependentGoods);
 	}
-	
+
 	@Override
 	public void update(NxDepartmentIndependentGoodsEntity nxDepartmentIndependentGoods){
 		nxDepartmentIndependentGoodsDao.update(nxDepartmentIndependentGoods);
 	}
-	
+
 	@Override
 	public void delete(Integer nxDepartmentIndependentGoodsId){
 		nxDepartmentIndependentGoodsDao.delete(nxDepartmentIndependentGoodsId);
 	}
-	
 	@Override
-	public void deleteBatch(Integer[] nxDepartmentIndependentGoodsIds){
-		nxDepartmentIndependentGoodsDao.deleteBatch(nxDepartmentIndependentGoodsIds);
-	}
-
-    @Override
-    public List<NxDepartmentIndependentGoodsEntity> querySearchStr(Map<String, Object> map) {
+	public List<NxDepartmentIndependentGoodsEntity> querySearchStr(Map<String, Object> map) {
 
 		return nxDepartmentIndependentGoodsDao.querySearchStr(map);
-    }
+	}
+
+	
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDepartmentIndependentGoodsDao.queryTotal(map);
+//	}
+	
+
+
+//
+//	@Override
+//	public void deleteBatch(Integer[] nxDepartmentIndependentGoodsIds){
+//		nxDepartmentIndependentGoodsDao.deleteBatch(nxDepartmentIndependentGoodsIds);
+//	}
+
+
 
 }

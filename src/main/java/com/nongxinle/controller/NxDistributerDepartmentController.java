@@ -40,7 +40,6 @@ public class NxDistributerDepartmentController {
 	@RequestMapping(value = "/disGetAllCustomer/{disId}")
 	@ResponseBody
 	public R disGetAllDisDepartments(@PathVariable Integer disId) {
-		System.out.println("conterrlekl");
 		List<NxDepartmentEntity> entities =  nxDistributerDepartmentService.queryAllDisDepartments(disId);
 		return R.ok().put("data", entities);
 	}

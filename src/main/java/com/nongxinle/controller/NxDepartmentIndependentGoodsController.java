@@ -124,26 +124,26 @@ public class NxDepartmentIndependentGoodsController {
 //////////////
 
 
-	@RequestMapping(value = "/searchDepDisGoodsAndIndependentGoods", method = RequestMethod.POST)
-	@ResponseBody
-	public R searchDepDisGoodsAndIndependentGoods (Integer depId, String searchStr) {
-		System.out.println(searchStr);
-		//1 DepDisGoods-search
-		Map<String, Object> map = new HashMap<>();
-		map.put("depId", depId);
-		map.put("searchStr", searchStr);
-		List<NxGoodsEntity> depDisGoods = nxDepartmentDisGoodsService.querySearchStr(map);
-		System.out.println("depDisGoodsssss====" + depDisGoods);
-
-		//2, depIndependent -search
-		List<NxDepartmentIndependentGoodsEntity> independentGoods = nxDepIndepenGoodsService.querySearchStr(map);
-
-		List<Map<String, Object>> mapList = letterGoods(independentGoods);
-		Map<String, Object>  result = new HashMap<>();
-		result.put("depGoodsArr", depDisGoods);
-		result.put("independentArr", mapList);
-	    return R.ok().put("data", result);
-	}
+//	@RequestMapping(value = "/searchDepDisGoodsAndIndependentGoods", method = RequestMethod.POST)
+//	@ResponseBody
+//	public R searchDepDisGoodsAndIndependentGoods (Integer depId, String searchStr) {
+//		System.out.println(searchStr);
+//		//1 DepDisGoods-search
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("depId", depId);
+//		map.put("searchStr", searchStr);
+//		List<NxGoodsEntity> depDisGoods = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
+//		System.out.println("depDisGoodsssss====" + depDisGoods);
+//
+//		//2, depIndependent -search
+//		List<NxDepartmentIndependentGoodsEntity> independentGoods = nxDepIndepenGoodsService.querySearchStr(map);
+//
+//		List<Map<String, Object>> mapList = letterGoods(independentGoods);
+//		Map<String, Object>  result = new HashMap<>();
+//		result.put("depGoodsArr", depDisGoods);
+//		result.put("independentArr", mapList);
+//	    return R.ok().put("data", result);
+//	}
 
 
 

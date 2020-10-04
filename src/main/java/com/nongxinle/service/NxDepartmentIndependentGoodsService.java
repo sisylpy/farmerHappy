@@ -18,15 +18,17 @@ public interface NxDepartmentIndependentGoodsService {
 	
 	List<NxDepartmentIndependentGoodsEntity> queryList(Map<String, Object> map);
 	
-	int queryTotal(Map<String, Object> map);
-	
+
 	void save(NxDepartmentIndependentGoodsEntity nxDepartmentIndependentGoods);
 	
 	void update(NxDepartmentIndependentGoodsEntity nxDepartmentIndependentGoods);
 	
 	void delete(Integer nxDepartmentIndependentGoodsId);
 	
-	void deleteBatch(Integer[] nxDepartmentIndependentGoodsIds);
+//	void deleteBatch(Integer[] nxDepartmentIndependentGoodsIds);
 
-    List<NxDepartmentIndependentGoodsEntity> querySearchStr(Map<String, Object> map);
+	//	int queryTotal(Map<String, Object> map);
+
+
+	List<NxDepartmentIndependentGoodsEntity> querySearchStr(Map<String, Object> map);
 }

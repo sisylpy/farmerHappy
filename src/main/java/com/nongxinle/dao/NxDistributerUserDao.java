@@ -22,4 +22,6 @@ public interface NxDistributerUserDao extends BaseDao<NxDistributerUserEntity> {
     NxDistributerUserEntity queryUserInfo(Integer nxDistributerUserId);
 
     List<NxDistributerUserEntity> queryUserByOpenId(String openid);
+
+    List<NxDistributerUserEntity> queryAllUsersByDisId(Integer disId);
 }

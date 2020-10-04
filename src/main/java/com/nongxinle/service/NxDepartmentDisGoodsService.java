@@ -24,28 +24,34 @@ public interface NxDepartmentDisGoodsService {
 
 	int queryDepGoodsTotal(Map<String, Object> map3);
 
+	List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
 
+	void save(NxDepartmentDisGoodsEntity nxDepartmentDisGoods);
+
+	void update(NxDepartmentDisGoodsEntity nxDepartmentDisGoods);
+
+	NxDepartmentDisGoodsEntity queryObject(Integer nxDepartmentDisGoodsId);
+
+    List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map);
+
+    List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3);
 
 //	/////
 
 
+//	List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map);
 
-	NxDepartmentDisGoodsEntity queryObject(Integer nxDepartmentDisGoodsId);
-	
-	List<NxDepartmentDisGoodsEntity> queryList(Map<String, Object> map);
-	
-	int queryTotal(Map<String, Object> map);
-	
-	void save(NxDepartmentDisGoodsEntity nxDepartmentDisGoods);
-	
-	void update(NxDepartmentDisGoodsEntity nxDepartmentDisGoods);
-	
-	void delete(Integer nxDepartmentDisGoodsId);
-	
-	void deleteBatch(Integer[] nxDepartmentDisGoodsIds);
+//
+//	List<NxDepartmentDisGoodsEntity> queryList(Map<String, Object> map);
+//
+//	int queryTotal(Map<String, Object> map);
+//
+//
+//
+//	void delete(Integer nxDepartmentDisGoodsId);
+//
+//	void deleteBatch(Integer[] nxDepartmentDisGoodsIds);
 
-
-    List<NxGoodsEntity> querySearchStr(Map<String, Object> map);
 
 
 

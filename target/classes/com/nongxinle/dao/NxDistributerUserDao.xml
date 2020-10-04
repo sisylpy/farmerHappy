@@ -64,8 +64,11 @@
 						  left join nx_distributer as d on d.nx_distributer_id = du.nx_DIU_distributer_id
 		where nx_DIU_wx_open_id = #{openid}
 	</select>
+    <select id="queryAllUsersByDisId" resultType="com.nongxinle.entity.NxDistributerUserEntity">
+		select * from nx_distributer_user where nx_DIU_distributer_id = #{disId}
+	</select>
 
-	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerUserEntity"
+    <insert id="save" parameterType="com.nongxinle.entity.NxDistributerUserEntity"
 	useGeneratedKeys="true" keyProperty="nxDistributerUserId">
 		insert into nx_distributer_user
 		(

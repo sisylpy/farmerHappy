@@ -21,8 +21,6 @@ public interface NxDistributerGoodsService {
 
 	int queryDisGoodsTotal(Map<String, Object> map3);
 
-	List<NxDistributerGoodsEntity> queryDisGoodsListByDisFatherId(Integer nxDgDfgGoodsFatherId);
-
 
 
 
@@ -39,8 +37,8 @@ public interface NxDistributerGoodsService {
 	void save(NxDistributerGoodsEntity nxDistributerGoods);
 	
 	void update(NxDistributerGoodsEntity nxDistributerGoods);
-	
-	void delete(Integer nxDistributerGoodsId);
+
+	int delete(Integer nxDistributerGoodsId);
 	
 	void deleteBatch(Integer[] nxDistributerGoodsIds);
 
@@ -48,33 +46,17 @@ public interface NxDistributerGoodsService {
 
     List<NxDistributerGoodsEntity> queryAddDistributerNxGoods(Map<String, Object> map);
 
-	List<NxGoodsEntity> queryAllDistributerGoodsCata(Integer disId);
-
-    Integer queryGrandSubAmount(Integer nxGrandGoodsId);
-
-
-	List<NxGoodsEntity> queryDisGoodsGrandList(Map<String, Object> map);
 
     NxDistributerGoodsEntity queryDisGoodsDetail(Integer disGoodsId);
 
-    List<NxGoodsEntity> queryDisGoodsCata(Integer disId);
 
-	Integer querySubAmount(Integer nxGoodsId);
-
-	List<NxDistributerGoodsEntity> queryDisGoodsFatherList(Map<String, Object> map);
-
-    List<NxGoodsEntity> queryDisGoodsListWithFatherId(Map<String, Object> map);
 
     List<NxDistributerGoodsEntity> queryQuickSearch(Map<String, Object> map);
 
-    NxDistributerGoodsEntity queryObjectWithStandards(Integer nxDdgDisGoodsId);
 
 
+    List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map1);
 
+//	Integer deleteDisGoods(Map<String, Object> map);
 
-//    List<NxDistributerGoodsEntity> queryHasDisGrandGoodsFather(Map<String, Object> map);
-//
-//	List<NxDistributerFatherGoodsEntity> queryHasDisGreatGrandGoodsFather(Map<String, Object> map);
-
-//	List<NxDistributerGoodsEntity> queryDisGoodsListByFatherId(Map<String, Object> map);
 }

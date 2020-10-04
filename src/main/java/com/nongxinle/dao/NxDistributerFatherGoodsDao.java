@@ -19,9 +19,10 @@ public interface NxDistributerFatherGoodsDao extends BaseDao<NxDistributerFather
 
     List<NxDistributerFatherGoodsEntity> queryDisGoodsCata(Integer disId);
 
-    List<NxDistributerFatherGoodsEntity> queryHasDisGrandFather(Map<String, Object> map2);
+    List<NxDistributerFatherGoodsEntity> queryHasDisFathersFather(Map<String, Object> map2);
 
-    List<NxDistributerFatherGoodsEntity> queryHasGreatGrandGoods(Map<String, Object> map3);
+    List<NxDistributerFatherGoodsEntity> queryDisFathersGoodsByParams(Map<String, Object> map);
 
-//    List<NxDistributerFatherGoodsEntity> queryDistFatherGoods(Map<String, Object> map);
+//    List<NxDistributerFatherGoodsEntity> queryHasGreatGrandGoods(Map<String, Object> map3);
+
 }

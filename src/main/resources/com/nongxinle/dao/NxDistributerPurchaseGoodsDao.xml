@@ -6,13 +6,9 @@
 
 	<select id="queryDisPurchaseGoods" resultMap="disFatherGoods">
 		select  *
-# 		       dp.nx_distributer_purchase_goods_id, dp.nx_DPG_dis_goods_id, dp.nx_DPG_dis_goods_father_id, dp.nx_DPG_quantity,
-# 			   dp.nx_DPG_standard, dp.nx_DPG_status, dp.nx_DPG_distributer_id, dp.nx_DPG_purchase_type, dp.nx_DPG_time,
-# 			   dp.nx_DPG_buy_user_id, dp.nx_DPG_orders_amount, dp.nx_DPG_type_add_user_id,
-# 			   dg.nx_distributer_goods_id, dg.nx_dg_goods_name, dg.nx_dg_goods_standardname, dg.nx_dg_goods_detail,
-# 			   dg.nx_dg_goods_brand, dg.nx_dg_goods_place, dg.nx_dg_goods_py, dg.nx_dg_goods_pinyin,
-# 			   dg.nx_dg_nx_father_id
 		from nx_distributer_purchase_goods as dp
+		left join nx_department_orders as ndo on ndo.nx_DO_purchase_goods_id = dp.nx_distributer_purchase_goods_id
+		left join nx_department as fatherOrdep on fatherOrdep.nx_department_id = ndo.nx_DO_department_father_id
 		left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dp.nx_DPG_dis_goods_id
 		left join nx_distributer_father_goods as dfg on dfg.nx_distributer_father_goods_id = dp.nx_DPG_dis_goods_father_id
 		where dp.nx_DPG_distributer_id = #{disId} and dp.nx_DPG_status &lt; #{status}
@@ -60,6 +56,7 @@
 		<id property="nxDepartmentOrdersId" column="nx_department_orders_id"/>
 		<result property="nxDoQuantity" column="nx_DO_quantity"/>
 		<result property="nxDoStandard" column="nx_DO_standard"/>
+		<result property="nxDoRemark" column="nx_DO_remark"/>
 		<association property="nxDepartmentEntity" resultMap="orderDepartments"/>
 	</resultMap>
 
@@ -76,6 +73,25 @@
 		<result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
 	</resultMap>
 
+	<resultMap id="depOrders" type="NxDepartmentOrdersEntity">
+		<id property="nxDepartmentOrdersId" column="nx_department_orders_id"/>
+		<result property="nxDoOrderUserId" column="nx_DO_order_user_id"/>
+		<result property="nxDoQuantity" column="nx_DO_quantity"/>
+		<result property="nxDoStandard" column="nx_DO_standard"/>
+		<result property="nxDoRemark" column="nx_DO_remark"/>
+		<result property="nxDoStatus" column="nx_DO_status"/>
+		<result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+		<result property="nxDoDepartmentFatherId" column="nx_DO_department_father_id"/>
+		<result property="nxDoDisGoodsId" column="nx_DO_dis_goods_id"/>
+		<result property="nxDoDepartmentId" column="nx_DO_department_id"/>
+		<result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+		<association property="nxDepartmentEntity" resultMap="orderFatherDepartment"/>
+	</resultMap>
+
+	<resultMap id="orderFatherDepartment" type="NxDepartmentEntity">
+		<id property="nxDepartmentId" column="nx_department_id"/>
+		<result property="nxDepartmentName" column="nx_department_name"/>
+	</resultMap>
 
 	<resultMap id="purchaseGoods" type="NxDistributerPurchaseGoodsEntity">
 		<id property="nxDistributerPurchaseGoodsId" column="nx_distributer_purchase_goods_id"/>
@@ -91,6 +107,7 @@
 		<result property="nxDpgTypeAddUserId" column="nx_DPG_type_add_user_id"/>
 		<result property="nxDpgTime" column="nx_DPG_time"/>
 		<association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
+		<collection property="nxDepartmentOrdersEntities" resultMap="depOrders"/>
 	</resultMap>
 
 

@@ -17,24 +17,24 @@ import java.util.Map;
 public interface NxDistributerDepartmentService {
 
 	List<NxDepartmentEntity> queryAllDisDepartments(Integer disId);
+	void save(NxDistributerDepartmentEntity nxDistributerDepartment);
 
 
 //	/////////
 
 
-	NxDistributerDepartmentEntity queryObject(Integer nxDistributerDepId);
-	
-	List<NxDistributerDepartmentEntity> queryList(Map<String, Object> map);
-	
-	int queryTotal(Map<String, Object> map);
-	
-	void save(NxDistributerDepartmentEntity nxDistributerDepartment);
-	
-	void update(NxDistributerDepartmentEntity nxDistributerDepartment);
-	
-	void delete(Integer nxDistributerDepId);
-	
-	void deleteBatch(Integer[] nxDistributerDepIds);
+//	NxDistributerDepartmentEntity queryObject(Integer nxDistributerDepId);
+//
+//	List<NxDistributerDepartmentEntity> queryList(Map<String, Object> map);
+//
+//	int queryTotal(Map<String, Object> map);
+//
+//
+//	void update(NxDistributerDepartmentEntity nxDistributerDepartment);
+//
+//	void delete(Integer nxDistributerDepId);
+//
+//	void deleteBatch(Integer[] nxDistributerDepIds);
 
 
 }

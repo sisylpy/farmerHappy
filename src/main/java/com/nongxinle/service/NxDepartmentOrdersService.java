@@ -36,29 +36,29 @@ public interface NxDepartmentOrdersService {
 	
 	List<NxDepartmentOrdersEntity> queryList(Map<String, Object> map);
 	
-	int queryTotal(Map<String, Object> map);
-	
+
 
 	void update(NxDepartmentOrdersEntity nxDepartmentOrders);
 	
 	void delete(Integer nxDepartmentOrdersId);
-	
-	void deleteBatch(Integer[] nxDepartmentOrdersIds);
 
 
+	Integer queryNewOrders(Integer nxDepartmentId);
+
+	Integer queryFatherNewOrders(Integer nxDepartmentId);
 
 
+//	void deleteBatch(Integer[] nxDepartmentOrdersIds);
+//	int queryTotal(Map<String, Object> map);
 //	List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId);
 
 
-    List<NxDepartmentOrdersEntity> queryToFillDepOrders(Map<String, Object> map);
+//    List<NxDepartmentOrdersEntity> queryToFillDepOrders(Map<String, Object> map);
 
 
 //	List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId);
 
-    Integer queryNewOrders(Integer nxDepartmentId);
 
-	Integer queryFatherNewOrders(Integer nxDepartmentId);
 
 
 

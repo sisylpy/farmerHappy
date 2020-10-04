@@ -265,10 +265,20 @@ public class NxDepartmentUserController {
 	@RequestMapping(value = "/getDepAndUserInfo/{userid}")
 	@ResponseBody
 	public R getDepAndUserInfo(@PathVariable Integer userid) {
-		//todo
 		Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(userid);
-//		Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(userid);
 		return R.ok().put("data", stringObjectMap);
+	}
+	/**
+	 * ORDER
+	 * 获取群用户部门和用户信息
+	 * @param userId 群用户id
+	 * @return 部门用户
+	 */
+	@RequestMapping(value = "/getDepUserInfo/{userId}")
+	@ResponseBody
+	public R getDepUserInfo(@PathVariable Integer userId) {
+		NxDepartmentUserEntity nxDepartmentUserEntity = nxDepartmentUserService.queryObject(userId);
+		return R.ok().put("data", nxDepartmentUserEntity);
 	}
 
 
@@ -351,18 +361,6 @@ public class NxDepartmentUserController {
 	    return R.ok().put("data", userEntities);
 	}
 
-	/**
-	 * ORDER
-	 * 获取群用户部门和用户信息
-	 * @param userId 群用户id
-	 * @return 部门用户
-	 */
-	@RequestMapping(value = "/getDepUserInfo/{userId}")
-	@ResponseBody
-	public R getDepUserInfo(@PathVariable Integer userId) {
-		NxDepartmentUserEntity nxDepartmentUserEntity = nxDepartmentUserService.queryObject(userId);
-		return R.ok().put("data", nxDepartmentUserEntity);
-	}
 
 
 	/**

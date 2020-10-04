@@ -16,6 +16,8 @@ public interface NxGoodsService {
 
 	List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map);
 
+	List<NxGoodsEntity> queryQuickSearchNxGoods(String str);
+
 
 
 //	///////
@@ -56,6 +58,11 @@ public interface NxGoodsService {
 
     List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId);
 
-    List<NxGoodsEntity> queryQuickSearch(String str);
+
+	List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map);
+
+	List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
+
+	List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map);
 
 }

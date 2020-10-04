@@ -50,9 +50,12 @@
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
         where ddg.nx_DDG_department_father_id = #{depId}
           and ddg.nx_DDG_dis_goods_father_id = #{fatherId}
+        order by dg.nx_dg_goods_py
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
+
+
     </select>
 
 
@@ -141,26 +144,60 @@
 
 
 
-    <select id="querySearchStr" resultMap="depDisGoodsCata">
-        select fg.nx_goods_id          'fg_nx_goods_id',
-               fg.nx_goods_name        'fg_nx_goods_name',
-               g.nx_goods_id           'nx_goods_id',
-               g.nx_goods_name         'nx_goods_name',
-               g.nx_goods_standardname 'nx_goods_standardname',
+    <select id="queryDepDisSearchStr" resultMap="depDisGoods">
+        select ddg.nx_department_dis_goods_id,
+               ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
+               ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
+               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
+               dgs.nx_DDS_standard_name,
                dg.nx_distributer_goods_id,
                ds.nx_distributer_standard_id,
                ds.nx_DS_standard_name
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
                  left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
-                 left join nx_goods as g on g.nx_goods_id = dg.nx_dg_nx_goods_id
-                 left join nx_goods as fg on fg.nx_goods_id = g.nx_goods_father_id
+                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
         where nx_DDG_department_father_id = #{depId}
-          and (nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%')
-            or nx_DDG_dep_goods_pinyin like concat('%', #{searchStr}, '%')
-            or nx_DDG_dep_goods_py like concat('%', #{searchStr}, '%'))
-        order by nx_DDG_dis_goods_id
+          and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%')
+
+
     </select>
+    <select id="queryDepDisSearchPinyin" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
+        select ddg.nx_department_dis_goods_id,
+               ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
+               ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
+               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
+               dgs.nx_DDS_standard_name,
+               dg.nx_distributer_goods_id,
+               ds.nx_distributer_standard_id,
+               ds.nx_DS_standard_name
+        from nx_department_dis_goods as ddg
+                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+                 left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
+                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
+        where nx_DDG_department_father_id = #{depId}
+          and ddg.nx_DDG_dep_goods_pinyin like concat('%', #{pinyin}, '%')
+    </select>
+    <select id="queryDepDisSearchHeadPy" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
+        select ddg.nx_department_dis_goods_id,
+               ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
+               ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
+               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
+               dgs.nx_DDS_standard_name,
+               dg.nx_distributer_goods_id,
+               ds.nx_distributer_standard_id,
+               ds.nx_DS_standard_name
+        from nx_department_dis_goods as ddg
+                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+                 left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
+                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
+        where nx_DDG_department_father_id = #{depId}
+          and (ddg.nx_DDG_dep_goods_pinyin like concat('%', #{pinyin}, '%')
+            or ddg.nx_DDG_dep_goods_py like concat('%', #{headPinyin}, '%'))
+    </select>
+
+
+    <!--  and ddg.nx_DDG_dis_goods_father_id = #{fatherId} -->
 
     <resultMap id="depStandard" type="NxDepartmentStandardEntity">
         <id property="nxDepartmentStandardId" column="nx_department_standard_id"/>
@@ -177,9 +214,8 @@
         <result property="nxDdgDepGoodsDetail" column="nx_DDG_dep_goods_detail"/>
         <result property="nxDdgDepGoodsBrand" column="nx_DDG_dep_goods_brand"/>
         <association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
+        <collection property="nxDepStandardEntities" resultMap="depStandard"/>
     </resultMap>
-
-
 
 
     <resultMap id="departments" type="NxDepartmentEntity">
@@ -206,7 +242,9 @@
          `nx_DDG_dep_goods_standardname`,
          `nx_DDG_dep_goods_detail`,
          `nx_DDG_dep_goods_brand`,
-         `nx_DDG_dep_goods_place`
+         `nx_DDG_dep_goods_place`,
+        `nx_DDG_dep_goods_price`,
+         `nx_DDG_dep_goods_price_date`
          )
         values (#{nxDepartmentDisGoodsId},
                 #{nxDdgDepartmentFatherId},
@@ -219,7 +257,9 @@
                 #{nxDdgDepGoodsStandardname},
                 #{nxDdgDepGoodsDetail},
                 #{nxDdgDepGoodsBrand},
-                #{nxDdgDepGoodsPlace}
+                #{nxDdgDepGoodsPlace},
+                #{nxDdgDepGoodsPrice},
+                #{nxDdgDepGoodsPriceDate}
                 )
     </insert>
 
@@ -237,6 +277,8 @@
             </if>
             <if test="nxDdgDepGoodsDetail != null">`nx_DDG_dep_goods_detail` = #{nxDdgDepGoodsDetail},</if>
             <if test="nxDdgDepGoodsBrand != null">`nx_DDG_dep_goods_brand` = #{nxDdgDepGoodsBrand},</if>
+            <if test="nxDdgDepGoodsPrice != null">`nx_DDG_dep_goods_price` = #{nxDdgDepGoodsPrice},</if>
+            <if test="nxDdgDepGoodsPriceDate != null">`nx_DDG_dep_goods_price_date` = #{nxDdgDepGoodsPriceDate},</if>
             <if test="nxDdgDepGoodsPlace != null">`nx_DDG_dep_goods_place` = #{nxDdgDepGoodsPlace}</if>
         </set>
         where nx_department_dis_goods_id = #{nxDepartmentDisGoodsId}

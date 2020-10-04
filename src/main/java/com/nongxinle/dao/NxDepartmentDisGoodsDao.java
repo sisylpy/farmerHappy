@@ -25,11 +25,18 @@ public interface NxDepartmentDisGoodsDao extends BaseDao<NxDepartmentDisGoodsEnt
 
     int queryDisGoodsTotal(Map<String, Object> map3);
 
+    List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
+
+    List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map);
+
+    List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3);
+
+
+//    List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map);
+
 
 //    //////
 
-
-    List<NxGoodsEntity> querySearchStr(Map<String, Object> map);
 
 
 

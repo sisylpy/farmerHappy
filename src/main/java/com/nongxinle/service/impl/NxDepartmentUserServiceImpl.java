@@ -22,17 +22,7 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
 	public NxDepartmentUserEntity queryObject(Integer nxDepartmentUserId){
 		return nxDepartmentUserDao.queryObject(nxDepartmentUserId);
 	}
-	
-	@Override
-	public List<NxDepartmentUserEntity> queryList(Map<String, Object> map){
-		return nxDepartmentUserDao.queryList(map);
-	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDepartmentUserDao.queryTotal(map);
-	}
-	
+
 	@Override
 	public void save(NxDepartmentUserEntity nxDepartmentUser){
 
@@ -47,11 +37,6 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
 	@Override
 	public void delete(Integer nxDepartmentUserId){
 		nxDepartmentUserDao.delete(nxDepartmentUserId);
-	}
-	
-	@Override
-	public void deleteBatch(Integer[] nxDepartmentUserIds){
-		nxDepartmentUserDao.deleteBatch(nxDepartmentUserIds);
 	}
 
     @Override
@@ -74,5 +59,23 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
 
 		return nxDepartmentUserDao.queryMultiDepartmentByWxOpenId(openId);
     }
+
+
+//	@Override
+//	public List<NxDepartmentUserEntity> queryList(Map<String, Object> map){
+//		return nxDepartmentUserDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDepartmentUserDao.queryTotal(map);
+//	}
+//
+
+//	@Override
+//	public void deleteBatch(Integer[] nxDepartmentUserIds){
+//		nxDepartmentUserDao.deleteBatch(nxDepartmentUserIds);
+//	}
+
 
 }

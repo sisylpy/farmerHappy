@@ -16,9 +16,9 @@ public interface NxDepartmentStandardService {
 	
 	NxDepartmentStandardEntity queryObject(Integer nxDepartmentStandardId);
 	
-	List<NxDepartmentStandardEntity> queryList(Map<String, Object> map);
+//	List<NxDepartmentStandardEntity> queryList(Map<String, Object> map);
 	
-	int queryTotal(Map<String, Object> map);
+//	int queryTotal(Map<String, Object> map);
 	
 	void save(NxDepartmentStandardEntity nxDepartmentStandard);
 	
@@ -26,7 +26,7 @@ public interface NxDepartmentStandardService {
 	
 	void delete(Integer nxDepartmentStandardId);
 	
-	void deleteBatch(Integer[] nxDepartmentStandardIds);
+//	void deleteBatch(Integer[] nxDepartmentStandardIds);
 
     List<NxDepartmentStandardEntity> queryDepGoodsStandards(Integer depGoodsId);
 }

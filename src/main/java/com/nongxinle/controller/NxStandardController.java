@@ -39,6 +39,24 @@ public class NxStandardController {
 
 
 
+	@RequestMapping(value = "/deleteStandard/{id}")
+	@ResponseBody
+	public R deleteStandard(@PathVariable Integer id) {
+	    nxStandardService.delete(id);
+	    return R.ok();
+	}
+	/**
+	 * 添加
+	 * @param standard
+	 * @return
+	 */
+	@RequestMapping(value = "/saveNxStandard", method = RequestMethod.POST)
+	@ResponseBody
+	public R saveNxStandard (@RequestBody NxStandardEntity standard) {
+	    nxStandardService.save(standard);
+	    return R.ok().put("data", standard);
+	}
+
 	/**
 	 * 列表
 	 */

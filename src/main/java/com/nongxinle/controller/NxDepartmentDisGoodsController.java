@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
 
+import static com.nongxinle.utils.PinYin4jUtils.getHeadStringByString;
+import static com.nongxinle.utils.PinYin4jUtils.hanziToPinyin;
+
 
 @RestController
 @RequestMapping("api/nxdepartmentdisgoods")
@@ -31,8 +34,52 @@ public class NxDepartmentDisGoodsController {
     @Autowired
     private NxDistributerDepartmentService nxDisDepartmentService;
 
+    @RequestMapping(value = "/queryDepDisGoodsByQuickSearch", method = RequestMethod.POST)
+    @ResponseBody
+    public R queryDepDisGoodsByQuickSearch (String searchStr , Integer fatherId, Integer depId  ) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("depId", depId);
+        map.put("searchStr", searchStr);
+        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
+
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("depId", depId);
+        String pinyin = hanziToPinyin(searchStr);
+        String headPinyin = getHeadStringByString(searchStr, false, null);
+        map2.put("pinyin",  pinyin);
+//        map2.put("headPinyin",  headPinyin);
+
+        List<NxDepartmentDisGoodsEntity> disGoodsEntitiesPinyin = nxDepartmentDisGoodsService.queryDepDisSearchPinyin(map2);
+        Map<String, Object> mapData = new HashMap<>();
+
+        if(disGoodsEntities.size() > 0){
+
+            boolean b = disGoodsEntitiesPinyin.removeAll(disGoodsEntities);
+            if(b) {
+                mapData.put("pinyin", disGoodsEntitiesPinyin);
+            }
+        }else {
+            mapData.put("pinyin", disGoodsEntitiesPinyin);
+        }
+
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("depId",depId );
+        map3.put("headPinyin",  headPinyin);
+//        List<NxDepartmentDisGoodsEntity> disGoodsEntitiesHeadPy= nxDepartmentDisGoodsService.queryDepDisSearchHeadPy(map3);
+//
+//        if(disGoodsEntitiesPinyin.size() > 0){
+//            boolean b1 = disGoodsEntitiesHeadPy.removeAll(disGoodsEntitiesPinyin);
+//            if(b1){
+//            }
+//        }
+//        mapData.put("headPy", disGoodsEntitiesHeadPy);
+        mapData.put("str", disGoodsEntities);
+
+        return R.ok().put("data", mapData);
+    }
     /**
-     * DISTRBUTE
+     * DISTRIBUTER
      * 获取不是批发商商品的客户列表
      * @param disGoodsId 批发商商品id
      * @param disId 批发商id
@@ -41,16 +88,20 @@ public class NxDepartmentDisGoodsController {
     @RequestMapping(value = "/getUnDisGoodsDepartments", method = RequestMethod.POST)
     @ResponseBody
     public R getUnDisGoodsDepartments(Integer disGoodsId, Integer disId) {
+        //查询已经添加disGoods的客户
         List<NxDepartmentEntity> addGoodsCustomer = nxDepartmentDisGoodsService.queryDepartmentsByDisGoodsId(disGoodsId);
+        //查询批发商的全部客户
         List<NxDepartmentEntity> allCustomer = nxDisDepartmentService.queryAllDisDepartments(disId);
+        //去除已经添加disGoods的客户
         allCustomer.removeAll(addGoodsCustomer);
+        //返回没有添加disGoods的客户
         return R.ok().put("data", allCustomer);
     }
 
 
 
     /**
-     * PURCHASE,ORDER,DISTRIBUTE
+     * PURCHASE,ORDER,DISTRIBUTER
      * 订货群获取自己群商品类别
      * @param depId 订货群id
      * @return 订货群商品类别列表
@@ -63,7 +114,8 @@ public class NxDepartmentDisGoodsController {
     }
 
     /**
-     *
+     * PURCHASER
+     * 采购员获取批发商商品，显示群是否添加
      * @param limit 每页商品数量
      * @param page 第几页
      * @param fatherId 商品父级id
@@ -74,7 +126,6 @@ public class NxDepartmentDisGoodsController {
     @RequestMapping(value = "/depGetDisGoods", method = RequestMethod.POST)
     @ResponseBody
     public R depGetDisGoods(Integer limit, Integer page, Integer fatherId, Integer depFatherId, Integer disId) {
-        System.out.println("dkfaklfad");
         Map<String, Object> map = new HashMap<>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
@@ -90,7 +141,6 @@ public class NxDepartmentDisGoodsController {
             map1.put("depFatherId", depFatherId);
             map1.put("disGoodsId", goods.getNxDistributerGoodsId());
             List<NxDepartmentDisGoodsEntity> ddgGoods = nxDepartmentDisGoodsService.queryAddDisDepGoods(map1);
-            System.out.println(ddgGoods.size() + "siziziziiziziziz" );
             if (ddgGoods.size() > 0) {
                 goods.setIsDownload(1);
                 goodsEntities.add(goods);
@@ -99,11 +149,12 @@ public class NxDepartmentDisGoodsController {
                 goodsEntities.add(goods);
             }
         }
+
         Map<String, Object> map3 = new HashMap<>();
         map3.put("disId", disId );
         map3.put("fatherId", fatherId );
-
 		int total = nxDistributerGoodsService.queryDisGoodsTotal(map3);
+
         PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
         return R.ok().put("page", pageUtil);
     }
@@ -134,7 +185,7 @@ public class NxDepartmentDisGoodsController {
 
     /**
      * DISTRIBUTE,
-     * 批发商添加批发商商品的客户
+     * 批发商添加disGoods的订货群
      * @param depDisGoods 批发商商品
      * @return ok
      */
@@ -167,7 +218,8 @@ public class NxDepartmentDisGoodsController {
     }
 
     /**
-     * PURCHASE,
+     * ORDER
+     * 订货员获取配送商品
      * @param limit 每页显示商品数
      * @param page 第几页
      * @param depId 群id

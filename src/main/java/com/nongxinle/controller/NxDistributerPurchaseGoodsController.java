@@ -43,6 +43,64 @@ public class NxDistributerPurchaseGoodsController {
 
 
 
+	/**
+	 * DISTRIBUTER
+	 * 完成进货商品
+	 * @param purGoodsList 进货列表
+	 * @return ok
+	 */
+	@RequestMapping(value = "/finishPruchaseGoodsStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public R finishPruchaseGoodsStatus (@RequestBody List<NxDistributerPurchaseGoodsEntity> purGoodsList  ) {
+		System.out.println(purGoodsList);
+		for (NxDistributerPurchaseGoodsEntity purgoods : purGoodsList) {
+			purgoods.setNxDpgPurchaseType(3);
+			purgoods.setNxDpgStatus(3);
+			purgoods.setNxDpgTime(formatWhatTime(0));
+			nxDisPurcGoodsService.update(purgoods);
+		}
+		return R.ok();
+	}
+
+	/**
+	 * 复制进货商品
+	 * @param purGoodsList 进货列表
+	 * @return ok
+	 */
+	@RequestMapping(value = "/copyPruchaseGoodsStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public R copyPruchaseGoodsStatus (@RequestBody List<NxDistributerPurchaseGoodsEntity> purGoodsList  ) {
+		System.out.println(purGoodsList);
+		for (NxDistributerPurchaseGoodsEntity purgoods : purGoodsList) {
+			purgoods.setNxDpgPurchaseType(1);
+			purgoods.setNxDpgStatus(1);
+			purgoods.setNxDpgTime(formatWhatTime(0));
+			nxDisPurcGoodsService.update(purgoods);
+		}
+		return R.ok();
+	}
+
+
+
+	/**
+	 * 打印进货商品
+	 * @param purGoodsList 进货列表
+	 * @return ok
+	 */
+	@RequestMapping(value = "/printPurchaseGoodsStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public R printPurchaseGoodsStatus (@RequestBody List<NxDistributerPurchaseGoodsEntity> purGoodsList  ) {
+		System.out.println(purGoodsList);
+		for (NxDistributerPurchaseGoodsEntity purgoods : purGoodsList) {
+			purgoods.setNxDpgPurchaseType(2);
+			purgoods.setNxDpgStatus(2);
+			purgoods.setNxDpgTime(formatWhatTime(0));
+			nxDisPurcGoodsService.update(purgoods);
+		}
+		return R.ok();
+	}
+
+
 
 	/**
 	 * DISTRIBUTE
@@ -52,7 +110,7 @@ public class NxDistributerPurchaseGoodsController {
 	 */
 	@RequestMapping(value = "/getPurchaseGoods/{disId}")
 	@ResponseBody
-	public R getPurchaseGoodsAndPurchaseBatch(@PathVariable Integer disId) {
+	public R getPurchaseGoods(@PathVariable Integer disId) {
 		Map<String, Object> map2 = new HashMap<>();
 		map2.put("disId", disId);
 		map2.put("status", 3);
@@ -97,46 +155,20 @@ public class NxDistributerPurchaseGoodsController {
 //	////////////////////////////////////////////////
 
 
-	@RequestMapping(value = "/finishPruchaseGoodsStatus", method = RequestMethod.POST)
-	@ResponseBody
-	public R finishPruchaseGoodsStatus (@RequestBody List<NxDistributerPurchaseGoodsEntity> purGoodsList  ) {
-		System.out.println(purGoodsList);
-		for (NxDistributerPurchaseGoodsEntity purgoods : purGoodsList) {
-			purgoods.setNxDpgTime(formatWhatTime(0));
-			purgoods.setNxDpgPurchaseType(3);
-			purgoods.setNxDpgStatus(3);
-			nxDisPurcGoodsService.update(purgoods);
-		}
-		return R.ok();
-	}
-	@RequestMapping(value = "/copyPruchaseGoodsStatus", method = RequestMethod.POST)
-	@ResponseBody
-	public R copyPruchaseGoodsStatus (@RequestBody List<NxDistributerPurchaseGoodsEntity> purGoodsList  ) {
-		System.out.println(purGoodsList);
-		for (NxDistributerPurchaseGoodsEntity purgoods : purGoodsList) {
-			purgoods.setNxDpgPurchaseType(1);
-			purgoods.setNxDpgStatus(1);
-			purgoods.setNxDpgTime(formatWhatTime(0));
-			nxDisPurcGoodsService.update(purgoods);
-		}
-	    return R.ok();
-	}
 
-
-
-
-	@RequestMapping(value = "/purUserGetPurchaseGoods/{purUserId}")
-	@ResponseBody
-	public R purUserGetPurchaseGoods(@PathVariable Integer purUserId) {
-
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("purUserId", purUserId);
-//		map.put("status", 1);
-		List<NxDistributerPurchaseGoodsEntity>  purchase = nxDisPurcGoodsService.purUserGetPurchaseGoods(purUserId);
-
-	    return R.ok().put("data", purchase);
-	}
+//
+//	@RequestMapping(value = "/purUserGetPurchaseGoods/{purUserId}")
+//	@ResponseBody
+//	public R purUserGetPurchaseGoods(@PathVariable Integer purUserId) {
+//
+//
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("purUserId", purUserId);
+////		map.put("status", 1);
+//		List<NxDistributerPurchaseGoodsEntity>  purchase = nxDisPurcGoodsService.purUserGetPurchaseGoods(purUserId);
+//
+//	    return R.ok().put("data", purchase);
+//	}
 
 
 

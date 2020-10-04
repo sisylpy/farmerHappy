@@ -14,18 +14,18 @@ import java.util.Map;
 
 public interface NxDistributerService {
 	
-	NxDistributerEntity queryObject(Integer distributerId);
+//	NxDistributerEntity queryObject(Integer distributerId);
 	
-	List<NxDistributerEntity> queryList(Map<String, Object> map);
+//	List<NxDistributerEntity> queryList(Map<String, Object> map);
 	
-	int queryTotal(Map<String, Object> map);
+//	int queryTotal(Map<String, Object> map);
 	
 	void save(NxDistributerEntity nxDistributer);
 	
-	void update(NxDistributerEntity nxDistributer);
+//	void update(NxDistributerEntity nxDistributer);
 	
-	void delete(Integer distributerId);
+//	void delete(Integer distributerId);
 	
-	void deleteBatch(Integer[] distributerIds);
+//	void deleteBatch(Integer[] distributerIds);
 
 }

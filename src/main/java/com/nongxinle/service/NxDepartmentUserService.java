@@ -17,9 +17,9 @@ public interface NxDepartmentUserService {
 	
 	NxDepartmentUserEntity queryObject(Integer nxDepartmentUserId);
 	
-	List<NxDepartmentUserEntity> queryList(Map<String, Object> map);
+//	List<NxDepartmentUserEntity> queryList(Map<String, Object> map);
 	
-	int queryTotal(Map<String, Object> map);
+//	int queryTotal(Map<String, Object> map);
 	
 	void save(NxDepartmentUserEntity nxDepartmentUser);
 	
@@ -27,7 +27,7 @@ public interface NxDepartmentUserService {
 	
 	void delete(Integer nxDepartmentUserId);
 	
-	void deleteBatch(Integer[] nxDepartmentUserIds);
+//	void deleteBatch(Integer[] nxDepartmentUserIds);
 
     List<NxDepartmentUserEntity> queryAllUsersByDepId(Integer depId);
 

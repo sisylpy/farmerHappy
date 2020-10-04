@@ -1,7 +1,6 @@
 package com.nongxinle.service.impl;
 
 import com.nongxinle.entity.*;
-import com.nongxinle.service.NxDepartmentStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,56 +42,74 @@ public class NxDepartmentDisGoodsServiceImpl implements NxDepartmentDisGoodsServ
 		return nxDepartmentDisGoodsDao.queryDisGoodsTotal(map3);
     }
 
-
-//	///////
-
-
-
-	@Override
-	public NxDepartmentDisGoodsEntity queryObject(Integer nxDepartmentDisGoodsId){
-		return nxDepartmentDisGoodsDao.queryObject(nxDepartmentDisGoodsId);
-	}
-	
-	@Override
-	public List<NxDepartmentDisGoodsEntity> queryList(Map<String, Object> map){
-		return nxDepartmentDisGoodsDao.queryList(map);
-	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDepartmentDisGoodsDao.queryTotal(map);
-	}
-	
 	@Override
 	public void save(NxDepartmentDisGoodsEntity nxDepartmentDisGoods){
-
 		nxDepartmentDisGoodsDao.save(nxDepartmentDisGoods);
-
 	}
-	
 	@Override
 	public void update(NxDepartmentDisGoodsEntity nxDepartmentDisGoods){
 		nxDepartmentDisGoodsDao.update(nxDepartmentDisGoods);
 	}
-	
 	@Override
-	public void delete(Integer nxDepartmentDisGoodsId){
-		nxDepartmentDisGoodsDao.delete(nxDepartmentDisGoodsId);
-	}
-	
-	@Override
-	public void deleteBatch(Integer[] nxDepartmentDisGoodsIds){
-		nxDepartmentDisGoodsDao.deleteBatch(nxDepartmentDisGoodsIds);
+	public NxDepartmentDisGoodsEntity queryObject(Integer nxDepartmentDisGoodsId){
+		return nxDepartmentDisGoodsDao.queryObject(nxDepartmentDisGoodsId);
 	}
 
+	@Override
+	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map) {
+		return nxDepartmentDisGoodsDao.queryDepDisSearchPinyin(map);
+	}
+
+	@Override
+	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3) {
+		return nxDepartmentDisGoodsDao.queryDepDisSearchHeadPy(map3);
+	}
+
+//	///////
+
+	@Override
+	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map) {
+
+		return nxDepartmentDisGoodsDao.queryDepDisSearchStr (map);
+	}
 
 
 
-    @Override
-    public List<NxGoodsEntity> querySearchStr(Map<String, Object> map) {
+//	@Override
+//	public List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map) {
+//
+//		return nxDepartmentDisGoodsDao.queryIfHasDisGoods(map);
+//	}
 
-		return nxDepartmentDisGoodsDao.querySearchStr (map);
-    }
+
+//
+//	@Override
+//	public List<NxDepartmentDisGoodsEntity> queryList(Map<String, Object> map){
+//		return nxDepartmentDisGoodsDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDepartmentDisGoodsDao.queryTotal(map);
+//	}
+//
+
+
+//
+
+//
+//	@Override
+//	public void delete(Integer nxDepartmentDisGoodsId){
+//		nxDepartmentDisGoodsDao.delete(nxDepartmentDisGoodsId);
+//	}
+//
+//	@Override
+//	public void deleteBatch(Integer[] nxDepartmentDisGoodsIds){
+//		nxDepartmentDisGoodsDao.deleteBatch(nxDepartmentDisGoodsIds);
+//	}
+
+
+
 
 
 

@@ -9,11 +9,8 @@ import java.util.*;
 
 import com.nongxinle.entity.*;
 import com.nongxinle.service.*;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
 
 import static com.nongxinle.utils.DateUtils.*;
@@ -24,17 +21,27 @@ import static com.nongxinle.utils.DateUtils.*;
 public class NxDepartmentOrdersController {
     @Autowired
     private NxDepartmentOrdersService nxDepartmentOrdersService;
-
-    @Autowired
-    private NxGoodsService nxGoodsService;
-
     @Autowired
     private NxDepartmentService nxDepartmentService;
-
-
     @Autowired
-    private NxStandardService nxStandardService;
+    private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
 
+
+
+    @RequestMapping(value = "/disGetDepTodayOrders")
+    @ResponseBody
+    public R disGetDepTodayOrders (Integer disId,    Integer depFatherId, Integer depId) {
+        System.out.println(disId + "sisisiis");
+        Map<String, Object> map = new HashMap<>();
+        map.put("disId", disId);
+        map.put("depFatherId", depId);
+        map.put("depId", depFatherId);
+        map.put("status", 4);
+
+       List<NxDepartmentOrdersEntity> ordersEntities =  nxDepartmentOrdersService.queryDisOrdersByParams(map);
+
+        return R.ok().put("data", ordersEntities);
+    }
 
 
     /**
@@ -67,20 +74,38 @@ public class NxDepartmentOrdersController {
         return R.ok().put("data", fatherGoodsEntities);
     }
 
+    //
+    @RequestMapping(value = "/saveToFillPrice", method = RequestMethod.POST)
+    @ResponseBody
+    public R saveToFillPrice (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
 
+        for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
+//            ordersEntity.setNxDoStatus(2);
+            String nxDoPrice = ordersEntity.getNxDoPrice();
+            Integer nxDoDepDisGoodsId = ordersEntity.getNxDoDepDisGoodsId();
+            NxDepartmentDisGoodsEntity nxDepartmentDisGoodsEntity = nxDepartmentDisGoodsService.queryObject(nxDoDepDisGoodsId);
+            nxDepartmentDisGoodsEntity.setNxDdgDepGoodsPrice(nxDoPrice);
+            nxDepartmentDisGoodsEntity.setNxDdgDepGoodsPriceDate(formatWhatDate(0));
+
+            nxDepartmentDisGoodsService.update(nxDepartmentDisGoodsEntity);
+
+            nxDepartmentOrdersService.update(ordersEntity);
+        }
+        return R.ok();
+    }
     /**
      * 9-11
      * DISTRIBUTER
-     * 保存订单的金额和数量
+     * 保存订单的数量
      * @param depOrders 订单
      * @return ok
      */
-    @RequestMapping(value = "/saveToFillContent", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveToFillWeight", method = RequestMethod.POST)
     @ResponseBody
-    public R saveToFillContent (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
+    public R saveToFillWeight (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
 
         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
-            ordersEntity.setNxDoStatus(2);
+//            ordersEntity.setNxDoStatus(2);
             nxDepartmentOrdersService.update(ordersEntity);
         }
         return R.ok();
@@ -146,6 +171,8 @@ public class NxDepartmentOrdersController {
         map.put("depFatherId", depId);
         map.put("disId", disId);
         map.put("status", 3);
+        map.put("orderBy", "time");
+
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
         //按每天显示订单
         Map<String, Object> stringObjectMap = countSwiperHeight((ordersEntities));
@@ -199,6 +226,7 @@ public class NxDepartmentOrdersController {
         Map<String, Object> map = new HashMap<>();
         map.put("onlyDate", date);
         map.put("depId", depId);
+        map.put("orderBy", "time");
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
         //按每天显示订单
         Map<String, Object> stringObjectMap = showOrderByEveryDay((ordersEntities));
@@ -206,6 +234,12 @@ public class NxDepartmentOrdersController {
     }
 
 
+    /**
+     * DISTRIBUTER
+     * 批发商获取今日订货群和订单
+     * @param disId 批发商id
+     * @return 订货群
+     */
     @RequestMapping(value = "/disGetTodayOrderCustomer/{disId}")
     @ResponseBody
     public R disGetTodayOrderCustomer(@PathVariable Integer disId) {
@@ -336,79 +370,7 @@ public class NxDepartmentOrdersController {
     }
 
 
-
-//==========================================
-
-
-//    @RequestMapping(value = "/departmentGetTodayOrders/{depId}")
-//    @ResponseBody
-//    public R departmentGetTodayOrders(@PathVariable Integer depId) {
-//
-//
-//        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDepartmentTodayOrders(depId);
-//        return R.ok().put("data", ordersEntities);
-//    }
-
-
-
-
-
-
-//
-//     @RequestMapping(value = "/saveOrderArr", method = RequestMethod.POST)
-//      @ResponseBody
-//      public R saveOrderArr (@RequestBody List<NxDepartmentOrdersEntity> orders) {
-//         System.out.println(orders);
-//         for (NxDepartmentOrdersEntity ordersEntity : orders) {
-//             nxDepartmentOrdersService.save(ordersEntity);
-//         }
-//
-//
-//        return R.ok();
-//      }
-
-
-
-
-
-
-
-
-    /**
-     * 列表
-     */
-    @ResponseBody
-    @RequestMapping("/list")
-    @RequiresPermissions("nxdepartmentorders:list")
-    public R list(Integer page, Integer limit) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("offset", (page - 1) * limit);
-        map.put("limit", limit);
-
-        //查询列表数据
-        List<NxDepartmentOrdersEntity> nxDepartmentOrdersList = nxDepartmentOrdersService.queryList(map);
-        int total = nxDepartmentOrdersService.queryTotal(map);
-
-        PageUtils pageUtil = new PageUtils(nxDepartmentOrdersList, total, limit, page);
-
-        return R.ok().put("page", pageUtil);
-    }
-
-
-    /**
-     * 信息
-     */
-    @ResponseBody
-    @RequestMapping("/info/{nxDepartmentOrdersId}")
-    @RequiresPermissions("nxdepartmentorders:info")
-    public R info(@PathVariable("nxDepartmentOrdersId") Integer nxDepartmentOrdersId) {
-        NxDepartmentOrdersEntity nxDepartmentOrders = nxDepartmentOrdersService.queryObject(nxDepartmentOrdersId);
-
-        return R.ok().put("nxDepartmentOrders", nxDepartmentOrders);
-    }
-
-
-
+   //组装订货员的每日订单
     private Map<String, Object> showOrderByEveryDay(List<NxDepartmentOrdersEntity> ordersArr){
         List<Map<String, Object>> data = new ArrayList<>();
         TreeSet<NxDepartmentOrdersEntity> treeSet = new TreeSet<>();
@@ -449,9 +411,73 @@ public class NxDepartmentOrdersController {
         return map2;
     }
 
+
+
 }
 
 
+//    @RequestMapping(value = "/departmentGetTodayOrders/{depId}")
+//    @ResponseBody
+//    public R departmentGetTodayOrders(@PathVariable Integer depId) {
+//
+//
+//        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDepartmentTodayOrders(depId);
+//        return R.ok().put("data", ordersEntities);
+//    }
+
+
+
+
+
+
+//
+//     @RequestMapping(value = "/saveOrderArr", method = RequestMethod.POST)
+//      @ResponseBody
+//      public R saveOrderArr (@RequestBody List<NxDepartmentOrdersEntity> orders) {
+//         System.out.println(orders);
+//         for (NxDepartmentOrdersEntity ordersEntity : orders) {
+//             nxDepartmentOrdersService.save(ordersEntity);
+//         }
+//
+//
+//        return R.ok();
+//      }
+
+
+
+
+
+//
+//
+//    /**
+//     * 列表
+//     */
+//    @ResponseBody
+//    @RequestMapping("/list")
+//    @RequiresPermissions("nxdepartmentorders:list")
+//    public R list(Integer page, Integer limit) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("offset", (page - 1) * limit);
+//        map.put("limit", limit);
+//
+//        //查询列表数据
+//        List<NxDepartmentOrdersEntity> nxDepartmentOrdersList = nxDepartmentOrdersService.queryList(map);
+//        int total = nxDepartmentOrdersService.queryTotal(map);
+//
+//        PageUtils pageUtil = new PageUtils(nxDepartmentOrdersList, total, limit, page);
+//
+//        return R.ok().put("page", pageUtil);
+//    }
+/**
+ * 信息
+ */
+//    @ResponseBody
+//    @RequestMapping("/info/{nxDepartmentOrdersId}")
+//    @RequiresPermissions("nxdepartmentorders:info")
+//    public R info(@PathVariable("nxDepartmentOrdersId") Integer nxDepartmentOrdersId) {
+//        NxDepartmentOrdersEntity nxDepartmentOrders = nxDepartmentOrdersService.queryObject(nxDepartmentOrdersId);
+//        return R.ok().put("nxDepartmentOrders", nxDepartmentOrders);
+//    }
 
 
 

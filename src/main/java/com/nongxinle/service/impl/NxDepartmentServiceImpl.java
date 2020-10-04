@@ -59,6 +59,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 		//1.保存餐馆
 		nxDepartmentDao.save(dep);
 
+		//wxApp
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
 		String purchaseAppID = myAPPIDConfig.getPurchaseAppID();
 		String purchaseScreat = myAPPIDConfig.getPurchaseScreat();
@@ -79,12 +80,9 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 		nxDepartmentUserEntity.setNxDuDepartmentFatherId(nxDepartmentId);
 		nxDepartmentUserEntity.setNxDuJoinDate(formatWhatDay(0));
 		nxDepartmentUserService.save(nxDepartmentUserEntity);
-		List<NxDepartmentEntity> nxDepartmentEntities1 = dep.getNxDepartmentEntities();
-		System.out.println(nxDepartmentEntities1);
 
 		if(dep.getNxDepartmentEntities().size() > 0){
 			//3,保存部门
-
 			List<NxDepartmentEntity> nxDepartmentEntities = dep.getNxDepartmentEntities();
 			for (NxDepartmentEntity subDep : nxDepartmentEntities) {
 				subDep.setNxDepartmentFatherId(nxDepartmentId);
@@ -100,8 +98,17 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 		entity.setNxDdDepartmentId(nxDepartmentId);
 		nxDistributerDepartmentService.save(entity);
 
-//		Integer nxDepartmentUserId = nxDepartmentUserEntity.getNxDepartmentUserId();
 		return openid;
+	}
+
+	@Override
+	public void saveJustDepartment(NxDepartmentEntity nxDepartmentEntity) {
+		nxDepartmentDao.save(nxDepartmentEntity);
+	}
+
+	@Override
+	public List<NxDepartmentEntity> querySubDepartments(Integer depId) {
+		return nxDepartmentDao.querySubDepartments(depId);
 	}
 
 
@@ -109,17 +116,6 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 	public NxDepartmentEntity queryObject(Integer nxDepartmentId){
 		return nxDepartmentDao.queryObject(nxDepartmentId);
 	}
-	
-	@Override
-	public List<NxDepartmentEntity> queryList(Map<String, Object> map){
-		return nxDepartmentDao.queryList(map);
-	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDepartmentDao.queryTotal(map);
-	}
-
 
 	@Override
 	public void save(NxDepartmentEntity nxDepartment){
@@ -131,33 +127,39 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 		nxDepartmentUserService.update(nxDepartmentUserEntity);
 
 	}
-	
+
 	@Override
 	public void update(NxDepartmentEntity nxDepartment){
 		nxDepartmentDao.update(nxDepartment);
 	}
-	
-	@Override
-	public void delete(Integer nxDepartmentId){
-		nxDepartmentDao.delete(nxDepartmentId);
-	}
-	
-	@Override
-	public void deleteBatch(Integer[] nxDepartmentIds){
-		nxDepartmentDao.deleteBatch(nxDepartmentIds);
-	}
+
+
+//
+//	@Override
+//	public List<NxDepartmentEntity> queryList(Map<String, Object> map){
+//		return nxDepartmentDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDepartmentDao.queryTotal(map);
+//	}
 
 
 
-	@Override
-	public void saveJustDepartment(NxDepartmentEntity nxDepartmentEntity) {
-		nxDepartmentDao.save(nxDepartmentEntity);
-	}
+//
+//	@Override
+//	public void delete(Integer nxDepartmentId){
+//		nxDepartmentDao.delete(nxDepartmentId);
+//	}
+//
+//	@Override
+//	public void deleteBatch(Integer[] nxDepartmentIds){
+//		nxDepartmentDao.deleteBatch(nxDepartmentIds);
+//	}
+//
 
-	@Override
-	public List<NxDepartmentEntity> querySubDepartments(Integer depId) {
-		return nxDepartmentDao.querySubDepartments(depId);
-	}
+
 
 
 

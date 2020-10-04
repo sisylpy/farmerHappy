@@ -18,6 +18,12 @@ public class NxGoodsServiceImpl implements NxGoodsService {
 	private NxGoodsDao nxGoodsDao;
 
 	@Override
+	public List<NxGoodsEntity> queryQuickSearchNxGoods(String str) {
+
+		return nxGoodsDao.queryQuickSearchNxGoods(str);
+	}
+
+	@Override
 	public List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map) {
 		return nxGoodsDao.queryNxGoodsByParams(map);
 	}
@@ -103,11 +109,22 @@ public class NxGoodsServiceImpl implements NxGoodsService {
         return nxGoodsDao.queryGoodsByFatherId(fatherId);
     }
 
-    @Override
-    public List<NxGoodsEntity> queryQuickSearch(String str) {
+	@Override
+	public List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map) {
+		return nxGoodsDao.queryIfHasSameGoods(map);
+	}
 
-		return nxGoodsDao.queryQuickSearch(str);
-    }
+	@Override
+	public List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map) {
+		return nxGoodsDao.queryQuickSearchNxCategoryGoods(map);
+	}
+
+	@Override
+	public List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map) {
+		return  nxGoodsDao.queryGoodsOrderById(map);
+	}
+
+
 
 
 }

@@ -19,42 +19,43 @@ public class NxDistributerServiceImpl implements NxDistributerService {
 	@Autowired
 	private NxDistributerDao nxDistributerDao;
 
-	@Autowired
-	private NxDistributerUserDao nxDistributerUserDao;
-	
-	@Override
-	public NxDistributerEntity queryObject(Integer distributerId){
-		return nxDistributerDao.queryObject(distributerId);
-	}
-	
-	@Override
-	public List<NxDistributerEntity> queryList(Map<String, Object> map){
-		return nxDistributerDao.queryList(map);
-	}
-	
-	@Override
-	public int queryTotal(Map<String, Object> map){
-		return nxDistributerDao.queryTotal(map);
-	}
-	
+
 	@Override
 	public void save(NxDistributerEntity nxDistributer){
 		nxDistributerDao.save(nxDistributer);
 	}
+
+
+//	@Override
+//	public NxDistributerEntity queryObject(Integer distributerId){
+//		return nxDistributerDao.queryObject(distributerId);
+//	}
+//
+//	@Override
+//	public List<NxDistributerEntity> queryList(Map<String, Object> map){
+//		return nxDistributerDao.queryList(map);
+//	}
+//
+//	@Override
+//	public int queryTotal(Map<String, Object> map){
+//		return nxDistributerDao.queryTotal(map);
+//	}
+//
+
 	
-	@Override
-	public void update(NxDistributerEntity nxDistributer){
-		nxDistributerDao.update(nxDistributer);
-	}
-	
-	@Override
-	public void delete(Integer distributerId){
-		nxDistributerDao.delete(distributerId);
-	}
-	
-	@Override
-	public void deleteBatch(Integer[] distributerIds){
-		nxDistributerDao.deleteBatch(distributerIds);
-	}
+//	@Override
+//	public void update(NxDistributerEntity nxDistributer){
+//		nxDistributerDao.update(nxDistributer);
+//	}
+//
+//	@Override
+//	public void delete(Integer distributerId){
+//		nxDistributerDao.delete(distributerId);
+//	}
+//
+//	@Override
+//	public void deleteBatch(Integer[] distributerIds){
+//		nxDistributerDao.deleteBatch(distributerIds);
+//	}
 
 }

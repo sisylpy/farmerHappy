@@ -15,6 +15,8 @@ import java.util.Map;
 
 public interface NxGoodsDao extends BaseDao<NxGoodsEntity> {
 
+    List<NxGoodsEntity> queryQuickSearchNxGoods(String str);
+
     List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map);
 
 
@@ -39,6 +41,11 @@ public interface NxGoodsDao extends BaseDao<NxGoodsEntity> {
 
     List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId);
 
-    List<NxGoodsEntity> queryQuickSearch(String str);
+
+    List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map);
+
+    List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
+
+    List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map);
 
 }

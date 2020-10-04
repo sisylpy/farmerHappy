@@ -66,14 +66,26 @@
 		where greatGrand.nx_DFG_distributer_id = #{disId}
 	</select>
 
-	<select id="queryHasDisGrandFather" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">
+	<select id="queryHasDisFathersFather" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">
 		select * from nx_distributer_father_goods where nx_dfg_distributer_id = #{disId}
-		and nx_dfg_father_goods_name like  #{grandName}
+		and nx_dfg_father_goods_name like  #{fathersFatherName}
 	</select>
-	<select id="queryHasGreatGrandGoods" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">
-		select * from nx_distributer_father_goods where nx_dfg_distributer_id = #{disId}
-		and nx_dfg_father_goods_name like  #{greatGrandName}
+	<select id="queryDisFathersGoodsByParams" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">
+		select * from nx_distributer_father_goods
+	<where>
+		<if test="disId != null">
+			nx_dfg_distributer_id  = #{disId}
+		</if>
+		<if test="fathersFatherId != null">
+			and nx_dfg_fathers_father_id  = #{fathersFatherId}
+		</if>
+	</where>
 	</select>
+	<!--	-->
+<!--	<select id="queryHasGreatGrandGoods" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">-->
+<!--		select * from nx_distributer_father_goods where nx_dfg_distributer_id = #{disId}-->
+<!--		and nx_dfg_father_goods_name like  #{greatGrandName}-->
+<!--	</select>-->
 
 	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerFatherGoodsEntity" useGeneratedKeys="true"
 	keyProperty="nxDistributerFatherGoodsId">
@@ -121,12 +133,6 @@
 	<delete id="delete">
 		delete from nx_distributer_father_goods where nx_distributer_father_goods_id = #{value}
 	</delete>
-	
-	<delete id="deleteBatch">
-		delete from nx_distributer_father_goods where nx_distributer_father_goods_id in 
-		<foreach item="nxDistributerFatherGoodsId" collection="array" open="(" separator="," close=")">
-			#{nxDistributerFatherGoodsId}
-		</foreach>
-	</delete>
+
 
 </mapper>

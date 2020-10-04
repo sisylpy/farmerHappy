@@ -23,7 +23,12 @@ public class NxDistributerUserServiceImpl implements NxDistributerUserService {
 
 	@Autowired
 	private NxDistributerUserRoleDao nxDistributerUserRoleDao;
-	
+
+	@Override
+	public List<NxDistributerUserEntity> getAllUserByDisId(Integer disId) {
+		return nxDistributerUserDao.queryAllUsersByDisId(disId);
+	}
+
 	@Override
 	public NxDistributerUserEntity queryObject(Integer nxDistributerUserId){
 		return nxDistributerUserDao.queryObject(nxDistributerUserId);
