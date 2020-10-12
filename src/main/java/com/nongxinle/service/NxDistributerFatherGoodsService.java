@@ -7,6 +7,7 @@ package com.nongxinle.service;
  * @date 07-27 17:38
  */
 
+import com.nongxinle.entity.NxDepartmentOrdersEntity;
 import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 import com.nongxinle.entity.NxDistributerGoodsEntity;
 import com.nongxinle.entity.NxGoodsEntity;
@@ -31,6 +32,7 @@ public interface NxDistributerFatherGoodsService {
 
 //
 	NxDistributerFatherGoodsEntity queryObject(Integer nxDistributerFatherGoodsId);
+
 //
 //	List<NxDistributerFatherGoodsEntity> queryList(Map<String, Object> map);
 //

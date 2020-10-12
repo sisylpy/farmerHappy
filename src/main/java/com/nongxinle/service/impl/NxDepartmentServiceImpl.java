@@ -32,7 +32,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 
 	@Override
-	public List<NxDepartmentEntity> queryGroupInfo(String openId) {
+	public List<NxDepartmentEntity> queryMultiGroupInfo(String openId) {
 		//采购员的全部店
 		List<NxDepartmentEntity> departmentEntities = nxDepartmentUserService.queryMultiDepartmentByWxOpenId(openId);
 		return  departmentEntities;
@@ -54,7 +54,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 
 	@Override
-	public String saveNewRestraunt(NxDepartmentEntity dep) {
+	public Integer saveNewRestraunt(NxDepartmentEntity dep) {
 
 		//1.保存餐馆
 		nxDepartmentDao.save(dep);
@@ -98,7 +98,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 		entity.setNxDdDepartmentId(nxDepartmentId);
 		nxDistributerDepartmentService.save(entity);
 
-		return openid;
+		return nxDepartmentUserEntity.getNxDepartmentUserId();
 	}
 
 	@Override

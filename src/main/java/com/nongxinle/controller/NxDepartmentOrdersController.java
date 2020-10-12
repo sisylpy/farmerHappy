@@ -80,6 +80,7 @@ public class NxDepartmentOrdersController {
     public R saveToFillPrice (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
 
         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
+            System.out.println(ordersEntity.getNxDoDepDisGoodsId()+ "whatis");
 //            ordersEntity.setNxDoStatus(2);
             String nxDoPrice = ordersEntity.getNxDoPrice();
             Integer nxDoDepDisGoodsId = ordersEntity.getNxDoDepDisGoodsId();

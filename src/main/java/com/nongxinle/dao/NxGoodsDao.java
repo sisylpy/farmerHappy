@@ -17,10 +17,9 @@ public interface NxGoodsDao extends BaseDao<NxGoodsEntity> {
 
     List<NxGoodsEntity> queryQuickSearchNxGoods(String str);
 
+    List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
+
     List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map);
-
-
-//    //////////
 
 
     List<NxGoodsEntity> getNxGoodsCateList();
@@ -35,17 +34,15 @@ public interface NxGoodsDao extends BaseDao<NxGoodsEntity> {
 
     List<NxGoodsEntity> queryGoodsCataByType(Integer type);
 
-    List<NxGoodsEntity> queryDownloadGoods(String fatherId);
+//    List<NxGoodsEntity> queryDownloadGoods(String fatherId);
 
     List<NxGoodsEntity> queryGoodsTree();
 
-    List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId);
+//    List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId);
 
 
     List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map);
 
-    List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
 
-    List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map);
-
+    List<NxGoodsEntity> queryNxGoodsOrderByGoodsId(Map<String, Object> map);
 }

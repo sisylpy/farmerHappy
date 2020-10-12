@@ -7,6 +7,7 @@ package com.nongxinle.dao;
  * @date 07-27 17:38
  */
 
+import com.nongxinle.entity.NxDepartmentOrdersEntity;
 import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 import com.nongxinle.entity.NxDistributerGoodsEntity;
 import com.nongxinle.entity.NxGoodsEntity;
@@ -22,6 +23,7 @@ public interface NxDistributerFatherGoodsDao extends BaseDao<NxDistributerFather
     List<NxDistributerFatherGoodsEntity> queryHasDisFathersFather(Map<String, Object> map2);
 
     List<NxDistributerFatherGoodsEntity> queryDisFathersGoodsByParams(Map<String, Object> map);
+
 
 //    List<NxDistributerFatherGoodsEntity> queryHasGreatGrandGoods(Map<String, Object> map3);
 

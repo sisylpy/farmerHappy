@@ -46,4 +46,7 @@ public interface NxDistributerPurchaseGoodsService {
 
     List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByBatchId(Integer purchaseBatchId);
 
+	List<NxDistributerPurchaseGoodsEntity> queryForDisGoods(Map<String, Object> map2);
+
+    List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByParams(Map<String, Object> map2);
 }

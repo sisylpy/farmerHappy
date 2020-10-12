@@ -22,80 +22,31 @@ import com.nongxinle.utils.R;
 
 
 @RestController
-@RequestMapping("nxalias")
+@RequestMapping("api/nxalias")
 public class NxAliasController {
 	@Autowired
 	private NxAliasService nxAliasService;
-	
 
-	
-	/**
-	 * 列表
-	 */
+	@RequestMapping(value = "/saveAlias", method = RequestMethod.POST)
 	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxalias:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxAliasEntity> nxAliasList = nxAliasService.queryList(map);
-		int total = nxAliasService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxAliasList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
+	public R saveAlias (@RequestBody NxAliasEntity alias) {
+	    nxAliasService.save(alias);
+	    return R.ok().put("data",alias);
 	}
-	
-	
-	/**
-	 * 信息
-	 */
+
+	@RequestMapping(value = "/updateAlias", method = RequestMethod.POST)
 	@ResponseBody
-	@RequestMapping("/info/{nxAliasId}")
-	@RequiresPermissions("nxalias:info")
-	public R info(@PathVariable("nxAliasId") Integer nxAliasId){
-		NxAliasEntity nxAlias = nxAliasService.queryObject(nxAliasId);
-		
-		return R.ok().put("nxAlias", nxAlias);
+	public R updateAlias (@RequestBody NxAliasEntity alias) {
+	    nxAliasService.update(alias);
+	    return R.ok();
 	}
-	
-	/**
-	 * 保存
-	 */
+
+	@RequestMapping(value = "/deleteAlias/{id}")
 	@ResponseBody
-	@RequestMapping("/save")
-	@RequiresPermissions("nxalias:save")
-	public R save(@RequestBody NxAliasEntity nxAlias){
-		nxAliasService.save(nxAlias);
-		
-		return R.ok();
+	public R deleteAlias(@PathVariable Integer id) {
+	    nxAliasService.delete(id);
+	    return R.ok();
 	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxalias:update")
-	public R update(@RequestBody NxAliasEntity nxAlias){
-		nxAliasService.update(nxAlias);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxalias:delete")
-	public R delete(@RequestBody Integer[] nxAliasIds){
-		nxAliasService.deleteBatch(nxAliasIds);
-		
-		return R.ok();
-	}
+
 	
 }

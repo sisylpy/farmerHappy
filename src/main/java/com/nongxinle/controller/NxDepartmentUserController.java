@@ -42,6 +42,24 @@ public class NxDepartmentUserController {
 	private NxDepartmentOrdersService nxDepartmentOrdersService;
 
 
+
+
+	/**
+	 *
+	 * @param openId
+	 * @return
+	 */
+//	@RequestMapping(value = "/purchaserGetGroupInfo/{openId}")
+//	@ResponseBody
+//	public R purchaserGetGroupInfo(@PathVariable String openId) {
+//		if (openId != null){
+//			List<NxDepartmentEntity>  entities= nxDepartmentService.queryMultiGroupInfo(openId);
+//			return R.ok().put("data", entities);
+//		}else {
+//			return R.error(-1,"cuowu");
+//		}
+//	}
+
 	/**
 	 * 修改订货用户信息
 	 * @param userName 订货用户名称
@@ -129,11 +147,13 @@ public class NxDepartmentUserController {
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
-//		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
 		if(openId != null){
+		NxDepartmentUserEntity depUserEntity = nxDepartmentUserService.queryDepUserByOpenId(openId);
+			Integer nxDepartmentUserId = depUserEntity.getNxDepartmentUserId();
+			Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(nxDepartmentUserId);
 
-			List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
-			return R.ok().put("data", departmentEntities);
+//			List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
+			return R.ok().put("data", stringObjectMap);
 		}else {
 			return R.error(-1,"请进行注册");
 		}
@@ -164,8 +184,8 @@ public class NxDepartmentUserController {
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
-		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
-       if(depUserEntities.size() > 0){
+		NxDepartmentUserEntity depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
+       if(depUserEntities != null){
 		   return R.error(-1,"请直接登陆");
 
 	   }else{
@@ -175,9 +195,10 @@ public class NxDepartmentUserController {
 		   nxDepartmentUserService.save(nxDepartmentUser);
 		   Integer nxDepartmentUserId = nxDepartmentUser.getNxDepartmentUserId();
 		   //todo
-		  List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
+//		  List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
+		   Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(nxDepartmentUserId);
 
-		   return R.ok().put("data",departmentEntities);
+		   return R.ok().put("data",stringObjectMap);
 	   }
 	}
 
@@ -205,8 +226,8 @@ public class NxDepartmentUserController {
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openid = jsonObject.get("openid").toString();
 
-		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openid);
-		if(depUserEntities.size() > 0){
+		NxDepartmentUserEntity depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openid);
+		if(depUserEntities != null){
 			return R.error(-1,"请直接登陆");
 
 		}else{
@@ -245,10 +266,9 @@ public class NxDepartmentUserController {
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
 		System.out.println(openId + "openididiiddi");
-		List<NxDepartmentUserEntity> depUserEntities = nxDepartmentUserService.queryDepUserByOpenId(openId);
-		if(depUserEntities.size() > 0){
-			NxDepartmentUserEntity nxDistributerUserEntity = depUserEntities.get(0);
-			Integer nxDepartmentUserId = nxDistributerUserEntity.getNxDepartmentUserId();
+		NxDepartmentUserEntity depUserEntity = nxDepartmentUserService.queryDepUserByOpenId(openId);
+		if(depUserEntity != null){
+			Integer nxDepartmentUserId = depUserEntity.getNxDepartmentUserId();
 			Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(nxDepartmentUserId);
 			return R.ok().put("data", stringObjectMap);
 		}else {

@@ -22,6 +22,10 @@ public class NxGoodsServiceImpl implements NxGoodsService {
 
 		return nxGoodsDao.queryQuickSearchNxGoods(str);
 	}
+	@Override
+	public List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map) {
+		return nxGoodsDao.queryQuickSearchNxCategoryGoods(map);
+	}
 
 	@Override
 	public List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map) {
@@ -33,11 +37,7 @@ public class NxGoodsServiceImpl implements NxGoodsService {
 		return nxGoodsDao.queryObject(nxGoodsId);
 	}
 	
-	@Override
-	public List<NxGoodsEntity> queryList(Map<String, Object> map){
-		return nxGoodsDao.queryList(map);
-	}
-	
+
 	@Override
 	public int queryTotal(Map<String, Object> map){
 		return nxGoodsDao.queryTotal(map);
@@ -58,10 +58,6 @@ public class NxGoodsServiceImpl implements NxGoodsService {
 		nxGoodsDao.delete(nxGoodsId);
 	}
 	
-	@Override
-	public void deleteBatch(Integer[] nxGoodsIds){
-		nxGoodsDao.deleteBatch(nxGoodsIds);
-	}
 
 	@Override
 	public List<NxGoodsEntity> getiBookCoverData() {
@@ -94,20 +90,12 @@ public class NxGoodsServiceImpl implements NxGoodsService {
         return nxGoodsDao.queryGoodsCataByType(type);
     }
 
-	@Override
-	public List<NxGoodsEntity> downloadGoods(String fatherId) {
-		return nxGoodsDao.queryDownloadGoods(fatherId);
-	}
 
 	@Override
 	public List<NxGoodsEntity> queryGoodsTree() {
 		return nxGoodsDao.queryGoodsTree();
 	}
 
-    @Override
-    public List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId) {
-        return nxGoodsDao.queryGoodsByFatherId(fatherId);
-    }
 
 	@Override
 	public List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map) {
@@ -115,16 +103,9 @@ public class NxGoodsServiceImpl implements NxGoodsService {
 	}
 
 	@Override
-	public List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map) {
-		return nxGoodsDao.queryQuickSearchNxCategoryGoods(map);
+	public List<NxGoodsEntity> queryNxGoodsOrderByGoodsId(Map<String, Object> map) {
+		return nxGoodsDao.queryNxGoodsOrderByGoodsId(map);
 	}
-
-	@Override
-	public List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map) {
-		return  nxGoodsDao.queryGoodsOrderById(map);
-	}
-
-
 
 
 }

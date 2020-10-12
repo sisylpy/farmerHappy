@@ -123,30 +123,16 @@ public class NxStandardController {
 
 		return R.ok().put("data",  standardEntity);
 	}
-	
-	/**
-	 * 修改
-	 */
+
+	@RequestMapping(value = "/updateStandard", method = RequestMethod.POST)
 	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxstandard:update")
-	public R update(@RequestBody NxStandardEntity nxStandard){
-		System.out.println("===" + nxStandard);
+	public R updateStandard (@RequestBody NxStandardEntity nxStandard  ) {
 		nxStandardService.update(nxStandard);
-		
+
 		return R.ok();
 	}
+
 	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxstandard:delete")
-	public R delete(@RequestBody Integer[] nxStandardIds){
-		nxStandardService.deleteBatch(nxStandardIds);
-		
-		return R.ok();
-	}
+
 	
 }

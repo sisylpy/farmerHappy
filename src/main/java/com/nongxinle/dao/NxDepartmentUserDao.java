@@ -17,7 +17,7 @@ public interface NxDepartmentUserDao extends BaseDao<NxDepartmentUserEntity> {
 
     List<NxDepartmentUserEntity> queryAllUsersByDepId(Integer depId);
 
-    List<NxDepartmentUserEntity> queryDepUserByOpenId(String openId);
+    NxDepartmentUserEntity queryDepUserByOpenId(String openId);
 
     List<NxDepartmentUserEntity> queryGroupAdminUserAmount(Integer nxDuDepartmentId);
 

@@ -24,22 +24,10 @@ public interface NxDepartmentOrdersDao extends BaseDao<NxDepartmentOrdersEntity>
 
     List<NxDistributerFatherGoodsEntity>  disGetUnPlanPurchaseApplys(Integer disId);
 
-//    List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId);
-
-//    List<NxDepartmentOrdersEntity> queryOrders(Map<String, Object> map1);
-
-    List<NxDepartmentOrdersEntity> queryKindsOfOrders(Map<String, Object> map);
-
-
-
     Integer queryNewOrders(Integer nxDepartmentId);
 
     Integer queryFatherNewOrders(Integer nxDepartmentId);
 
 
-//    int queryDisOrdersTotal(Map<String, Object> map);
-
-//    List<NxDepartmentOrdersEntity> queryIndependentOrdersByLimit(Map<String, Object> map);
-
-//    int queryIndependentOrdersTotal(Map<String, Object> map);
+    List<NxDepartmentOrdersEntity> queryOrdersForDisGoods(Map<String, Object> map1);
 }

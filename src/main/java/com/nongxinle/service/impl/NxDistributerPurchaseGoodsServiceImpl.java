@@ -96,4 +96,15 @@ public class NxDistributerPurchaseGoodsServiceImpl implements NxDistributerPurch
 		return nxDistributerPurchaseGoodsDao.queryPurchaseGoodsByBatchId(purchaseBatchId);
     }
 
+	@Override
+	public List<NxDistributerPurchaseGoodsEntity> queryForDisGoods(Map<String, Object> map2) {
+		return  nxDistributerPurchaseGoodsDao.queryForDisGoods(map2);
+	}
+
+    @Override
+    public List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByParams(Map<String, Object> map2) {
+
+		return nxDistributerPurchaseGoodsDao.queryPurchaseGoodsByParams(map2);
+    }
+
 }

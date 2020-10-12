@@ -29,13 +29,9 @@ public interface NxDepartmentDisGoodsDao extends BaseDao<NxDepartmentDisGoodsEnt
 
     List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map);
 
-    List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3);
+    List<NxDepartmentDisGoodsEntity> queryDepDisGoodsByParams(Map<String, Object> map);
 
 
-//    List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map);
-
-
-//    //////
 
 
 

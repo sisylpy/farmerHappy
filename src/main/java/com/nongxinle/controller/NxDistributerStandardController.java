@@ -26,6 +26,13 @@ public class NxDistributerStandardController {
     private NxDistributerStandardService nxDistributerStandardService;
 
 
+    @RequestMapping(value = "/disDeleteStandard/{id}")
+    @ResponseBody
+    public R disDeleteStandard(@PathVariable Integer id) {
+        nxDistributerStandardService.delete(id);
+        return R.ok();
+    }
+
     /**
      * 批发商修改订货单位
      * @param standard 单位

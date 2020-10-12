@@ -145,44 +145,23 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 
 
 
-//	@Override
-//	public int queryTotal(Map<String, Object> map){
-//		return nxDepartmentOrdersDao.queryTotal(map);
-//	}
-//	@Override
-//	public void deleteBatch(Integer[] nxDepartmentOrdersIds){
-//		nxDepartmentOrdersDao.deleteBatch(nxDepartmentOrdersIds);
-//	}
 
-//	@Override
-//	public List<NxDepartmentOrdersEntity> disGetUnPlanPurchaseGoodsByFatherGoodsId(Integer nxGoodsId) {
-//		return nxDepartmentOrdersDao.disGetUnPlanPurchaseGoodsByFatherGoodsId(nxGoodsId);
-//	}
-
-//    @Override
-//    public List<NxDepartmentOrdersEntity> queryToFillDepOrders(Map<String, Object> map) {
-//
-//		return nxDepartmentOrdersDao.queryKindsOfOrders(map);
-//    }
-
-
-
-//	@Override
-//	public List<NxDepartmentOrdersEntity> queryDepartmentTodayOrders(Integer depId) {
-//		return nxDepartmentOrdersDao.queryDepartmentTodayOrders(depId);
-//	}
-
-
-//	@Override
+	@Override
 	public Integer queryNewOrders(Integer nxDepartmentId) {
 		return nxDepartmentOrdersDao.queryNewOrders(nxDepartmentId);
 	}
 //
-//    @Override
+    @Override
     public Integer queryFatherNewOrders(Integer nxDepartmentId) {
 
 		return nxDepartmentOrdersDao.queryFatherNewOrders(nxDepartmentId);
 	}
+
+    @Override
+    public List<NxDepartmentOrdersEntity> queryOrdersForDisGoods(Map<String, Object> map1) {
+
+		return nxDepartmentOrdersDao.queryOrdersForDisGoods(map1);
+    }
 
 
 }

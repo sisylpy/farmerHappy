@@ -1,5 +1,6 @@
 package com.nongxinle.service.impl;
 
+import com.nongxinle.entity.NxDepartmentOrdersEntity;
 import com.nongxinle.entity.NxDistributerGoodsEntity;
 import com.nongxinle.entity.NxGoodsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,8 @@ public class NxDistributerFatherGoodsServiceImpl implements NxDistributerFatherG
 	public NxDistributerFatherGoodsEntity queryObject(Integer nxDistributerFatherGoodsId){
 		return nxDistributerFatherGoodsDao.queryObject(nxDistributerFatherGoodsId);
 	}
+
+
 //
 //	@Override
 //	public List<NxDistributerFatherGoodsEntity> queryList(Map<String, Object> map){

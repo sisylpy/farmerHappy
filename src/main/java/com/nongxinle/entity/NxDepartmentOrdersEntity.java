@@ -146,6 +146,8 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 
 	private Boolean isNotice = false ;
 
+	private Boolean showDate = true;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

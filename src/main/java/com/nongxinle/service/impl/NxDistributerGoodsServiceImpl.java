@@ -98,9 +98,9 @@ public class NxDistributerGoodsServiceImpl implements NxDistributerGoodsService 
 
 
     @Override
-    public List<NxDistributerGoodsEntity> queryQuickSearch(Map<String, Object> map) {
+    public List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchStr(Map<String, Object> map) {
 
-		return nxDistributerGoodsDao.queryQuickSearch(map);
+		return nxDistributerGoodsDao.queryDisGoodsQuickSearchStr(map);
     }
 
 
@@ -108,6 +108,12 @@ public class NxDistributerGoodsServiceImpl implements NxDistributerGoodsService 
     public List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map1) {
 
 		return nxDistributerGoodsDao.queryIfHasDisGoods(map1);
+    }
+
+    @Override
+    public List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchPinyin(Map<String, Object> map2) {
+
+		return nxDistributerGoodsDao.queryDisGoodsQuickSearchPinyin(map2);
     }
 
 //    @Override

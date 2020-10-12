@@ -17,6 +17,7 @@ public interface NxGoodsService {
 	List<NxGoodsEntity> queryNxGoodsByParams(Map<String, Object> map);
 
 	List<NxGoodsEntity> queryQuickSearchNxGoods(String str);
+	List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
 
 
 
@@ -27,8 +28,7 @@ public interface NxGoodsService {
 
 	NxGoodsEntity queryObject(Integer nxGoodsId);
 	
-	List<NxGoodsEntity> queryList(Map<String, Object> map);
-	
+
 	int queryTotal(Map<String, Object> map);
 	
 	void save(NxGoodsEntity nxGoods);
@@ -36,8 +36,6 @@ public interface NxGoodsService {
 	void update(NxGoodsEntity nxGoods);
 	
 	void delete(Integer nxGoodsId);
-	
-	void deleteBatch(Integer[] nxGoodsIds);
 
 	List<NxGoodsEntity> getiBookCoverData();
 
@@ -52,17 +50,13 @@ public interface NxGoodsService {
 
     List<NxGoodsEntity> queryGoodsCataByType(Integer type);
 
-	List<NxGoodsEntity> downloadGoods(String fatherId);
-
     List<NxGoodsEntity> queryGoodsTree();
-
-    List<NxGoodsEntity> queryGoodsByFatherId(Integer fatherId);
 
 
 	List<NxGoodsEntity> queryIfHasSameGoods(Map<String, Object> map);
 
-	List<NxGoodsEntity> queryQuickSearchNxCategoryGoods(Map<String, Object> map);
+	List<NxGoodsEntity> queryNxGoodsOrderByGoodsId(Map<String, Object> map);
 
-	List<NxGoodsEntity> queryGoodsOrderById(Map<String, Object> map);
+
 
 }

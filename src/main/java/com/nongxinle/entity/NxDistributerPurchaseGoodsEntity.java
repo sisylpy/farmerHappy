@@ -57,6 +57,8 @@ public class NxDistributerPurchaseGoodsEntity implements Serializable {
 	 */
 	private String nxDpgTime;
 
+	private String nxDpgApplyDate;
+
 	private Integer nxDpgBatchId;
 
 	private Integer nxDpgBuyUserId;

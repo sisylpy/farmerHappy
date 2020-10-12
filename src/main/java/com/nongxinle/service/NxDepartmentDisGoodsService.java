@@ -34,7 +34,10 @@ public interface NxDepartmentDisGoodsService {
 
     List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map);
 
-    List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3);
+
+	void delete(Integer nxDepartmentDisGoodsId);
+
+    List<NxDepartmentDisGoodsEntity> queryDepDisGoodsByParams(Map<String, Object> map);
 
 //	/////
 
@@ -48,7 +51,6 @@ public interface NxDepartmentDisGoodsService {
 //
 //
 //
-//	void delete(Integer nxDepartmentDisGoodsId);
 //
 //	void deleteBatch(Integer[] nxDepartmentDisGoodsIds);
 

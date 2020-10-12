@@ -15,16 +15,11 @@
 		order by dp.nx_DPG_dis_goods_father_id, dp.nx_DPG_dis_goods_id
 	</select>
 
-
 	<resultMap id="disFatherGoods" type="NxDistributerFatherGoodsEntity">
 		<id property="nxDistributerFatherGoodsId" column="nx_distributer_father_goods_id"/>
 		<result property="nxDfgFatherGoodsName" column="nx_dfg_father_goods_name"/>
 		<collection property="nxDistributerPurchaseGoodsEntities" resultMap="purchaseGoods"/>
 	</resultMap>
-
-<!--///////////////////-->
-
-
 
 	<select id="queryObject" resultType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity">
 		select * from nx_distributer_purchase_goods where nx_distributer_purchase_goods_id = #{value}
@@ -111,11 +106,6 @@
 	</resultMap>
 
 
-
-
-
-
-
 	<select id="queryPurchaseGoodsByGoodsId" resultMap="purchaseGoods">
 		select dp.nx_distributer_purchase_goods_id, dp.nx_DPG_dis_goods_id, dp.nx_DPG_dis_goods_father_id, dp.nx_DPG_quantity,
 			   dp.nx_DPG_standard, dp.nx_DPG_status, dp.nx_DPG_distributer_id, dp.nx_DPG_purchase_type, dp.nx_DPG_time,
@@ -151,8 +141,27 @@
             resultType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity">
 		select * from nx_distributer_purchase_goods where nx_DPG_batch_id = #{purchaseBatchId}
 	</select>
+	<select id="queryForDisGoods" resultType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity">
+		select * from nx_distributer_purchase_goods as pg
+		left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = pg.nx_DPG_dis_goods_id
+		where nx_DPG_distributer_id = #{disId}
+		and nx_DPG_dis_goods_id = #{disGoodsId}
+			order by nx_DPG_apply_date
+	</select>
+	<select id="queryPurchaseGoodsByParams" resultType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity">
+		select * from nx_distributer_purchase_goods
+		<where>
+			<if test="disGoodsId != null">
+				nx_DPG_dis_goods_id = #{disGoodsId}
+			</if>
+			<if test="status != null">
+				nx_DPG_status &lt; #{status}
+			</if>
+		</where>
+         order by nx_DPG_apply_date Desc
+	</select>
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity"
+	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity"
 			useGeneratedKeys="true" keyProperty="nxDistributerPurchaseGoodsId">
 		insert into nx_distributer_purchase_goods
 		(
@@ -170,7 +179,8 @@
 		 	`nx_DPG_buy_price`,
 		 	`nx_DPG_buy_quantity`,
 		 	`nx_DPG_orders_amount`,
-		 	`nx_DPG_type_add_user_id`
+		 	`nx_DPG_type_add_user_id`,
+		 	`nx_DPG_apply_date`
 		)
 		values
 		(
@@ -188,7 +198,8 @@
 		 	#{nxDpgBuyPrice},
 		 	#{nxDpgBuyQuantity},
 		 	#{nxDpgOrdersAmount},
-		 	#{nxDpgTypeAddUserId}
+		 	#{nxDpgTypeAddUserId},
+		 	#{nxDpgApplyDate}
 		)
 	</insert>
 	 
@@ -208,6 +219,7 @@
 			<if test="nxDpgBuyQuantity != null">`nx_DPG_buy_quantity` = #{nxDpgBuyQuantity}, </if>
 			<if test="nxDpgOrdersAmount != null">`nx_DPG_orders_amount` = #{nxDpgOrdersAmount}, </if>
 			<if test="nxDpgTypeAddUserId != null">`nx_DPG_type_add_user_id` = #{nxDpgTypeAddUserId}, </if>
+			<if test="nxDpgApplyDate != null">`nx_DPG_apply_date` = #{nxDpgApplyDate}, </if>
 			<if test="nxDpgTime != null">`nx_DPG_time` = #{nxDpgTime}</if>
 		</set>
 		where nx_distributer_purchase_goods_id = #{nxDistributerPurchaseGoodsId}

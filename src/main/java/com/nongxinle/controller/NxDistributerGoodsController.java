@@ -29,7 +29,7 @@ public class NxDistributerGoodsController {
 	private NxDistributerGoodsService dgService;
 
 	@Autowired
-	private NxStandardService standardService;
+	private NxDepartmentOrdersService depOrdersService;
 
 	@Autowired
 	private NxGoodsService nxGoodsService;
@@ -39,68 +39,92 @@ public class NxDistributerGoodsController {
 
 	@Autowired
 	private NxDistributerStandardService dsService;
+	@Autowired
+	private NxDistributerAliasService disAliasService;
 
 	@Autowired
 	private NxDepartmentDisGoodsService nxDepDisGoodsService;
+
+	@Autowired
+	private NxDistributerPurchaseGoodsService nxDisPurchaseGoodsService;
+	
+	@Autowired
+	private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
 
 
 
 	@RequestMapping(value = "/canclePostDgnGoods", method = RequestMethod.POST)
 	@ResponseBody
 	public R canclePostDgnGoods (Integer disGoodsId,Integer disGoodsFatherId, Integer disId  ) {
+		//判断此商品下是否有客户
 
-		Map<String, Object> map1 = new HashMap<>();
-		map1.put("disId", disId);
-		map1.put("fatherId", disGoodsFatherId);
-		//搜索fatherId下有几个disGoods
-		List<NxDistributerGoodsEntity> totalDisGoods = dgService.queryDisGoodsByParams(map1);
-		//如果disGoods的父类只有一个商品
-		if(totalDisGoods.size() == 1){
-			//父类Entity
-			NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity = dgfService.queryObject(disGoodsFatherId);
-			//disGoods的grandId
-			Integer grandId = nxDistributerFatherGoodsEntity.getNxDfgFathersFatherId();
-			Map<String, Object> mapGrand = new HashMap<>();
-			mapGrand.put("fathersFatherId", grandId);
-			mapGrand.put("disId", disId);
-			//搜索grand有几个兄弟
-			List<NxDistributerFatherGoodsEntity> fatherGoodsEntities = dgfService.queryDisFatherGoodsByParams(mapGrand);
-			if(fatherGoodsEntities.size() == 1){
+		Map<String, Object> map4 = new HashMap<>();
+		map4.put("disGoodsId", disGoodsId);
 
-				Integer nxDfgFathersFatherId = fatherGoodsEntities.get(0).getNxDfgFathersFatherId();
-				NxDistributerFatherGoodsEntity grandEntity = dgfService.queryObject(nxDfgFathersFatherId);
-				Integer greatGrandId = grandEntity.getNxDfgFathersFatherId();
-				Map<String, Object> map = new HashMap<>();
-				map.put("disId", disId);
-				map.put("fathersFatherId", greatGrandId);
-				List<NxDistributerFatherGoodsEntity> grandGoodsEntities =dgfService.queryDisFatherGoodsByParams(map);
-
-				//如果grandFather也是只有一个，则删除greatGrandFather
-				if(grandGoodsEntities.size() == 1){
-
-					dgfService.delete(greatGrandId);
-				}
-				dgfService.delete(grandId);
-			}
-			dgfService.delete(disGoodsFatherId);
-		}
-
-		//删除订货单位
-		List<NxDistributerStandardEntity> standardEntities = dsService.queryDisStandardByDisGoodsId(disGoodsId);
-		if (standardEntities.size() > 0){
-			for (NxDistributerStandardEntity disStandard : standardEntities) {
-				dsService.delete(disStandard.getNxDistributerStandardId());
-			}
-		}
-
-
-		int i = dgService.delete(disGoodsId);
-
-		if(i == 1){
-			return R.ok();
+		List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map4);
+		if(disGoodsEntities.size() > 0){
+			return R.error(-1,"有客户使用此商品");
 		}else {
-			return R.error(-1, "删除失败");
+
+			Map<String, Object> map1 = new HashMap<>();
+			map1.put("disId", disId);
+			map1.put("fatherId", disGoodsFatherId);
+			//搜索fatherId下有几个disGoods
+			List<NxDistributerGoodsEntity> totalDisGoods = dgService.queryDisGoodsByParams(map1);
+			//如果disGoods的父类只有一个商品
+			if(totalDisGoods.size() == 1){
+				//父类Entity
+				NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity = dgfService.queryObject(disGoodsFatherId);
+				//disGoods的grandId
+				Integer grandId = nxDistributerFatherGoodsEntity.getNxDfgFathersFatherId();
+				Map<String, Object> mapGrand = new HashMap<>();
+				mapGrand.put("fathersFatherId", grandId);
+				mapGrand.put("disId", disId);
+				//搜索grand有几个兄弟
+				List<NxDistributerFatherGoodsEntity> fatherGoodsEntities = dgfService.queryDisFatherGoodsByParams(mapGrand);
+				if(fatherGoodsEntities.size() == 1){
+					Integer nxDfgFathersFatherId = fatherGoodsEntities.get(0).getNxDfgFathersFatherId();
+					NxDistributerFatherGoodsEntity grandEntity = dgfService.queryObject(nxDfgFathersFatherId);
+					Integer greatGrandId = grandEntity.getNxDfgFathersFatherId();
+					Map<String, Object> map = new HashMap<>();
+					map.put("disId", disId);
+					map.put("fathersFatherId", greatGrandId);
+					List<NxDistributerFatherGoodsEntity> grandGoodsEntities =dgfService.queryDisFatherGoodsByParams(map);
+
+					//如果grandFather也是只有一个，则删除greatGrandFather
+					if(grandGoodsEntities.size() == 1){
+						dgfService.delete(greatGrandId);
+					}
+					dgfService.delete(grandId);
+				}
+				dgfService.delete(disGoodsFatherId);
+			}else{
+				//父类商品数量减去1
+				NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity = dgfService.queryObject(disGoodsFatherId);
+				Integer nxDfgGoodsAmount = nxDistributerFatherGoodsEntity.getNxDfgGoodsAmount();
+				nxDistributerFatherGoodsEntity.setNxDfgGoodsAmount(nxDfgGoodsAmount - 1);
+				dgfService.update(nxDistributerFatherGoodsEntity);
+			}
+
+			//删除订货单位
+			List<NxDistributerStandardEntity> standardEntities = dsService.queryDisStandardByDisGoodsId(disGoodsId);
+			if (standardEntities.size() > 0){
+				for (NxDistributerStandardEntity disStandard : standardEntities) {
+					dsService.delete(disStandard.getNxDistributerStandardId());
+				}
+			}
+
+
+			int i = dgService.delete(disGoodsId);
+
+			if(i == 1){
+				return R.ok();
+			}else {
+				return R.error(-1, "删除失败");
+			}
 		}
+
+
 	}
 	
 	
@@ -114,19 +138,31 @@ public class NxDistributerGoodsController {
 	@ResponseBody
 	public R postDgnGoods(@RequestBody NxDistributerGoodsEntity cgnGoods) {
 
-		//queryGrandFatherId
-		NxGoodsEntity fatherEntity = nxGoodsService.queryObject(cgnGoods.getNxDgNxFatherId());
-		Integer grandFatherId = fatherEntity.getNxGoodsFatherId();
-		cgnGoods.setNxDgNxGrandId(grandFatherId);
-		NxGoodsEntity grandEntity = nxGoodsService.queryObject(grandFatherId);
-		cgnGoods.setNxDgNxGrandName(grandEntity.getNxGoodsName());
+		//判断是否已经下载
+		Integer nxDgNxGoodsId = cgnGoods.getNxDgNxGoodsId();
+		Integer nxDgDistributerId1 = cgnGoods.getNxDgDistributerId();
+		Map<String, Object> map7 = new HashMap<>();
+		map7.put("disId", nxDgDistributerId1);
+		map7.put("goodsId", nxDgNxGoodsId );
+		List<NxDistributerGoodsEntity> distributerGoodsEntities = dgService.queryDisGoodsByParams(map7);
 
-		//queryGreatGrandFatherId
-		Integer greatGrandFatherId = grandEntity.getNxGoodsFatherId();
-		cgnGoods.setNxDgNxGreatGrandId(greatGrandFatherId);
-		cgnGoods.setNxDgNxGreatGrandName(nxGoodsService.queryObject(greatGrandFatherId).getNxGoodsName());
+		if(distributerGoodsEntities.size() > 0){
+			return R.error(-1, "已经下载");
+		}else {
 
-		Integer nxDgDistributerId = cgnGoods.getNxDgDistributerId();
+			//queryGrandFatherId
+			NxGoodsEntity fatherEntity = nxGoodsService.queryObject(cgnGoods.getNxDgNxFatherId());
+			Integer grandFatherId = fatherEntity.getNxGoodsFatherId();
+			cgnGoods.setNxDgNxGrandId(grandFatherId);
+			NxGoodsEntity grandEntity = nxGoodsService.queryObject(grandFatherId);
+			cgnGoods.setNxDgNxGrandName(grandEntity.getNxGoodsName());
+
+			//queryGreatGrandFatherId
+			Integer greatGrandFatherId = grandEntity.getNxGoodsFatherId();
+			cgnGoods.setNxDgNxGreatGrandId(greatGrandFatherId);
+			cgnGoods.setNxDgNxGreatGrandName(nxGoodsService.queryObject(greatGrandFatherId).getNxGoodsName());
+
+			Integer nxDgDistributerId = cgnGoods.getNxDgDistributerId();
 
 			// 3， 查询父类
 			Integer nxDgNxFatherId = cgnGoods.getNxDgNxFatherId();
@@ -136,9 +172,16 @@ public class NxDistributerGoodsController {
 			List<NxDistributerGoodsEntity> disGoodsEntities =  dgService.queryDisGoodsHasNxGoodsFather(map);
 
 			if(disGoodsEntities.size() > 0){
+				NxDistributerGoodsEntity disGoodsEntity = disGoodsEntities.get(0);
+
 				//直接加disGoods和disStandard,不需要加disFatherGoods
 				//1，给父类商品的字段商品数量加1
-				NxDistributerGoodsEntity disGoodsEntity = disGoodsEntities.get(0);
+				Integer nxDgDfgGoodsFatherId1 = disGoodsEntity.getNxDgDfgGoodsFatherId();
+
+				NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity = dgfService.queryObject(nxDgDfgGoodsFatherId1);
+				Integer nxDfgGoodsAmount = nxDistributerFatherGoodsEntity.getNxDfgGoodsAmount();
+				nxDistributerFatherGoodsEntity.setNxDfgGoodsAmount(nxDfgGoodsAmount + 1);
+				dgfService.update(nxDistributerFatherGoodsEntity);
 
 				//2，保存disId商品
 				Integer nxDgDfgGoodsFatherId = disGoodsEntity.getNxDgDfgGoodsFatherId();
@@ -152,6 +195,8 @@ public class NxDistributerGoodsController {
 				dgf.setNxDfgDistributerId(cgnGoods.getNxDgDistributerId());
 				dgf.setNxDfgFatherGoodsName(cgnGoods.getNxDgNxFatherName());
 				dgf.setNxDfgFatherGoodsLevel(2);
+				dgf.setNxDfgGoodsAmount(1);
+				dgf.setNxDfgFatherGoodsColor(cgnGoods.getNxDgNxGoodsFatherColor());
 				dgfService.save(dgf);
 				//更新disGoods的fatherGoodsId
 				Integer distributerFatherGoodsId = dgf.getNxDistributerFatherGoodsId();
@@ -206,20 +251,38 @@ public class NxDistributerGoodsController {
 
 			}
 
-			//2，保存dis规格
+			//2，保存dis规格bieming
 			Integer nxCgGoodsId = cgnGoods.getNxDistributerGoodsId();
+			//2.1
 			List<NxStandardEntity> ncsEntities = cgnGoods.getNxStandardEntities();
-			for (NxStandardEntity standard : ncsEntities) {
-				NxDistributerStandardEntity disStandards = new NxDistributerStandardEntity();
-				disStandards.setNxDsDisGoodsId(nxCgGoodsId);
-				disStandards.setNxDsStandardName(standard.getNxStandardName());
-				disStandards.setNxDsStandardError(standard.getNxStandardError());
-				disStandards.setNxDsStandardScale(standard.getNxStandardScale());
-				disStandards.setNxDsStandardFilePath(standard.getNxStandardFilePath());
-				disStandards.setNxDsStandardSort(standard.getNxStandardSort());
-				dsService.save(disStandards);
+			if(ncsEntities.size() > 0){
+				for (NxStandardEntity standard : ncsEntities) {
+					NxDistributerStandardEntity disStandards = new NxDistributerStandardEntity();
+					disStandards.setNxDsDisGoodsId(nxCgGoodsId);
+					disStandards.setNxDsStandardName(standard.getNxStandardName());
+					disStandards.setNxDsStandardError(standard.getNxStandardError());
+					disStandards.setNxDsStandardScale(standard.getNxStandardScale());
+					disStandards.setNxDsStandardFilePath(standard.getNxStandardFilePath());
+					disStandards.setNxDsStandardSort(standard.getNxStandardSort());
+					dsService.save(disStandards);
+				}
 			}
+
+			//2.2
+			List<NxAliasEntity> aliasEntities = cgnGoods.getNxAliasEntities();
+			if(aliasEntities.size() > 0){
+				for (NxAliasEntity aliasEntity : aliasEntities) {
+					NxDistributerAliasEntity disAlias = new NxDistributerAliasEntity();
+					disAlias.setNxDaDisGoodsId(nxCgGoodsId);
+					disAlias.setNxDaAliasName(aliasEntity.getNxAliasName());
+					disAliasService.save(disAlias);
+				}
+			}
+
 			return R.ok().put("data",cgnGoods);
+		}
+
+
 		}
 
 
@@ -249,11 +312,9 @@ public class NxDistributerGoodsController {
 	 * @param disId 批发商id
 	 * @return ibook商品列表
 	 */
-
 	@RequestMapping(value = "/disGetIbookGoods", method = RequestMethod.POST)
 	@ResponseBody
 	public R disGetIbookGoods (Integer limit, Integer page, Integer fatherId, Integer disId ) {
-		System.out.println("hen");
 		Map<String, Object> map1 = new HashMap<>();
 		map1.put("offset", (page - 1) * limit);
 		map1.put("limit", limit);
@@ -292,12 +353,37 @@ public class NxDistributerGoodsController {
 	@RequestMapping(value = "/disGetGoodsDetail/{disGoodsId}")
 	@ResponseBody
 	public R disGetGoodsDetail(@PathVariable Integer disGoodsId) {
+
+		//商品信息
 		NxDistributerGoodsEntity disGoods =  dgService.queryDisGoodsDetail(disGoodsId);
 
+		//每日订单
+		Map<String, Object> map1 = new HashMap<>();
+		map1.put("disId", disGoods.getNxDgDistributerId());
+		map1.put("disGoodsId", disGoodsId);
+		List<NxDepartmentOrdersEntity> departmentOrdersEntities = depOrdersService.queryOrdersForDisGoods(map1);
+		for(int i = 1; i < departmentOrdersEntities.size(); i++){
+			String nxDoApplyOnlyDate = departmentOrdersEntities.get(i-1).getNxDoApplyOnlyDate();
+				if(nxDoApplyOnlyDate.equals(departmentOrdersEntities.get(i).getNxDoApplyOnlyDate())){
+					departmentOrdersEntities.get(i).setShowDate(false);
+				}
+		}
+
+		//进货
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("disId", disGoods.getNxDgDistributerId());
+		map2.put("disGoodsId", disGoodsId);
+		List<NxDistributerPurchaseGoodsEntity> disPurchaseGoods = nxDisPurchaseGoodsService.queryForDisGoods(map2);
+
+		//客户
 		List<NxDepartmentEntity> entities = nxDepDisGoodsService.queryDepartmentsByDisGoodsId(disGoodsId);
 		Map<String, Object> map = new HashMap<>();
+		map.put("orderArr", departmentOrdersEntities);
+		map.put("purchaseArr", disPurchaseGoods);
+
 		map.put("goodsInfo", disGoods);
 		map.put("departmentArr", entities);
+
 
 		return R.ok().put("data", map);
 	}
@@ -306,19 +392,40 @@ public class NxDistributerGoodsController {
 
 	/**
 	 *
-	 * @param str 搜索字符串
+	 * @param searchStr 搜索字符串
 	 * @param disId 批发商id
 	 * @return 搜索结果
 	 */
 	@RequestMapping(value = "/queryDisGoodsByQuickSearch", method = RequestMethod.POST)
 	@ResponseBody
-	public R queryDisGoodsByQuickSearch(String str, String disId) {
-		System.out.println(str);
+	public R queryDisGoodsByQuickSearch(String searchStr, String disId) {
+
+		System.out.println(searchStr);
 		Map<String, Object> map = new HashMap<>();
-		map.put("str", str);
+		map.put("searchStr", searchStr);
 		map.put("disId", disId);
-		List<NxDistributerGoodsEntity> goodsEntities = dgService.queryQuickSearch(map);
-		return R.ok().put("data", goodsEntities);
+		List<NxDistributerGoodsEntity> goodsEntities = dgService.queryDisGoodsQuickSearchStr(map);
+
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("disId", disId);
+		String pinyin = hanziToPinyin(searchStr);
+		map2.put("pinyin",  pinyin);
+
+		List<NxDistributerGoodsEntity> disGoodsEntitiesPinyin = dgService.queryDisGoodsQuickSearchPinyin(map2);
+		Map<String, Object> mapData = new HashMap<>();
+
+		if(goodsEntities.size() > 0){
+
+			boolean b = disGoodsEntitiesPinyin.removeAll(goodsEntities);
+			if(b) {
+				mapData.put("pinyin", disGoodsEntitiesPinyin);
+			}
+		}else {
+			mapData.put("pinyin", disGoodsEntitiesPinyin);
+		}
+		mapData.put("str", goodsEntities);
+
+		return R.ok().put("data", mapData);
 	}
 
 

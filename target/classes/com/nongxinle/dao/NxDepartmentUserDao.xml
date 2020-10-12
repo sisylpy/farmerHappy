@@ -33,6 +33,7 @@
 		<result property="nxDuWxNickName" column="nx_DU_wx_nick_name"/>
 		<result property="nxDuWxAvartraUrl" column="nx_DU_wx_avartra_url"/>
 		<result property="nxDuUrlChange" column="nx_DU_url_change"/>
+		<result property="nxDuWxOpenId" column="nx_DU_wx_open_id"/>
 	</resultMap>
 	<resultMap id="distributer" type="NxDistributerEntity">
 		<id property="nxDistributerId" column="nx_distributer_id"/>
@@ -57,6 +58,7 @@
 		select  du.nx_DU_wx_open_id , d.nx_department_id, d.nx_department_name,d.nx_department_dis_id,
 		        d.nx_department_type, d.nx_department_is_group_dep, d.nx_department_sub_amount,
 		        ddu.nx_department_user_id, ddu.nx_DU_wx_nick_name , ddu.nx_DU_department_id,
+		        ddu.nx_DU_wx_open_id,
 		        ddu.nx_DU_url_change, ddu.nx_DU_join_date, ddu.nx_DU_wx_avartra_url,
 		       dis.nx_distributer_id, dis.nx_distributer_name, dis.nx_distributer_manager,
 		       dis.nx_distributer_phone, dis.nx_distributer_address, dis.nx_distributer_img

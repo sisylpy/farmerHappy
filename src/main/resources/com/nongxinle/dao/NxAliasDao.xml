@@ -7,18 +7,9 @@
 		select * from nx_alias where nx_alias_id = #{value}
 	</select>
 
-	<select id="queryList" resultType="com.nongxinle.entity.NxAliasEntity">
-		select * from nx_alias 
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
-		</if>
-	</select>
-	
- 	<select id="queryTotal" resultType="int">
-		select count(*) from nx_alias 
-	</select>
-	 
-	<insert id="save" parameterType="com.nongxinle.entity.NxAliasEntity">
+
+	<insert id="save" parameterType="com.nongxinle.entity.NxAliasEntity"
+			useGeneratedKeys="true" keyProperty="nxAliasId">
 		insert into nx_alias
 		(
 			`nx_alias_id`, 
@@ -49,11 +40,6 @@
 		delete from nx_alias where nx_alias_id = #{value}
 	</delete>
 	
-	<delete id="deleteBatch">
-		delete from nx_alias where nx_alias_id in 
-		<foreach item="nxAliasId" collection="array" open="(" separator="," close=")">
-			#{nxAliasId}
-		</foreach>
-	</delete>
+
 
 </mapper>

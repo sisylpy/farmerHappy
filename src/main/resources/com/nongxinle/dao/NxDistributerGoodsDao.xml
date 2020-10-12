@@ -15,13 +15,15 @@
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
         <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
         <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
+        <result property="nxDgNxGoodsFatherColor" column="nx_dg_nx_goods_father_color"/>
         <collection property="distributerStandardEntities" resultMap="disStandards"/>
+        <collection property="nxAliasEntities" resultMap="disAlias"/>
     </resultMap>
 
 
     <select id="queryDisGoodsByParams" resultMap="disGoodsWithStandards">
-        select * from nx_distributer_goods as dg
-        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+        select * from
+        (select * from  nx_distributer_goods
         <where>
             <if test="fatherId != null">
                 and  nx_dg_dfg_goods_father_id = #{fatherId}
@@ -32,11 +34,18 @@
             <if test="goodsId != null">
                 and nx_dg_nx_goods_id = #{goodsId}
             </if>
-        </where> order by nx_dg_goods_pinyin
-
-            <if test="offset != null and limit != null">
-                limit #{offset}, #{limit}
+            <if test="dgFatherId != null">
+                and nx_dg_dfg_goods_father_id = #{dgFatherId}
             </if>
+        </where>
+        order by nx_dg_goods_py, nx_dg_goods_pinyin
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+            )as dg
+        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+        left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
+        order by dg.nx_dg_goods_py, dg.nx_dg_goods_pinyin
     </select>
 
 
@@ -45,17 +54,6 @@
         and nx_dg_dfg_goods_father_id = #{fatherId}
     </select>
 
-<!--    <select id="queryDisGoodsListByDisFatherId" resultMap="disGoodsWithStandards">-->
-<!--        select * from nx_distributer_goods as dg-->
-<!--        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id-->
-<!--        where nx_dg_dfg_goods_father_id = #{nxDgDfgGoodsFatherId} order by dg.nx_dg_goods_py-->
-<!--    </select>-->
-
-
-
-
-
-<!--    ///////////////   -->
 
 
 
@@ -71,10 +69,7 @@
         </if>
     </select>
 
-    <select id="queryTotal" resultType="int">
-        select count(*)
-        from nx_distributer_goods
-    </select>
+
     <select id="queryDisGoodsHasNxGoodsFather" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
         select *
         from nx_distributer_goods
@@ -132,6 +127,10 @@
         <result property="nxDsStandardName" column="nx_DS_standard_name"/>
         <result property="nxDsStandardScale" column="nx_DS_standard_scale"/>
     </resultMap>
+    <resultMap id="disAlias" type="NxDistributerAliasEntity">
+        <id property="nxDistributerAliasId" column="nx_distributer_alias_id"/>
+        <result property="nxDaAliasName" column="nx_DA_alias_name"/>
+    </resultMap>
     <resultMap id="nxDisGoods" type="NxDistributerGoodsEntity">
         <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
         <result property="nxDgPullOff" column="nx_DG_pull_off"/>
@@ -148,6 +147,7 @@
         <result property="nxGoodsFile" column="g_nx_goods_file"/>
         <association property="nxDistributerGoodsEntity" resultMap="nxDisGoods"/>
         <collection property="nxDisStandardEntities" resultMap="disStandards"/>
+        <collection property="nxDistributerAliasEntities" resultMap="disAlias"/>
     </resultMap>
 
     <resultMap id="disGoods" type="com.nongxinle.entity.NxGoodsEntity">
@@ -198,6 +198,7 @@
         from nx_distributer_goods as dg
                  left join nx_goods as g on g.nx_goods_id = dg.nx_dg_nx_goods_id
                  left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+                left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
                  left join nx_goods as fg on fg.nx_goods_id = g.nx_goods_father_id
         where nx_dg_nx_father_id = #{grandId}
           and nx_dg_distributer_id = #{disId}
@@ -210,7 +211,9 @@
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
         <result property="nxDgPullOff" column="nx_dg_pull_off"/>
         <result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
+        <result property="nxDgDistributerId" column="nx_dg_distributer_id"/>
         <collection property="distributerStandardEntities" resultMap="disStandards"/>
+        <collection property="nxAliasEntities" resultMap="disAlias"/>
     </resultMap>
 
 
@@ -218,6 +221,7 @@
         select *
         from nx_distributer_goods as dg
                  left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+                left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
         where nx_distributer_goods_id = #{disGoodsId}
     </select>
 
@@ -252,51 +256,43 @@
                 g.nx_goods_detail       'g_nx_goods_detail',
                 g.nx_goods_brand        'g_nx_goods_brand',
                 g.nx_goods_place        'g_nx_goods_place',
-
                 dg.nx_distributer_goods_id ,
                 ds.nx_DS_standard_name,
-                ds.nx_DS_standard_scale
+                ds.nx_DS_standard_scale,
+                da.nx_DA_dis_goods_id, da.nx_DA_alias_name
         from nx_distributer_goods as dg
         left join nx_goods as g on dg.nx_dg_nx_goods_id = g.nx_goods_id
         left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+        left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
         where nx_dg_distributer_id = #{disId}
         and nx_dg_nx_father_id = #{fatherId}
     </select>
 
 
-    <select id="queryDisGoodsListWithFatherId" resultMap="disSubGoods">
-        select g.nx_goods_id           'g_nx_goods_id',
-        g.nx_goods_name         'g_nx_goods_name',
-        g.nx_goods_standardname 'g_nx_goods_standardname',
-        g.nx_goods_detail       'g_nx_goods_detail',
-        g.nx_goods_brand        'g_nx_goods_brand',
-        g.nx_goods_place        'g_nx_goods_place',
-        g.nx_goods_pinyin       'g_nx_goods_pinyin',
-        g.nx_goods_py            'g_nx_goods_py',
-        dg.nx_distributer_goods_id , dg.nx_dg_pull_off,
-        ds.nx_DS_standard_name,
-        ds.nx_DS_standard_scale from nx_distributer_goods as dg
-        left join nx_goods as g on dg.nx_dg_nx_goods_id = g.nx_goods_id
-        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
-        where nx_dg_dfg_goods_father_id = #{fatherId}
-        <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
-        </if>
-
-    </select>
-
-
-    <select id="queryQuickSearch" resultMap="disGoodsWithStandards">
+    <select id="queryDisGoodsQuickSearchStr" resultMap="disGoodsWithStandards">
         select *
         from nx_distributer_goods as dg
         left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
-        where (nx_dg_goods_py like concat('%', #{str}, '%')
-                                           or nx_dg_goods_pinyin like concat('%', #{str}, '%')
-                                           or nx_dg_goods_name like concat('%', #{str}, '%'))
-            and nx_dg_distributer_id = #{disId}
-            order by nx_dg_goods_py;
+        left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
+        where ( nx_dg_goods_name like concat ('%', #{searchStr}, '%')
+              or da.nx_da_alias_name like concat ('%', #{searchStr}, '%')
+            )
+            and nx_dg_distributer_id = #{disId}  order by nx_dg_goods_pinyin
     </select>
 
+
+    <select id="queryDisGoodsQuickSearchPinyin" resultMap="disGoodsWithStandards">
+        select *
+        from nx_distributer_goods as dg
+                 left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
+                 left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
+        where (nx_dg_goods_pinyin like concat('%', #{pinyin}, '%')
+                   or nx_dg_goods_py like concat('%', #{pinyin}, '%')
+            or da.nx_DA_alias_name like concat('%', #{pinyin}, '%')
+            )
+          and nx_dg_distributer_id = #{disId}
+        order by nx_dg_goods_pinyin;
+    </select>
 
     <select id="queryDisGoodsWithStandards" resultMap="disGoodsWithStandards">
         select * from nx_distributer_goods as ddg
@@ -333,7 +329,8 @@
          `nx_dg_goods_py`,
          `nx_dg_nx_grand_id`,
          `nx_dg_nx_great_grand_id`,
-         `nx_dg_pull_off`
+         `nx_dg_pull_off`,
+         `nx_dg_nx_goods_father_color`
          )
         values (#{nxDistributerGoodsId},
                 #{nxDgDistributerId},
@@ -352,7 +349,8 @@
                 #{nxDgGoodsPy},
                 #{nxDgNxGrandId},
                 #{nxDgNxGreatGrandId},
-                #{nxDgPullOff}
+                #{nxDgPullOff},
+                #{nxDgNxGoodsFatherColor}
                 )
     </insert>
 
@@ -375,6 +373,7 @@
             <if test="nxDgNxGrandId != null">`nx_dg_nx_grand_id` = #{nxDgNxGrandId},</if>
             <if test="nxDgNxGreatGrandId != null">`nx_dg_nx_great_grand_id` = #{nxDgNxGreatGrandId},</if>
             <if test="nxDgPullOff != null">`nx_dg_pull_off` = #{nxDgPullOff},</if>
+            <if test="nxDgNxGoodsFatherColor != null">`nx_dg_nx_goods_father_color` = #{nxDgNxGoodsFatherColor},</if>
             <if test="nxDgGoodsPy != null">`nx_dg_goods_py` = #{nxDgGoodsPy}</if>
         </set>
         where nx_distributer_goods_id = #{nxDistributerGoodsId}

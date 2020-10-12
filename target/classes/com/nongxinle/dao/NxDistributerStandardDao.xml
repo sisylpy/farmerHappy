@@ -30,7 +30,8 @@
 	</select>
 
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxDistributerStandardEntity">
+    <insert id="save" parameterType="com.nongxinle.entity.NxDistributerStandardEntity"
+		useGeneratedKeys="true" keyProperty="nxDistributerStandardId">
 		insert into nx_distributer_standard
 		(
 			`nx_distributer_standard_id`, 

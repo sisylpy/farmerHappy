@@ -45,7 +45,7 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
     }
 
     @Override
-    public List<NxDepartmentUserEntity> queryDepUserByOpenId(String openId) {
+    public NxDepartmentUserEntity queryDepUserByOpenId(String openId) {
 		return nxDepartmentUserDao.queryDepUserByOpenId(openId);
     }
 

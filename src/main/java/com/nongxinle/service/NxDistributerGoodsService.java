@@ -51,11 +51,13 @@ public interface NxDistributerGoodsService {
 
 
 
-    List<NxDistributerGoodsEntity> queryQuickSearch(Map<String, Object> map);
+    List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchStr(Map<String, Object> map);
 
 
 
     List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map1);
+
+	List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchPinyin(Map<String, Object> map2);
 
 //	Integer deleteDisGoods(Map<String, Object> map);
 

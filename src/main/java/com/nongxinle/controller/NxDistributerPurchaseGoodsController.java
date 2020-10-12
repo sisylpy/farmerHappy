@@ -26,7 +26,7 @@ import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
 
 import static com.nongxinle.utils.CommonUtils.generateUUID;
-import static com.nongxinle.utils.DateUtils.formatWhatTime;
+import static com.nongxinle.utils.DateUtils.*;
 
 
 @RestController
@@ -100,6 +100,16 @@ public class NxDistributerPurchaseGoodsController {
 		return R.ok();
 	}
 
+	@RequestMapping(value = "/disGoodsGetPurchaseGoods/{disGoodsId}")
+	@ResponseBody
+	public R disGoodsGetPurchaseGoods(@PathVariable Integer disGoodsId) {
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("disGoodsId", disGoodsId);
+		List<NxDistributerPurchaseGoodsEntity> entities = nxDisPurcGoodsService.queryPurchaseGoodsByParams(map2);
+
+		return R.ok().put("data", entities);
+	}
+
 
 
 	/**
@@ -111,12 +121,12 @@ public class NxDistributerPurchaseGoodsController {
 	@RequestMapping(value = "/getPurchaseGoods/{disId}")
 	@ResponseBody
 	public R getPurchaseGoods(@PathVariable Integer disId) {
-		Map<String, Object> map2 = new HashMap<>();
-		map2.put("disId", disId);
-		map2.put("status", 3);
 
 		//1,查询采购商品
-		List<NxDistributerFatherGoodsEntity>  purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map2);
+		Map<String, Object> map = new HashMap<>();
+		map.put("disId",disId );
+		map.put("status",3 );
+		List<NxDistributerFatherGoodsEntity>  purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map);
 
 		return R.ok().put("data", purchase);
 	}
@@ -131,6 +141,7 @@ public class NxDistributerPurchaseGoodsController {
 	public R savePlanPurchase (@RequestBody NxDistributerPurchaseGoodsEntity purchaseGoodsEntity) {
 
 		purchaseGoodsEntity.setNxDpgStatus(0);
+		purchaseGoodsEntity.setNxDpgApplyDate(formatWhatDay(0));
 		nxDisPurcGoodsService.save(purchaseGoodsEntity);
 
 		Integer nxDistributerPurchaseGoodsId = purchaseGoodsEntity.getNxDistributerPurchaseGoodsId();

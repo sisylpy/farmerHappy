@@ -33,10 +33,12 @@ public class NxDepartmentDisGoodsController {
     private NxDistributerStandardService nxDistributerStandardService;
     @Autowired
     private NxDistributerDepartmentService nxDisDepartmentService;
+    @Autowired
+    private NxDepartmentOrdersService nxDepartmentOrdersService;
 
     @RequestMapping(value = "/queryDepDisGoodsByQuickSearch", method = RequestMethod.POST)
     @ResponseBody
-    public R queryDepDisGoodsByQuickSearch (String searchStr , Integer fatherId, Integer depId  ) {
+    public R queryDepDisGoodsByQuickSearch (String searchStr, Integer depId  ) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("depId", depId);
@@ -46,9 +48,7 @@ public class NxDepartmentDisGoodsController {
         Map<String, Object> map2 = new HashMap<>();
         map2.put("depId", depId);
         String pinyin = hanziToPinyin(searchStr);
-        String headPinyin = getHeadStringByString(searchStr, false, null);
         map2.put("pinyin",  pinyin);
-//        map2.put("headPinyin",  headPinyin);
 
         List<NxDepartmentDisGoodsEntity> disGoodsEntitiesPinyin = nxDepartmentDisGoodsService.queryDepDisSearchPinyin(map2);
         Map<String, Object> mapData = new HashMap<>();
@@ -62,18 +62,6 @@ public class NxDepartmentDisGoodsController {
         }else {
             mapData.put("pinyin", disGoodsEntitiesPinyin);
         }
-
-        Map<String, Object> map3 = new HashMap<>();
-        map3.put("depId",depId );
-        map3.put("headPinyin",  headPinyin);
-//        List<NxDepartmentDisGoodsEntity> disGoodsEntitiesHeadPy= nxDepartmentDisGoodsService.queryDepDisSearchHeadPy(map3);
-//
-//        if(disGoodsEntitiesPinyin.size() > 0){
-//            boolean b1 = disGoodsEntitiesHeadPy.removeAll(disGoodsEntitiesPinyin);
-//            if(b1){
-//            }
-//        }
-//        mapData.put("headPy", disGoodsEntitiesHeadPy);
         mapData.put("str", disGoodsEntities);
 
         return R.ok().put("data", mapData);
@@ -143,6 +131,7 @@ public class NxDepartmentDisGoodsController {
             List<NxDepartmentDisGoodsEntity> ddgGoods = nxDepartmentDisGoodsService.queryAddDisDepGoods(map1);
             if (ddgGoods.size() > 0) {
                 goods.setIsDownload(1);
+                goods.setDepartmentDisGoodsEntity(ddgGoods.get(0));
                 goodsEntities.add(goods);
             } else {
                 goods.setIsDownload(0);
@@ -155,10 +144,38 @@ public class NxDepartmentDisGoodsController {
         map3.put("fatherId", fatherId );
 		int total = nxDistributerGoodsService.queryDisGoodsTotal(map3);
 
-        PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
+
+		//查询depGoods数量
+        Map<String, Object> map4 = new HashMap<>();
+        map4.put("depFatherId", depFatherId);
+        map4.put("disGoodsFatherId", fatherId);
+        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map4);
+        Map<String, Object> map5 = new HashMap<>();
+        map5.put("arr", goodsEntities);
+        map5.put("amount", disGoodsEntities.size());
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        mapList.add(map5);
+
+        PageUtils pageUtil = new PageUtils(mapList, total, limit, page);
         return R.ok().put("page", pageUtil);
     }
 
+
+    @RequestMapping(value = "/deleteDepDisGoods/{depDisGoodsId}")
+    @ResponseBody
+    public R deleteDepDisGoods(@PathVariable Integer depDisGoodsId) {
+        System.out.println(depDisGoodsId + "depdisgoodsid....");
+        Map<String, Object> map = new HashMap<>();
+        map.put("depDisGoodsId", depDisGoodsId);
+        map.put("status", 4 );
+        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
+        if (ordersEntities.size() > 0){
+            return R.error(-1,"此商品下有订单");
+        }else {
+            nxDepartmentDisGoodsService.delete(depDisGoodsId);
+            return R.ok();
+        }
+    }
 
     /**
      * PURCHASE
@@ -166,21 +183,34 @@ public class NxDepartmentDisGoodsController {
      * @param nxDepartmentDisGoods 群商品
      * @return ok
      */
-    @ResponseBody
+
     @RequestMapping("/saveDepDisGoods")
     public R saveDepDisGoods(@RequestBody NxDepartmentDisGoodsEntity nxDepartmentDisGoods) {
 
-        nxDepartmentDisGoodsService.save(nxDepartmentDisGoods);
+        //判断是否已经下载nxDdgDepartmentFatherId
+        Integer nxDdgDepartmentId = nxDepartmentDisGoods.getNxDdgDepartmentFatherId();
+        Integer nxDdgDisGoodsId = nxDepartmentDisGoods.getNxDdgDisGoodsId();
+        Map<String, Object> map = new HashMap<>();
+        map.put("depFatherId", nxDdgDepartmentId);
+        map.put("disGoodsId", nxDdgDisGoodsId);
+        List<NxDepartmentDisGoodsEntity> disGoodsEntities =   nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map);
 
-        Integer nxDepDisGoodsId = nxDepartmentDisGoods.getNxDepartmentDisGoodsId();
-		List<NxDepartmentStandardEntity> nxDepStandardEntities = nxDepartmentDisGoods.getNxDepStandardEntities();
-		if(nxDepStandardEntities.size() > 0){
-			for (NxDepartmentStandardEntity standard : nxDepStandardEntities) {
-				standard.setNxDdsDdsGoodsId(nxDepDisGoodsId);
-				nxDepartmentStandardService.save(standard);
-			}
-		}
-        return R.ok().put("data", nxDepartmentDisGoods.getNxDepartmentDisGoodsId());
+        if(disGoodsEntities.size() > 0){
+            return R.error(-1, "已经下载");
+        }else{
+            nxDepartmentDisGoodsService.save(nxDepartmentDisGoods);
+
+            Integer nxDepDisGoodsId = nxDepartmentDisGoods.getNxDepartmentDisGoodsId();
+            List<NxDepartmentStandardEntity> nxDepStandardEntities = nxDepartmentDisGoods.getNxDepStandardEntities();
+            if(nxDepStandardEntities.size() > 0){
+                for (NxDepartmentStandardEntity standard : nxDepStandardEntities) {
+                    standard.setNxDdsDdsGoodsId(nxDepDisGoodsId);
+                    nxDepartmentStandardService.save(standard);
+                }
+            }
+            return R.ok().put("data", nxDepartmentDisGoods);
+        }
+
     }
 
     /**

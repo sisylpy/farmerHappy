@@ -17,7 +17,8 @@
         <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
         <result property="nxDgPullOff" column="nx_DG_pull_off"/>
-<!--        <collection property="nxDepartmentStandardEntities" resultMap="depStandard"/>-->
+        <collection property="nxDepartmentStandardEntities" resultMap="depStandard"/>
+        <collection property="nxAliasEntities" resultMap="disAlias"/>
     </resultMap>
 
     <select id="queryDepartmentsByDisGoodsId" resultMap="departments">
@@ -47,39 +48,28 @@
     <select id="queryDepGoodsByFatherId" resultMap="depDisGoods">
         select *
         from nx_department_dis_goods as ddg
-                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+        left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+        left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
         where ddg.nx_DDG_department_father_id = #{depId}
           and ddg.nx_DDG_dis_goods_father_id = #{fatherId}
         order by dg.nx_dg_goods_py
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
-
-
     </select>
 
 
 
     <select id="queryDisDepGoods" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
-        select *
-        from nx_department_dis_goods
+        select * from nx_department_dis_goods
         where nx_DDG_department_father_id = #{depFatherId}
-          and nx_DDG_dis_goods_id = #{disGoodsId}
-
+        and nx_DDG_dis_goods_id = #{disGoodsId}
     </select>
 
     <select id="queryDisGoodsTotal" resultType="java.lang.Integer">
        select count(*) from nx_department_dis_goods where nx_DDG_department_father_id = #{depFatherId}
                 and nx_DDG_dis_goods_father_id = #{fatherId}
     </select>
-
-
-
-
-
-<!--    ///////////   -->
-
-
 
 
 
@@ -142,67 +132,68 @@
 
 
 
-
-
     <select id="queryDepDisSearchStr" resultMap="depDisGoods">
         select ddg.nx_department_dis_goods_id,
                ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
                ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
                ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
-               dgs.nx_DDS_standard_name,
                dg.nx_distributer_goods_id,
-               ds.nx_distributer_standard_id,
-               ds.nx_DS_standard_name
+               da.nx_DA_alias_name,da.nx_DA_dis_goods_id
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
-                 left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
-                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
+                left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
         where nx_DDG_department_father_id = #{depId}
           and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%')
+          or da.nx_DA_alias_name like concat('%', #{searchStr}, '%')
+            order by dg.nx_DG_goods_py
 
 
     </select>
-    <select id="queryDepDisSearchPinyin" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
+    <select id="queryDepDisSearchPinyin" resultMap="depDisGoods">
         select ddg.nx_department_dis_goods_id,
                ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
                ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
-               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
-               dgs.nx_DDS_standard_name,
+            ddg.nx_DDG_dis_goods_id,
                dg.nx_distributer_goods_id,
-               ds.nx_distributer_standard_id,
-               ds.nx_DS_standard_name
+               da.nx_DA_alias_name,da.nx_DA_dis_goods_id
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
-                 left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
-                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
-        where nx_DDG_department_father_id = #{depId}
-          and ddg.nx_DDG_dep_goods_pinyin like concat('%', #{pinyin}, '%')
-    </select>
-    <select id="queryDepDisSearchHeadPy" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
-        select ddg.nx_department_dis_goods_id,
-               ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
-               ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
-               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
-               dgs.nx_DDS_standard_name,
-               dg.nx_distributer_goods_id,
-               ds.nx_distributer_standard_id,
-               ds.nx_DS_standard_name
-        from nx_department_dis_goods as ddg
-                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
-                 left join nx_distributer_standard as ds on dg.nx_distributer_goods_id = ds.nx_DS_dis_goods_id
-                 left join nx_department_standard as dgs on dgs.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
+                 left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
         where nx_DDG_department_father_id = #{depId}
           and (ddg.nx_DDG_dep_goods_pinyin like concat('%', #{pinyin}, '%')
-            or ddg.nx_DDG_dep_goods_py like concat('%', #{headPinyin}, '%'))
+                   or ddg.nx_DDG_dep_goods_py like concat('%', #{pinyin}, '%')
+                   or da.nx_DA_alias_name like concat('%', #{pinyin}, '%'))
+    </select>
+    <select id="queryDepDisGoodsByParams" resultType="com.nongxinle.entity.NxDepartmentDisGoodsEntity">
+        select * from nx_department_dis_goods
+            <where>
+                <if test="depId != null">
+                    nx_DDG_department_id = #{depId}
+                </if>
+                <if test="depFatherId != null">
+                    nx_DDG_department_father_id = #{depFatherId}
+                </if>
+                <if test="disGoodsId != null">
+                   and nx_DDG_dis_goods_id = #{disGoodsId}
+                </if>
+                <if test="disGoodsFatherId != null">
+                  and  nx_DDG_dis_goods_father_id = #{disGoodsFatherId}
+                </if>
+
+            </where>
     </select>
 
-
-    <!--  and ddg.nx_DDG_dis_goods_father_id = #{fatherId} -->
 
     <resultMap id="depStandard" type="NxDepartmentStandardEntity">
         <id property="nxDepartmentStandardId" column="nx_department_standard_id"/>
         <result property="nxDdsStandardName" column="nx_DDS_standard_name"/>
         <result property="nxDdsDdsGoodsId" column="nx_DDS_dds_goods_id"/>
+    </resultMap>
+
+    <resultMap id="disAlias" type="NxDistributerAliasEntity">
+        <id property="nxDistributerAliasId" column="nx_distributer_alias_id"/>
+        <result property="nxDaAliasName" column="nx_da_alias_name"/>
+        <result property="nxDaDisGoodsId" column="nx_da_dis_goods_id"/>
     </resultMap>
 
     <resultMap id="depDisGoods" type="NxDepartmentDisGoodsEntity">

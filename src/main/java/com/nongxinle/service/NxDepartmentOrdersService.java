@@ -47,6 +47,8 @@ public interface NxDepartmentOrdersService {
 
 	Integer queryFatherNewOrders(Integer nxDepartmentId);
 
+    List<NxDepartmentOrdersEntity> queryOrdersForDisGoods(Map<String, Object> map1);
+
 
 //	void deleteBatch(Integer[] nxDepartmentOrdersIds);
 //	int queryTotal(Map<String, Object> map);

@@ -109,7 +109,7 @@
 		<result property="nxDepartmentDisId" column="d_nx_department_dis_id"/>
 		<association property="fatherDepartmentEntity" resultMap="fatherDep"/>
 		<association property="nxDistributerEntity" resultMap="distributer"/>
-<!--		<collection property="nxDepartmentEntities" resultMap="subDeps"/>-->
+		<collection property="nxDepartmentEntities" resultMap="subDeps"/>
 	</resultMap>
 
 	<resultMap id="groupInfo" type="NxDepartmentEntity">

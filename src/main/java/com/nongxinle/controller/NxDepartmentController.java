@@ -59,6 +59,8 @@ public class NxDepartmentController {
 		return "b59516a6fda0db869e06518f51400610";
 	}
 
+
+
 	/**
 	 * PURCHASE
 	 * 采购员注册
@@ -70,13 +72,15 @@ public class NxDepartmentController {
 	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
 
 
-		String openId = nxDepartmentService.saveNewRestraunt(dep);
+//		Integer openId = nxDepartmentService.saveNewRestraunt(dep);
+		Integer depUserId = nxDepartmentService.saveNewRestraunt(dep);
 
-		if (openId != null){
-			List<NxDepartmentEntity>  entities= nxDepartmentService.queryGroupInfo(openId);
-			return R.ok().put("data", entities);
+		if (depUserId != null){
+			Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(depUserId);
+
+			return R.ok().put("data", stringObjectMap);
 		}
-		return R.error(-1,"cuowu");
+		return R.error(-1,"注册失败");
 	}
 
 	/**

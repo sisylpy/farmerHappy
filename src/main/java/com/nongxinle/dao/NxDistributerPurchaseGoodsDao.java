@@ -27,4 +27,8 @@ public interface NxDistributerPurchaseGoodsDao extends BaseDao<NxDistributerPurc
     List<NxDistributerPurchaseGoodsEntity> queryPurUserPurchaseGoods(Integer purUserId);
 
     List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByBatchId(Integer purchaseBatchId);
+
+    List<NxDistributerPurchaseGoodsEntity> queryForDisGoods(Map<String, Object> map2);
+
+    List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByParams(Map<String, Object> map2);
 }

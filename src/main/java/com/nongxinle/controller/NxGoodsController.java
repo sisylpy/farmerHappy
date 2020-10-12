@@ -13,10 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.nongxinle.entity.NxCommunityGoodsEntity;
-//import com.nongxinle.entity.NxPurchaseStandardEntity;
 import com.nongxinle.entity.NxStandardEntity;
 import com.nongxinle.service.NxCommunityGoodsService;
-//import com.nongxinle.service.NxPurchaseStandardService;
 import com.nongxinle.service.NxStandardService;
 import com.nongxinle.utils.UploadFile;
 import org.apache.commons.io.IOUtils;
@@ -26,8 +24,6 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,19 +57,20 @@ public class NxGoodsController {
     /**
      * ADMIN
      * 获取nxGoods树
+     *
      * @return nxGoods大类
      */
     @RequestMapping(value = "/adminGetGoodsTree")
     @ResponseBody
-    public R adminGetGoodsTree( ) {
-        List<NxGoodsEntity> entities =  nxGoodsService.queryGoodsTree();
+    public R adminGetGoodsTree() {
+        List<NxGoodsEntity> entities = nxGoodsService.queryGoodsTree();
 
         return R.ok().put("data", entities);
     }
 
     @RequestMapping(value = "/adminGetNxGoodsByFatherId", method = RequestMethod.POST)
     @ResponseBody
-    public R adminGetNxGoodsByFatherId (Integer limit, Integer page, Integer fatherId) {
+    public R adminGetNxGoodsByFatherId(Integer limit, Integer page, Integer fatherId) {
         Map<String, Object> map = new HashMap<>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
@@ -81,7 +78,7 @@ public class NxGoodsController {
 
         List<NxGoodsEntity> nxGoodsEntities = nxGoodsService.queryNxGoodsByParams(map);
         int total = nxGoodsService.queryTotalByFatherId(fatherId);
-         PageUtils pageUtil = new PageUtils(nxGoodsEntities, total, limit, page);
+        PageUtils pageUtil = new PageUtils(nxGoodsEntities, total, limit, page);
 
         return R.ok().put("page", pageUtil);
     }
@@ -89,6 +86,7 @@ public class NxGoodsController {
 
     /**
      * 删除nxGoods
+     *
      * @param goodsId goodsId
      * @return ok
      */
@@ -98,10 +96,11 @@ public class NxGoodsController {
         nxGoodsService.delete(goodsId);
         return R.ok();
     }
-    
+
 
     /**
      * 查询nxGoods
+     *
      * @param nxGoodsId id
      * @return nxGoods
      */
@@ -113,35 +112,33 @@ public class NxGoodsController {
 
     /**
      * 更新商品
-     * @param goodsEntity nxGoods
+     *
+     * @param goods nxGoods
      * @return ok
      */
     @RequestMapping(value = "/editNxGoods", method = RequestMethod.POST)
     @ResponseBody
-    public R editNxGoods (@RequestBody NxGoodsEntity goods) {
+    public R editNxGoods(@RequestBody NxGoodsEntity goods) {
         String goodsName = goods.getNxGoodsName();
 
-            String pinyin = hanziToPinyin(goodsName);
-            String headPinyin = getHeadStringByString(goodsName, false, null);
-            goods.setNxGoodsPinyin(pinyin);
-            goods.setNxGoodsPy(headPinyin);
-//            nxGoodsService.save(goods);
-            nxGoodsService.update(goods);
-
-            return R.ok();
-
-//        return R.ok();
+        String pinyin = hanziToPinyin(goodsName);
+        String headPinyin = getHeadStringByString(goodsName, false, null);
+        goods.setNxGoodsPinyin(pinyin);
+        goods.setNxGoodsPy(headPinyin);
+        nxGoodsService.update(goods);
+        return R.ok();
     }
 
 
     /**
      * 保存商品
+     *
      * @param goods nxGoods
      * @return ok
      */
     @RequestMapping(value = "/saveNxGoods", method = RequestMethod.POST)
     @ResponseBody
-    public R saveNxGoods (@RequestBody NxGoodsEntity goods ) {
+    public R saveNxGoods(@RequestBody NxGoodsEntity goods) {
         String goodsName = goods.getNxGoodsName();
         String nxGoodsDetail = goods.getNxGoodsDetail();
         String nxGoodsBrand = goods.getNxGoodsBrand();
@@ -151,9 +148,9 @@ public class NxGoodsController {
         map.put("goodsDetail", nxGoodsDetail);
         map.put("goodsBrand", nxGoodsBrand);
         List<NxGoodsEntity> goodsEntities = nxGoodsService.queryIfHasSameGoods(map);
-        if(goodsEntities.size() > 0){
-            return R.error(-1,"已有相同商品");
-        }else {
+        if (goodsEntities.size() > 0) {
+            return R.error(-1, "已有相同商品");
+        } else {
             String pinyin = hanziToPinyin(goodsName);
             String headPinyin = getHeadStringByString(goodsName, false, null);
             goods.setNxGoodsPinyin(pinyin);
@@ -166,32 +163,40 @@ public class NxGoodsController {
 
     /**
      * 搜索ibook
+     *
      * @param str 搜索词
      * @return 搜索结果
      */
     @RequestMapping(value = "/queryGoodsByQuickSearch/{str}")
     @ResponseBody
-    public R queryGoodsByQuickSearch(@PathVariable  String str) {
+    public R queryGoodsByQuickSearch(@PathVariable String str) {
         List<NxGoodsEntity> goodsEntities = nxGoodsService.queryQuickSearchNxGoods(str);
         return R.ok().put("data", goodsEntities);
     }
 
+    /**
+     * 在类别下搜索商品
+     *
+     * @param fatherId  父级id
+     * @param searchStr 搜索词
+     * @return 批发商商品
+     */
     @RequestMapping(value = "/queryCategoryGoodsByQuickSearch", method = RequestMethod.POST)
     @ResponseBody
-    public R queryCategoryGoodsByQuickSearch(Integer fatherId, String searchStr ) {
+    public R queryCategoryGoodsByQuickSearch(Integer fatherId, String searchStr) {
         System.out.println(searchStr + "seachstrrr");
         Map<String, Object> map = new HashMap<>();
         map.put("fatherId", fatherId);
         map.put("searchStr", searchStr);
-        List<NxGoodsEntity>  goodsEntities = nxGoodsService.queryQuickSearchNxCategoryGoods(map);
+        List<NxGoodsEntity> goodsEntities = nxGoodsService.queryQuickSearchNxCategoryGoods(map);
         return R.ok().put("data", goodsEntities);
     }
-
 
 
     /**
      * ok
      * 获取ibook书皮数据
+     *
      * @return 封皮数据
      */
     @RequestMapping(value = "/getiBookCover")
@@ -232,111 +237,80 @@ public class NxGoodsController {
 
     /**
      * ibook大类列表
+     *
      * @param fatherId 父级id
      * @return 商品列表
      */
     @RequestMapping(value = "/getGoodsSubNamesByFatherId/{fatherId}")
     @ResponseBody
-    public R getGoodsSubNamesByFatherid(@PathVariable  Integer fatherId) {
+    public R getGoodsSubNamesByFatherid(@PathVariable Integer fatherId) {
 
-        System.out.println("is here????");
         Map<String, Object> map = new HashMap<>();
         map.put("fatherId", fatherId);
-
-        List<NxGoodsEntity> goodsEntities1 =   nxGoodsService.queryGoodsOrderById(map);
-        System.out.println(goodsEntities1);
+        List<NxGoodsEntity> goodsEntities1 = nxGoodsService.queryNxGoodsOrderByGoodsId(map);
 
         List<NxGoodsEntity> newList = new ArrayList<>();
 
-        for (NxGoodsEntity fatherGoods:goodsEntities1) {
+        for (NxGoodsEntity fatherGoods : goodsEntities1) {
             StringBuilder builder = new StringBuilder();
-            Map<String, Object> map1 = new HashMap<>();
-            map1.put("fatherId", fatherGoods.getNxGoodsId());
-//            List<NxGoodsEntity> goodsEntities = nxGoodsService.queryNxGoodsByParams(map1);
-            List<NxGoodsEntity> goodsEntities =   nxGoodsService.querySubNameByFatherId(fatherGoods.getNxGoodsId());
+
+            List<NxGoodsEntity> goodsEntities = nxGoodsService.querySubNameByFatherId(fatherGoods.getNxGoodsId());
             for (NxGoodsEntity goods : goodsEntities) {
                 String nxGoodsName = goods.getNxGoodsName();
                 builder.append(nxGoodsName);
                 builder.append(',');
             }
-
             fatherGoods.setNxGoodsSubNames(builder.toString());
             newList.add(fatherGoods);
         }
 
 
-        return R.ok().put("data",newList);
+        return R.ok().put("data", newList);
     }
-
-////////////////////////////////////////
-
-
-
-
-//
-//     @RequestMapping(value = "/restrauntGetGoodsByFatherId", method = RequestMethod.POST)
-//      @ResponseBody
-//      public R restrauntGetGoodsByFatherId (Integer limit, Integer page, Integer fatherId) {
-//
-//         Map<String, Object> map = new HashMap<>();
-//         map.put("offset", (page - 1) * limit);
-//         map.put("limit", limit);
-//         map.put("fatherId", fatherId);
-//         List<NxGoodsEntity> goodsEntities = nxGoodsService.queryNxGoodsByParams(map);
-////         List<NxGoodsEntity> nxGoodsEntities1 = queryByFatherIdwithLimit(limit, page, fatherId);
-//         int total = nxGoodsService.queryTotalByFatherId(fatherId);
-//         PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
-//        return R.ok().put("page",pageUtil);
-//      }
 
 
     @RequestMapping(value = "/adminGetTypeGoodsCata/{type}")
     @ResponseBody
     public R adminGetTypeGoodsCata(@PathVariable Integer type) {
-        System.out.println(type);
-       List<NxGoodsEntity> goodsEntities =  nxGoodsService.queryGoodsCataByType(type);
-
-
+        List<NxGoodsEntity> goodsEntities = nxGoodsService.queryGoodsCataByType(type);
         return R.ok().put("data", goodsEntities);
     }
 
 
+    @RequestMapping(value = "/getAddCommunityGoods", method = RequestMethod.POST)
+    @ResponseBody
+    public R getAddCommunityGoods(Integer limit, Integer page, Integer fatherId, Integer communityId) {
+        System.out.println("hen");
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("offset", (page - 1) * limit);
+        map1.put("limit", limit);
+        map1.put("fatherId", fatherId);
+        List<NxGoodsEntity> nxGoodsEntities1 = nxGoodsService.queryNxGoodsByParams(map1);
 
+        List<NxGoodsEntity> goodsEntities = new ArrayList<>();
 
-        @RequestMapping(value = "/getAddCommunityGoods", method = RequestMethod.POST)
-         @ResponseBody
-         public R getAddCommunityGoods (Integer limit, Integer page, Integer fatherId, Integer communityId ) {
-            System.out.println("hen");
-            Map<String, Object> map1 = new HashMap<>();
-          map1.put("offset", (page - 1) * limit);
-          map1.put("limit", limit);
-          map1.put("fatherId", fatherId);
-            List<NxGoodsEntity> nxGoodsEntities1 = nxGoodsService.queryNxGoodsByParams(map1);
+        for (NxGoodsEntity goods : nxGoodsEntities1) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("communityId", communityId);
+            map.put("goodsId", goods.getNxGoodsId());
+            List<NxCommunityGoodsEntity> dgGoods = dgService.queryCommunityDownloadGoods(map);
+            Integer nxGoodsId = goods.getNxGoodsId();
+            List<NxStandardEntity> standardEntities = standardService.queryGoodsStandardListByGoodId(nxGoodsId);
+            goods.setNxGoodsStandardEntities(standardEntities);
 
-            List<NxGoodsEntity> goodsEntities = new ArrayList<>();
-
-            for (NxGoodsEntity goods : nxGoodsEntities1) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("communityId", communityId);
-                map.put("goodsId", goods.getNxGoodsId());
-                List<NxCommunityGoodsEntity> dgGoods = dgService.queryCommunityDownloadGoods(map);
-                Integer nxGoodsId = goods.getNxGoodsId();
-                List<NxStandardEntity> standardEntities =  standardService.queryGoodsStandardListByGoodId(nxGoodsId);
-                goods.setNxGoodsStandardEntities(standardEntities);
-
-                if(dgGoods.size() > 0) {
-                    goods.setIsDownload(1);
-                    goodsEntities.add(goods);
-                }else {
-                    goods.setIsDownload(0);
-                    goodsEntities.add(goods);
-                }
+            if (dgGoods.size() > 0) {
+                goods.setIsDownload(1);
+                goodsEntities.add(goods);
+            } else {
+                goods.setIsDownload(0);
+                goodsEntities.add(goods);
             }
+        }
 
-            int total = nxGoodsService.queryTotalByFatherId(fatherId);
-            PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
-           return R.ok().put("page", pageUtil);
-         }
+        int total = nxGoodsService.queryTotalByFatherId(fatherId);
+        PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
+        return R.ok().put("page", pageUtil);
+    }
 
 
     /**
@@ -382,13 +356,9 @@ public class NxGoodsController {
 //    }
 
 
-
-
-
-
-
     /**
      * todo testPage
+     *
      * @param fatherId
      * @return
      */
@@ -445,6 +415,7 @@ public class NxGoodsController {
 //        return R.ok().put("data", nxGoodsEntities1);
 //
 //    }
+
     /**
      * 导出excel
      *
@@ -456,7 +427,9 @@ public class NxGoodsController {
 
         String fatherId = request.getParameter("fatherId");
         try {
-            List<NxGoodsEntity> ckGoodsEntities = nxGoodsService.downloadGoods(fatherId);
+            Map<String, Object> map = new HashMap<>();
+            map.put("fatherId", fatherId);
+            List<NxGoodsEntity> ckGoodsEntities = nxGoodsService.queryNxGoodsByParams(map);
             HSSFWorkbook wb = new HSSFWorkbook();
             HSSFSheet sheet = wb.createSheet("产品");
 
@@ -534,6 +507,7 @@ public class NxGoodsController {
     /**
      * ok
      * 导入商品
+     *
      * @param file    xls文件
      * @param session http
      * @return
@@ -551,8 +525,6 @@ public class NxGoodsController {
             sheet = wb.getSheetAt(j);
 
             int lastRowNum = sheet.getLastRowNum();
-
-            System.out.println(lastRowNum);
 
             Row goodsRow = null;
 
@@ -583,7 +555,6 @@ public class NxGoodsController {
         return R.ok();
 
     }
-
 
 
     private Object getCellValue(Cell cell) {
@@ -636,7 +607,7 @@ public class NxGoodsController {
 //    @RequiresPermissions("nxgoods:save")
     public R save(@RequestParam("file") MultipartFile file, @RequestParam("nxGoodsName") String goodsName,
                   @RequestParam("nxGoodsStandardName") String nxGoodsStandardName,
-                  @RequestParam("nxGoodsId") Integer nxGoodsId,  @RequestParam("nxGoodsFatherId") Integer nxGoodsFatherId,
+                  @RequestParam("nxGoodsId") Integer nxGoodsId, @RequestParam("nxGoodsFatherId") Integer nxGoodsFatherId,
                   HttpSession session) {
         System.out.println("hahhah");
         System.out.println(file);
@@ -652,14 +623,14 @@ public class NxGoodsController {
         String filename = file.getOriginalFilename();
         String filePath = newUploadName + "/" + filename;
 
-        if(nxGoodsId.equals(-1)){
+        if (nxGoodsId.equals(-1)) {
             NxGoodsEntity goodsEntity = new NxGoodsEntity();
             goodsEntity.setNxGoodsFile(filePath);
             goodsEntity.setNxGoodsName(goodsName);
             goodsEntity.setNxGoodsStandardname(nxGoodsStandardName);
             goodsEntity.setNxGoodsFatherId(nxGoodsFatherId);
             nxGoodsService.save(goodsEntity);
-        }else{
+        } else {
 
         }
 

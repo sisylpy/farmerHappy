@@ -34,6 +34,8 @@
 		<id property="nxDistributerFatherGoodsId" column="father_nx_distributer_father_goods_id"/>
 		<result property="nxDfgFathersFatherId" column="father_nx_dfg_fathers_father_id"/>
 		<result property="nxDfgFatherGoodsName" column="father_nx_dfg_father_goods_name"/>
+		<result property="nxDfgGoodsAmount" column="father_nx_dfg_goods_amount"/>
+		<result property="nxDfgFatherGoodsColor" column="father_nx_dfg_father_goods_color"/>
 	</resultMap>
 
 	<resultMap id="grandDisGoods" type="NxDistributerFatherGoodsEntity">
@@ -54,6 +56,8 @@
 		select father.nx_distributer_father_goods_id 'father_nx_distributer_father_goods_id',
 		       father.nx_dfg_fathers_father_id 'father_nx_dfg_fathers_father_id',
 		       father.nx_dfg_father_goods_name 'father_nx_dfg_father_goods_name',
+		       father.nx_dfg_goods_amount 'father_nx_dfg_goods_amount',
+		       father.nx_dfg_father_goods_color 'father_nx_dfg_father_goods_color',
 			   grand.nx_distributer_father_goods_id 'grand_nx_distributer_father_goods_id',
 		       grand.nx_dfg_fathers_father_id 'grand_nx_dfg_fathers_father_id',
 		       grand.nx_dfg_father_goods_name 'grand_nx_dfg_father_goods_name',
@@ -79,9 +83,13 @@
 		<if test="fathersFatherId != null">
 			and nx_dfg_fathers_father_id  = #{fathersFatherId}
 		</if>
+		<if test="fathersFatherId != null">
+			and nx_dfg_fathers_father_id  = #{fathersFatherId}
+		</if>
 	</where>
 	</select>
-	<!--	-->
+
+    <!--	-->
 <!--	<select id="queryHasGreatGrandGoods" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">-->
 <!--		select * from nx_distributer_father_goods where nx_dfg_distributer_id = #{disId}-->
 <!--		and nx_dfg_father_goods_name like  #{greatGrandName}-->

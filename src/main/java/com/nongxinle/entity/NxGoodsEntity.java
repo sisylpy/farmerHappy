@@ -74,6 +74,7 @@ public class NxGoodsEntity implements Serializable, Comparable {
 	private List<NxGoodsEntity> nxGoodsEntityList;
 
 	private List<NxDistributerStandardEntity> nxDisStandardEntities;
+	private List<NxDistributerAliasEntity> nxDistributerAliasEntities;
 	private List<NxDepartmentStandardEntity> nxDepStandardEntities;
 	private NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity;
 
@@ -92,6 +93,7 @@ public class NxGoodsEntity implements Serializable, Comparable {
 
 
 	private List<NxStandardEntity> nxGoodsStandardEntities;
+	private List<NxAliasEntity> nxAliasEntities;
 
 	private String nxGoodsDetail;
 

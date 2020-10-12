@@ -154,23 +154,13 @@ public class PinYin4jUtils {
 
                         Map<String, Object> cha = new HashMap<>();
                         cha.put("p",temp[0]);
-
-
                         words.add(temp[0]);
-
                         pinyinName += temp[0];
-
-
 
                     } else {
                         //非汉字不用转拼音
                         pinyinName += Character.toString(input[i]);
-                        System.out.println(input[i]);
-                        System.out.println("very important!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         words.add(pinyinName);
-                        System.out.println("------------00000111122222!@#");
-
-
                     }
                 }
 

@@ -60,12 +60,7 @@ public class NxDepartmentDisGoodsServiceImpl implements NxDepartmentDisGoodsServ
 		return nxDepartmentDisGoodsDao.queryDepDisSearchPinyin(map);
 	}
 
-	@Override
-	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchHeadPy(Map<String, Object> map3) {
-		return nxDepartmentDisGoodsDao.queryDepDisSearchHeadPy(map3);
-	}
 
-//	///////
 
 	@Override
 	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map) {
@@ -73,44 +68,15 @@ public class NxDepartmentDisGoodsServiceImpl implements NxDepartmentDisGoodsServ
 		return nxDepartmentDisGoodsDao.queryDepDisSearchStr (map);
 	}
 
+	@Override
+	public void delete(Integer nxDepartmentDisGoodsId){
+		nxDepartmentDisGoodsDao.delete(nxDepartmentDisGoodsId);
+	}
 
-
-//	@Override
-//	public List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map) {
-//
-//		return nxDepartmentDisGoodsDao.queryIfHasDisGoods(map);
-//	}
-
-
-//
-//	@Override
-//	public List<NxDepartmentDisGoodsEntity> queryList(Map<String, Object> map){
-//		return nxDepartmentDisGoodsDao.queryList(map);
-//	}
-//
-//	@Override
-//	public int queryTotal(Map<String, Object> map){
-//		return nxDepartmentDisGoodsDao.queryTotal(map);
-//	}
-//
-
-
-//
-
-//
-//	@Override
-//	public void delete(Integer nxDepartmentDisGoodsId){
-//		nxDepartmentDisGoodsDao.delete(nxDepartmentDisGoodsId);
-//	}
-//
-//	@Override
-//	public void deleteBatch(Integer[] nxDepartmentDisGoodsIds){
-//		nxDepartmentDisGoodsDao.deleteBatch(nxDepartmentDisGoodsIds);
-//	}
-
-
-
-
+	@Override
+	public List<NxDepartmentDisGoodsEntity> queryDepDisGoodsByParams(Map<String, Object> map) {
+		return nxDepartmentDisGoodsDao.queryDepDisGoodsByParams(map);
+	}
 
 
 }
