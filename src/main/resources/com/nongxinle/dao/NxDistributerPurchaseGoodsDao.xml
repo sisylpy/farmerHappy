@@ -146,7 +146,7 @@
 		left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = pg.nx_DPG_dis_goods_id
 		where nx_DPG_distributer_id = #{disId}
 		and nx_DPG_dis_goods_id = #{disGoodsId}
-			order by nx_DPG_apply_date
+			order by nx_distributer_purchase_goods_id DESC
 	</select>
 	<select id="queryPurchaseGoodsByParams" resultType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity">
 		select * from nx_distributer_purchase_goods

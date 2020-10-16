@@ -127,6 +127,8 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 
 	private Integer nxDoIsAgent;
 
+	private Integer nxDoApplyWeeksYear;
+
 
 
 	private NxGoodsEntity nxGoodsEntity;
@@ -147,6 +149,8 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 	private Boolean isNotice = false ;
 
 	private Boolean showDate = true;
+
+	private Boolean  isWeeks = true;
 
 	@Override
 	public boolean equals(Object o) {

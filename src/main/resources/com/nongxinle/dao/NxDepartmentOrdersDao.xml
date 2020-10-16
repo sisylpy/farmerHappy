@@ -301,6 +301,8 @@
         <result property="nxDoSubtotal" column="nx_DO_subtotal"/>
         <result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
         <result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
+        <result property="nxDoApplyWhatDay" column="nx_DO_apply_what_day"/>
+        <result property="nxDoApplyWeeksYear" column="nx_DO_apply_weeks_year"/>
         <association property="nxDepartmentEntity" resultMap="orderDepartment"/>
 
     </resultMap>
@@ -309,7 +311,7 @@
         left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
         left join nx_department as dep on dep.nx_department_id = dor.nx_DO_department_father_id
         where dor.nx_DO_distributer_id = #{disId} and dor.nx_DO_dis_goods_id = #{disGoodsId}
-        order by dor.nx_DO_apply_only_date, dor.nx_DO_apply_only_time
+        order by dor.nx_DO_apply_weeks_year DESC
     </select>
 
 
@@ -347,7 +349,8 @@
          `nx_DO_ind_goods_py`,
          `nx_DO_operation_time`,
          `nx_DO_apply_what_day`,
-         `nx_DO_is_agent`
+         `nx_DO_is_agent`,
+         `nx_DO_apply_weeks_year`
          )
             values (#{nxDepartmentOrdersId},
                     #{nxDoNxGoodsId},
@@ -381,7 +384,8 @@
                     #{nxDoIndGoodsPy},
                     #{nxDoOperationTime},
                     #{nxDoApplyWhatDay},
-                    #{nxDoIsAgent}
+                    #{nxDoIsAgent},
+                    #{nxDoApplyWeeksYear}
             )
     </insert>
 
@@ -419,6 +423,7 @@
             <if test="nxDoOperationTime != null">`nx_DO_operation_time` = #{nxDoOperationTime},</if>
             <if test="nxDoApplyWhatDay != null">`nx_DO_apply_what_day` = #{nxDoApplyWhatDay},</if>
             <if test="nxDoIsAgent != null">`nx_DO_is_agent` = #{nxDoIsAgent},</if>
+            <if test="nxDoApplyWeeksYear != null">`nx_DO_apply_weeks_year` = #{nxDoApplyWeeksYear},</if>
             <if test="nxDoArriveDate != null">`nx_DO_arrive_date` = #{nxDoArriveDate}</if>
         </set>
         where nx_department_orders_id = #{nxDepartmentOrdersId}

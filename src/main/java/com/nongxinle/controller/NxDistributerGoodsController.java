@@ -362,14 +362,23 @@ public class NxDistributerGoodsController {
 		map1.put("disId", disGoods.getNxDgDistributerId());
 		map1.put("disGoodsId", disGoodsId);
 		List<NxDepartmentOrdersEntity> departmentOrdersEntities = depOrdersService.queryOrdersForDisGoods(map1);
-		for(int i = 1; i < departmentOrdersEntities.size(); i++){
+		List<Map<String, Object>> orderMapList = new ArrayList<>();
+		Map<String, Object> map4 = new HashMap<>();
+
+
+
+		for(int i = 1; i < departmentOrdersEntities.size(); i++) {
 			String nxDoApplyOnlyDate = departmentOrdersEntities.get(i-1).getNxDoApplyOnlyDate();
 				if(nxDoApplyOnlyDate.equals(departmentOrdersEntities.get(i).getNxDoApplyOnlyDate())){
 					departmentOrdersEntities.get(i).setShowDate(false);
 				}
+			Integer nxDoApplyWeeksYear = departmentOrdersEntities.get(i - 1).getNxDoApplyWeeksYear();
+			if(nxDoApplyWeeksYear.equals(departmentOrdersEntities.get(i).getNxDoApplyWeeksYear())){
+				departmentOrdersEntities.get(i).setIsWeeks(false);
+			}
 		}
 
-		//进货
+			//进货
 		Map<String, Object> map2 = new HashMap<>();
 		map2.put("disId", disGoods.getNxDgDistributerId());
 		map2.put("disGoodsId", disGoodsId);
@@ -415,16 +424,15 @@ public class NxDistributerGoodsController {
 		Map<String, Object> mapData = new HashMap<>();
 
 		if(goodsEntities.size() > 0){
-
+			mapData.put("str", goodsEntities);
 			boolean b = disGoodsEntitiesPinyin.removeAll(goodsEntities);
 			if(b) {
 				mapData.put("pinyin", disGoodsEntitiesPinyin);
 			}
 		}else {
+			mapData.put("str", goodsEntities);
 			mapData.put("pinyin", disGoodsEntitiesPinyin);
 		}
-		mapData.put("str", goodsEntities);
-
 		return R.ok().put("data", mapData);
 	}
 
@@ -452,8 +460,12 @@ public class NxDistributerGoodsController {
 			standard.setNxDsDisGoodsId(distributerGoodsId);
 			dsService.save(standard);
 		}
+		Integer nxDgNxFatherId = nxDistributerGoods.getNxDgDfgGoodsFatherId();
+		NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity = dgfService.queryObject(nxDgNxFatherId);
+		nxDistributerFatherGoodsEntity.setNxDfgGoodsAmount(nxDistributerFatherGoodsEntity.getNxDfgGoodsAmount() + 1);
+		dgfService.update(nxDistributerFatherGoodsEntity);
 
-		return R.ok();
+		return R.ok().put("data",nxDistributerGoods.getNxDistributerGoodsId());
 	}
 
 

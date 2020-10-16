@@ -103,6 +103,7 @@ public class NxDistributerPurchaseGoodsController {
 	@RequestMapping(value = "/disGoodsGetPurchaseGoods/{disGoodsId}")
 	@ResponseBody
 	public R disGoodsGetPurchaseGoods(@PathVariable Integer disGoodsId) {
+
 		Map<String, Object> map2 = new HashMap<>();
 		map2.put("disGoodsId", disGoodsId);
 		List<NxDistributerPurchaseGoodsEntity> entities = nxDisPurcGoodsService.queryPurchaseGoodsByParams(map2);
@@ -122,13 +123,22 @@ public class NxDistributerPurchaseGoodsController {
 	@ResponseBody
 	public R getPurchaseGoods(@PathVariable Integer disId) {
 
+		Map<String, Object> map1 = new HashMap<>();
+		map1.put("disId", disId);
+		map1.put("status", 1 );
+		List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map1);
+
+
 		//1,查询采购商品
 		Map<String, Object> map = new HashMap<>();
 		map.put("disId",disId );
 		map.put("status",3 );
 		List<NxDistributerFatherGoodsEntity>  purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map);
 
-		return R.ok().put("data", purchase);
+		Map<String, Object> map3 = new HashMap<>();
+		map3.put("unPurchaseOrders", ordersEntities.size() );
+		map3.put("arr", purchase);
+		return R.ok().put("data", map3);
 	}
 
 	/**

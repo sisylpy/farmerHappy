@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mac
+ Source Server         : mysql
  Source Server Type    : MySQL
- Source Server Version : 80012
- Source Host           : localhost:3306
+ Source Server Version : 50725
+ Source Host           : 140.143.186.94:3306
  Source Schema         : nongxinle
 
  Target Server Type    : MySQL
- Target Server Version : 80012
+ Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 12/10/2020 08:12:46
+ Date: 14/10/2020 20:09:59
 */
 
 SET NAMES utf8mb4;
@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `nx_adsense`;
 CREATE TABLE `nx_adsense` (
   `nx_adsense_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '广告位id',
-  `nx_adsense_file_path` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位图片',
-  `nx_adsense_click` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位链接',
+  `nx_adsense_file_path` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位图片',
+  `nx_adsense_click` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位链接',
   `nx_adsense_community_id` int(20) DEFAULT NULL COMMENT '社区id',
   `nx_adsense_sort` int(4) DEFAULT NULL COMMENT '广告位排序',
   PRIMARY KEY (`nx_adsense_id`)
@@ -45,7 +45,7 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_agent`;
 CREATE TABLE `nx_agent` (
   `agent_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商用户id',
-  `agent_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '送货员名字',
+  `agent_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '送货员名字',
   `agent_dis_id` int(20) DEFAULT NULL COMMENT '批发商id',
   PRIMARY KEY (`agent_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -63,11 +63,11 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_agent_user`;
 CREATE TABLE `nx_agent_user` (
   `nx_agent_user_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '代理商用户id',
-  `AU_wx_nick_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信昵称',
-  `AU_wx_avartra_url` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信头像',
-  `AU_wx_agender` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信性别',
-  `AU_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户姓名',
-  `AU_phone` varchar(11) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户手机号码',
+  `AU_wx_nick_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信昵称',
+  `AU_wx_avartra_url` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信头像',
+  `AU_wx_agender` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户微信性别',
+  `AU_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户姓名',
+  `AU_phone` varchar(11) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '代理商用户手机号码',
   PRIMARY KEY (`nx_agent_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -77,7 +77,7 @@ CREATE TABLE `nx_agent_user` (
 DROP TABLE IF EXISTS `nx_alias`;
 CREATE TABLE `nx_alias` (
   `nx_alias_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '别名id',
-  `nx_alias_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '别名名称',
+  `nx_alias_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '别名名称',
   `nx_als_goods_id` int(20) DEFAULT NULL COMMENT '别名商品id',
   `nx_als_sort` int(10) DEFAULT NULL COMMENT '别名排序',
   PRIMARY KEY (`nx_alias_id`)
@@ -107,7 +107,7 @@ CREATE TABLE `nx_applys` (
   `nx_apply_distributer_id` int(20) DEFAULT NULL COMMENT '批发商id',
   `nx_apply_goods_id` int(20) DEFAULT NULL COMMENT '申请商品id',
   `nx_apply_quantity` float(10,1) DEFAULT NULL COMMENT '申请数量',
-  `nx_apply_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '申请日期',
+  `nx_apply_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '申请日期',
   `nx_apply_status` tinyint(2) DEFAULT NULL COMMENT '申请状态',
   `nx_apply_remark` tinyint(200) DEFAULT NULL COMMENT '申请备注',
   `nx_apply_weight` float(10,1) DEFAULT NULL COMMENT '申请数量',
@@ -125,12 +125,12 @@ CREATE TABLE `nx_applys` (
 DROP TABLE IF EXISTS `nx_community`;
 CREATE TABLE `nx_community` (
   `nx_community_id` int(20) NOT NULL,
-  `nx_community_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_community_lat` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_community_lng` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_community_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_community_lat` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_community_lng` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_community_route_id` int(20) DEFAULT NULL,
   `nx_community_dis_id` int(20) DEFAULT NULL,
-  `nx_community_polygon` varchar(10000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_community_polygon` varchar(10000) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_community_region` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_community_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -150,8 +150,8 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_community_adsense`;
 CREATE TABLE `nx_community_adsense` (
   `nx_community_adsense_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '广告位id',
-  `nx_CA_file_path` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位图片',
-  `nx_CA_click` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位链接',
+  `nx_CA_file_path` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位图片',
+  `nx_CA_click` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '广告位链接',
   `nx_CA_community_id` int(20) DEFAULT NULL COMMENT '社区id',
   `nx_CA_sort` int(4) DEFAULT NULL COMMENT '广告位排序',
   PRIMARY KEY (`nx_community_adsense_id`)
@@ -189,9 +189,9 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_community_daytime`;
 CREATE TABLE `nx_community_daytime` (
   `nx_week_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_day_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_day_open` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_day_close` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_open` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_close` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_dis_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_week_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -202,10 +202,10 @@ CREATE TABLE `nx_community_daytime` (
 DROP TABLE IF EXISTS `nx_community_father_goods`;
 CREATE TABLE `nx_community_father_goods` (
   `nx_community_father_goods_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_father_goods_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_father_goods_img` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_father_goods_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_father_goods_img` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_father_goods_sort` int(4) DEFAULT NULL,
-  `nx_father_goods_color` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_father_goods_color` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_fathers_father_id` int(20) DEFAULT NULL,
   `nx_father_goods_level` tinyint(2) DEFAULT NULL,
   `nx_CFG_community_id` int(20) DEFAULT NULL,
@@ -234,27 +234,27 @@ CREATE TABLE `nx_community_goods` (
   `nx_cg_goods_is_weight` tinyint(2) DEFAULT NULL COMMENT '是否称重',
   `nx_cg_goods_price` float(10,1) DEFAULT NULL COMMENT '价格',
   `nx_cg_goods_price_decimal` int(10) DEFAULT NULL COMMENT '价格小数点部分',
-  `nx_cg_nx_goods_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品图片',
+  `nx_cg_nx_goods_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品图片',
   `nx_cg_goods_sell_type` tinyint(2) DEFAULT NULL COMMENT '批发商商品销售规格模式0按standardname销售，1 按自己的规格销售',
   `nx_cg_goods_buy_type` tinyint(2) DEFAULT NULL COMMENT '自采购商品的状态',
   `nx_cg_cf_goods_father_id` int(20) DEFAULT NULL COMMENT '社区商品父类id',
   `nx_cg_nx_goods_id` int(10) DEFAULT NULL COMMENT '购买热度',
-  `nx_cg_nx_goods_father_id` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
-  `nx_cg_nx_goods_father_img` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进货方式',
+  `nx_cg_nx_goods_father_id` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
+  `nx_cg_nx_goods_father_img` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进货方式',
   `nx_cg_goods_total_hits` int(20) DEFAULT NULL COMMENT '自采购员工id',
   `nx_cg_purchase_quantity` int(20) DEFAULT NULL COMMENT 'App订货供货商appid',
   `nx_cg_buy_purchase_user_id` int(20) DEFAULT NULL COMMENT '供货商id',
-  `nx_cg_buy_app_id` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进价',
+  `nx_cg_buy_app_id` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进价',
   `nx_cg_buy_status` int(20) DEFAULT NULL COMMENT '商品id',
   `nx_cg_supplier_id` int(20) DEFAULT NULL COMMENT '商品库父类id',
-  `nx_cg_buying_price` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品库image',
+  `nx_cg_buying_price` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品库image',
   `nx_cg_goods_type` tinyint(2) DEFAULT NULL COMMENT '0 供货商，1 社区库存，2 自采购 4 加工',
-  `nx_cg_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
-  `nx_cg_goods_detail` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品详细',
-  `nx_cg_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
-  `nx_cg_goods_stock` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存商品库存量',
-  `nx_cg_goods_pinyin` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音',
-  `nx_cg_goods_py` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音简拼',
+  `nx_cg_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
+  `nx_cg_goods_detail` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品详细',
+  `nx_cg_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
+  `nx_cg_goods_stock` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存商品库存量',
+  `nx_cg_goods_pinyin` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音',
+  `nx_cg_goods_py` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音简拼',
   PRIMARY KEY (`nx_community_goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -278,20 +278,20 @@ CREATE TABLE `nx_community_orders` (
   `nx_CO_community_id` int(20) DEFAULT NULL COMMENT '订单社区id',
   `nx_CO_customer_id` int(20) DEFAULT NULL COMMENT '订单客户id',
   `nx_CO_user_id` int(20) DEFAULT NULL COMMENT '订单用户id',
-  `nx_CO_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单日期',
+  `nx_CO_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单日期',
   `nx_CO_status` tinyint(2) DEFAULT NULL COMMENT '订单状态',
-  `nx_CO_service` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送达时间',
+  `nx_CO_service` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送达时间',
   `nx_CO_amount` float(10,0) DEFAULT NULL COMMENT '订单总金额',
-  `nx_CO_service_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到日期',
-  `nx_CO_service_time` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到时间',
+  `nx_CO_service_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到日期',
+  `nx_CO_service_time` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到时间',
   `nx_CO_weigh_user_id` int(20) DEFAULT NULL COMMENT '订单称重用户id',
   `nx_CO_delivery_user_id` int(20) DEFAULT NULL COMMENT '订单配送员工id',
   `nx_CO_sub_amount` int(10) DEFAULT NULL COMMENT '订单子商品数量',
   `nx_CO_sub_finished` int(10) DEFAULT NULL COMMENT '订单子商品完成数量',
-  `nx_CO_weigh_number` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单称重订单号',
+  `nx_CO_weigh_number` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单称重订单号',
   `nx_CO_payment_status` tinyint(2) DEFAULT NULL COMMENT '订单支付状态',
-  `nx_CO_payment_send_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付发送时间',
-  `nx_CO_payment_time` varchar(0) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付时间',
+  `nx_CO_payment_send_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付发送时间',
+  `nx_CO_payment_time` varchar(0) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付时间',
   `nx_CO_type` tinyint(2) DEFAULT NULL COMMENT '订单类型 0先付款1后付款',
   PRIMARY KEY (`nx_community_orders_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -323,9 +323,9 @@ CREATE TABLE `nx_community_orders_sub` (
   `nx_COS_community_goods_id` int(20) DEFAULT NULL COMMENT '子订单社区商品id',
   `nx_COS_community_goods_father_id` int(20) DEFAULT NULL COMMENT '子订单商品父id',
   `nx_COS_quantity` float(10,1) DEFAULT NULL COMMENT '子订单申请数量',
-  `nx_COS_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请规格',
+  `nx_COS_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请规格',
   `nx_COS_price` float(10,1) DEFAULT NULL COMMENT '子订单申请商品单价',
-  `nx_COS_remark` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请备注',
+  `nx_COS_remark` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请备注',
   `nx_COS_weight` float(10,1) DEFAULT NULL COMMENT '子订单申请商品称重',
   `nx_COS_subtotal` float(10,1) DEFAULT NULL COMMENT '子订单申请商品小计',
   `nx_COS_status` tinyint(2) DEFAULT NULL COMMENT '子订单申请商品状态',
@@ -372,15 +372,15 @@ DROP TABLE IF EXISTS `nx_community_promote`;
 CREATE TABLE `nx_community_promote` (
   `nx_promote_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_promote_cg_id` int(20) DEFAULT NULL,
-  `nx_orignal_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_standard` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_weight` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_expired` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_storage` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_words` varchar(1000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_recommand_goods` varchar(1000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_orignal_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_standard` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_weight` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_expired` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_storage` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_words` varchar(1000) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_recommand_goods` varchar(1000) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_promote_community_id` int(20) DEFAULT NULL,
   `nx_promote_cg_father_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_promote_id`)
@@ -393,10 +393,10 @@ DROP TABLE IF EXISTS `nx_community_standard`;
 CREATE TABLE `nx_community_standard` (
   `nx_community_standard_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_CS_comm_goods_id` int(20) DEFAULT NULL,
-  `nx_CS_standard_name` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_CS_standard_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_CS_standard_scale` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_CS_standard_error` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CS_standard_name` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CS_standard_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CS_standard_scale` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CS_standard_error` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_CS_standard_sort` int(10) DEFAULT NULL,
   PRIMARY KEY (`nx_community_standard_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -415,11 +415,11 @@ DROP TABLE IF EXISTS `nx_community_stock`;
 CREATE TABLE `nx_community_stock` (
   `nx_community_stock_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '社区库存id',
   `nx_cs_community_id` int(20) DEFAULT NULL COMMENT '社区库存社区id',
-  `nx_stock_total` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存数量',
-  `nx_stock_requier_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存请求入库时间',
+  `nx_stock_total` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存数量',
+  `nx_stock_requier_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存请求入库时间',
   `nx_stock_requier_user_id` int(20) DEFAULT NULL COMMENT '社区库存请求入库用户',
   `nx_stock_status` tinyint(2) DEFAULT NULL COMMENT '社区库存状态',
-  `nx_stock_in_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存入库时间',
+  `nx_stock_in_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区库存入库时间',
   `nx_stock_in_user_id` int(20) DEFAULT NULL COMMENT '社区库存入库用户',
   PRIMARY KEY (`nx_community_stock_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -459,12 +459,12 @@ CREATE TABLE `nx_community_stock_sub` (
   `nx_community_sub_stock_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '社区子库存id',
   `nx_cs_id` int(20) DEFAULT NULL COMMENT '社区子库存库存id',
   `nx_css_cg_id` int(20) DEFAULT NULL COMMENT '社区子社区商品id',
-  `nx_css_entry_amount` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库数量',
-  `nx_css_entry_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库单位',
-  `nx_css_entry_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库单价',
-  `nx_css_entry_sub_total` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库小计',
-  `nx_css_entry_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库日期',
-  `nx_css_stock_amount` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存库存数量',
+  `nx_css_entry_amount` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库数量',
+  `nx_css_entry_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库单位',
+  `nx_css_entry_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库单价',
+  `nx_css_entry_sub_total` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库小计',
+  `nx_css_entry_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存入库日期',
+  `nx_css_stock_amount` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区子库存库存数量',
   PRIMARY KEY (`nx_community_sub_stock_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -511,11 +511,11 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_community_user`;
 CREATE TABLE `nx_community_user` (
   `nx_agent_user_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '社区用户id',
-  `AU_wx_nick_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信昵称',
-  `AU_wx_avartra_url` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信头像',
-  `AU_wx_agender` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信性别',
-  `AU_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户姓名',
-  `AU_phone` varchar(11) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户手机号码',
+  `AU_wx_nick_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信昵称',
+  `AU_wx_avartra_url` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信头像',
+  `AU_wx_agender` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户微信性别',
+  `AU_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户姓名',
+  `AU_phone` varchar(11) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区用户用户手机号码',
   PRIMARY KEY (`nx_agent_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -525,21 +525,21 @@ CREATE TABLE `nx_community_user` (
 DROP TABLE IF EXISTS `nx_customer`;
 CREATE TABLE `nx_customer` (
   `nx_customer_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '客户id',
-  `nx_customer_name` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户名称',
-  `nx_customer_print_label` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户打印名称',
-  `nx_customer_out_label` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户对外名称',
+  `nx_customer_name` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户名称',
+  `nx_customer_print_label` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户打印名称',
+  `nx_customer_out_label` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户对外名称',
   `nx_customer_type` tinyint(2) DEFAULT NULL COMMENT '客户类型',
-  `nx_customer_address` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户地址',
-  `nx_customer_phone` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户手机',
+  `nx_customer_address` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户地址',
+  `nx_customer_phone` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户手机',
   `nx_customer_call` int(10) DEFAULT NULL COMMENT '客户称呼',
-  `nx_customer_lat` varchar(30) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_customer_lng` varchar(30) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_customer_lat` varchar(30) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_customer_lng` varchar(30) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_customer_dis_id` int(20) DEFAULT NULL COMMENT '客户批发商id',
   `nx_customer_community_id` int(20) DEFAULT NULL COMMENT '社区id',
   `nx_customer_join_date` date DEFAULT NULL COMMENT '客户加入日期',
   `nx_customer_order_amount` float(10,1) DEFAULT NULL COMMENT '客户订货金额',
   `nx_customer_order_times` int(10) DEFAULT NULL COMMENT '客户订货次数',
-  `nx_customer_detail_address` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户详细地址',
+  `nx_customer_detail_address` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户详细地址',
   PRIMARY KEY (`nx_customer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -562,11 +562,11 @@ DROP TABLE IF EXISTS `nx_customer_user`;
 CREATE TABLE `nx_customer_user` (
   `nx_CU_user_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '客户用户id',
   `nx_CU_customer_id` int(20) DEFAULT NULL COMMENT '客户id',
-  `nx_CU_wx_nick_name` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户微信昵称',
-  `nx_CU_wx_avatar_url` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信头像',
+  `nx_CU_wx_nick_name` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户微信昵称',
+  `nx_CU_wx_avatar_url` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信头像',
   `nx_CU_wx_gender` int(2) DEFAULT NULL COMMENT '微信性别',
-  `nx_CU_wx_open_id` varchar(40) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信openid',
-  `nx_CU_wx_phone_number` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信手机号',
+  `nx_CU_wx_open_id` varchar(40) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信openid',
+  `nx_CU_wx_phone_number` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '微信手机号',
   `nx_CU_join_date` date DEFAULT NULL COMMENT '客户加入时间',
   `nx_CU_order_amount` float(10,1) DEFAULT NULL COMMENT '客户订货总金额',
   `nx_CU_order_times` int(10) DEFAULT NULL COMMENT '客户订货次数',
@@ -592,18 +592,18 @@ CREATE TABLE `nx_customer_user_goods` (
   `nx_CUG_goods_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '客户用户商品id',
   `nx_CUG_user_id` int(20) DEFAULT NULL COMMENT '客户用户id',
   `nx_CUG_community_goods_id` int(20) DEFAULT NULL COMMENT '批发商商品id',
-  `nx_CUG_first_order_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户第一次订货时间',
-  `nx_CUG_last_order_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户最后一次订货时间',
+  `nx_CUG_first_order_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户第一次订货时间',
+  `nx_CUG_last_order_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户用户最后一次订货时间',
   `nx_CUG_order_amount` float(10,1) DEFAULT NULL COMMENT '客户用户订货总量',
   `nx_CUG_order_times` int(10) DEFAULT NULL COMMENT '客户用户订货次数',
   `nx_CUG_is_love` tinyint(2) DEFAULT NULL COMMENT '客户用户最爱',
   `nx_CUG_order_rate` int(4) DEFAULT NULL COMMENT '客户订货频率',
   `nx_CUG_last_order_quantity` float(10,1) DEFAULT NULL COMMENT '客户最后一次订货数量',
-  `nx_CUG_last_order_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户最后一次订货规格',
+  `nx_CUG_last_order_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '客户最后一次订货规格',
   `nx_CUG_join_my_template` tinyint(2) DEFAULT NULL COMMENT '是否加入用户订货模版',
   `nx_CUG_order_quantity` float(4,1) DEFAULT NULL,
-  `nx_CUG_order_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_CUG_goods_color` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CUG_order_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_CUG_goods_color` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_CUG_goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -624,27 +624,23 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_department`;
 CREATE TABLE `nx_department` (
   `nx_department_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '订货部门id',
-  `nx_department_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门名称',
+  `nx_department_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门名称',
   `nx_department_father_id` int(20) DEFAULT NULL COMMENT '订货部门上级id',
   `nx_department_type` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门类型',
   `nx_department_sub_amount` int(2) DEFAULT NULL COMMENT '订货部门子部门数量',
   `nx_department_dis_id` int(20) DEFAULT NULL COMMENT '订货部门批发商id',
-  `nx_department_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_department_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_department_is_group_dep` tinyint(2) DEFAULT NULL COMMENT '是客户吗',
-  `nx_department_print_name` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_department_print_name` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_department_show_weeks` tinyint(2) DEFAULT '1',
   PRIMARY KEY (`nx_department_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department` VALUES (1, '海店', 0, '餐馆', 0, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', 1, NULL, 1);
-INSERT INTO `nx_department` VALUES (2, '小', 0, '单位、学校、幼儿园食堂', 0, 3, 'https://thirdwx.qlogo.cn/mmopen/vi_32/YTBiagAQnZiae8FfVjLGjNiadyccGNgibddlK5SKWTttFFxSFRzic9U52duO0bb8AUrLXgIyu9D6bne8kGn66MJCmEw/132', 1, NULL, 1);
-INSERT INTO `nx_department` VALUES (3, 'av', 0, '餐馆', 2, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', 1, NULL, 1);
-INSERT INTO `nx_department` VALUES (4, 'aaa', 3, '餐馆', 0, 1, NULL, 0, NULL, 1);
-INSERT INTO `nx_department` VALUES (5, 'vvv', 3, '餐馆', 0, 1, NULL, 0, NULL, 1);
+INSERT INTO `nx_department` VALUES (1, '子祥', 0, '1', 0, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', 1, NULL, 1);
 COMMIT;
 
 -- ----------------------------
@@ -655,12 +651,19 @@ CREATE TABLE `nx_department_bill` (
   `nx_department_bill_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_DB_dis_id` int(20) DEFAULT NULL,
   `nx_DB_dep_id` int(20) DEFAULT NULL,
-  `nx_DB_total` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DB_total` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DB_status` tinyint(2) DEFAULT NULL,
-  `nx_DB_time` varchar(30) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DB_time` varchar(30) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DB_issue_user_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_department_bill_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+
+-- ----------------------------
+-- Records of nx_department_bill
+-- ----------------------------
+BEGIN;
+INSERT INTO `nx_department_bill` VALUES (1, 1, 1, '129.0', 0, '2020-10-14', 1);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for nx_department_dis_goods
@@ -672,46 +675,71 @@ CREATE TABLE `nx_department_dis_goods` (
   `nx_DDG_department_id` int(20) DEFAULT NULL,
   `nx_DDG_dis_goods_id` int(20) DEFAULT NULL,
   `nx_DDG_dis_goods_father_id` int(20) DEFAULT NULL,
-  `nx_DDG_dep_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_pinyin` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_py` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_detail` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_brand` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DDG_dep_goods_place` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_pinyin` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_py` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_detail` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_brand` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DDG_dep_goods_place` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DDG_dep_goods_price` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DDG_dep_goods_price_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_department_dis_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department_dis_goods
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department_dis_goods` VALUES (22, 2, NULL, 55, 8, '白萝卜', 'bailuobu', 'blb', '斤', '', NULL, '', '8.8', '10-11');
-INSERT INTO `nx_department_dis_goods` VALUES (23, 2, NULL, 56, 8, '卞萝卜', 'bianluobu', 'blb', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (24, 2, NULL, 57, 8, '胡萝卜', 'huluobu', 'hlb', '斤', '', '', '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (25, 2, NULL, 58, 8, '红薯', 'hongshu', 'hs', '斤', '普通', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (26, 2, NULL, 59, 8, '绿萝卜', 'lüluobu', 'llb', '斤', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (27, 2, NULL, 60, 8, '凉薯', 'liangshu', 'ls', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (28, 2, NULL, 61, 8, '蜜薯', 'mishu', 'ms', '斤', '', '', '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (30, 2, NULL, 71, 11, '白不老', 'baibulao', 'bbl', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (31, 2, NULL, 72, 11, '扁豆', 'biandou', 'bd', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (32, 2, NULL, 73, 11, '荸荠', 'biji', 'bj', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (33, 2, NULL, 74, 11, '板栗南瓜', 'banlinangua', 'blng', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (34, 2, NULL, 105, 12, '菠菜', 'bocai', 'bc', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (35, 2, NULL, 106, 12, '菜心', 'caixin', 'cx', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (36, 2, NULL, 107, 12, '穿心莲', 'chuanxinlian', 'cxl', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (37, 2, NULL, 113, 12, '蒿子秆', 'haozigan', 'hzg', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (38, 2, NULL, 114, 12, '荠菜', 'jicai', 'jc', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (39, 2, NULL, 156, 15, '尖椒', 'jianjiao', 'jj', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (40, 2, NULL, 157, 15, '螺丝椒', 'luosijiao', 'lsj', '斤', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (41, 2, NULL, 158, 15, '毛葱', 'maocong', 'mc', '斤', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (42, 2, NULL, 185, 16, '香菇', 'xianggu', 'xg', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (43, 2, NULL, 181, 16, '口蘑', 'koumo', 'km', '斤', '', NULL, '', NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (44, 2, NULL, 187, 17, '进口香蕉', 'jinkouxiangjiao', 'jkxj', '斤', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (45, 2, NULL, 189, 19, '盒豆腐', 'hedoufu', 'hdf', '盒', '北豆腐', '白玉', NULL, NULL, NULL);
-INSERT INTO `nx_department_dis_goods` VALUES (51, 3, NULL, 140, 5, '白萝卜', 'bailuobu', 'blb', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (2, 1, NULL, 1, 1, '白萝卜', 'bailuobu', 'blb', '斤', '', NULL, '', '2', '10-14');
+INSERT INTO `nx_department_dis_goods` VALUES (3, 1, NULL, 3, 1, '胡萝卜', 'huluobu', 'hlb', '斤', '', '', '', '2', '10-14');
+INSERT INTO `nx_department_dis_goods` VALUES (4, 1, NULL, 4, 1, '红薯', 'hongshu', 'hs', '斤', '普通', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (5, 1, NULL, 5, 1, '绿萝卜', 'lüluobu', 'llb', '斤', NULL, NULL, NULL, '3', '10-14');
+INSERT INTO `nx_department_dis_goods` VALUES (6, 1, NULL, 10, 1, '土豆', 'tudou', 'td', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (7, 1, NULL, 11, 1, '铁棍山药', 'tiegunshanyao', 'tgsy', '斤', NULL, NULL, NULL, '6', '10-14');
+INSERT INTO `nx_department_dis_goods` VALUES (8, 1, NULL, 2, 1, '卞萝卜', 'bianluobu', 'blb', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (9, 1, NULL, 7, 1, '蜜薯', 'mishu', 'ms', '斤', '', '', '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (10, 1, NULL, 8, 1, '麻山药', 'mashanyao', 'msy', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (11, 1, NULL, 9, 1, '藕', 'ou', 'o', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (12, 1, NULL, 12, 1, '莴笋', 'wosun', 'ws', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (13, 1, NULL, 13, 1, '心里美', 'xinlimei', 'xlm', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (14, 1, NULL, 14, 1, '新土豆', 'xintudou', 'xtd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (15, 1, NULL, 15, 1, '芋头', 'yutou', 'yt', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (16, 1, NULL, 16, 1, '樱桃萝卜', 'yingtaoluobu', 'ytlb', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (17, 1, NULL, 17, 4, '白不老', 'baibulao', 'bbl', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (18, 1, NULL, 18, 4, '扁豆', 'biandou', 'bd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (19, 1, NULL, 19, 4, '荸荠', 'biji', 'bj', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (20, 1, NULL, 20, 4, '板栗南瓜', 'banlinangua', 'blng', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (21, 1, NULL, 21, 4, '长茄子', 'changqiezi', 'cqz', '斤', '', '', '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (22, 1, NULL, 22, 4, '冬春笋', 'dongchunsun', 'dcs', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (23, 1, NULL, 23, 4, '吊冬瓜', 'diaodonggua', 'ddg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (24, 1, NULL, 24, 4, '地冬瓜', 'didonggua', 'ddg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (25, 1, NULL, 25, 4, '豆王', 'douwang', 'dw', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (26, 1, NULL, 26, 4, '广茄', 'guangqie', 'gq', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (27, 1, NULL, 27, 4, '黄瓜', 'huanggua', 'hg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (28, 1, NULL, 28, 4, '荷兰瓜', 'helangua', 'hlg', '斤', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (29, 1, NULL, 29, 4, '花生', 'huasheng', 'hs', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (30, 1, NULL, 30, 4, '菜花', 'caihua', 'ch', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (31, 1, NULL, 31, 4, '架豆', 'jiadou', 'jd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (32, 1, NULL, 33, 4, '金丝南瓜', 'jinsinangua', 'jsng', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (33, 1, NULL, 32, 4, '豇豆', 'jiangdou', 'jd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (34, 1, NULL, 34, 4, '苦瓜', 'kugua', 'kg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (35, 1, NULL, 35, 4, '毛豆', 'maodou', 'md', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (36, 1, NULL, 39, 4, '散菜花', 'sancaihua', 'sch', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (37, 1, NULL, 38, 4, '丝瓜', 'sigua', 'sg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (38, 1, NULL, 37, 4, '秋葵', 'qiukui', 'qk', '斤', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (39, 1, NULL, 36, 4, '南北瓜', 'nanbeigua', 'nbg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (40, 1, NULL, 40, 4, '甜豆', 'tiandou', 'td', '斤', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (41, 1, NULL, 42, 4, '西胡芦', 'xihulu', 'xhl', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (42, 1, NULL, 41, 4, '豌豆', 'wandou', 'wd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (43, 1, NULL, 43, 4, '西红柿', 'xihongshi', 'xhs', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (44, 1, NULL, 44, 4, '西兰花', 'xilanhua', 'xlh', '斤', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (45, 1, NULL, 45, 4, '小毛冬瓜', 'xiaomaodonggua', 'xmdg', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (46, 1, NULL, 46, 4, '线茄', 'xianqie', 'xq', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (47, 1, NULL, 47, 4, '小西红柿', 'xiaoxihongshi', 'xxhs', '斤', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (48, 1, NULL, 48, 4, '油豆', 'youdou', 'yd', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (49, 1, NULL, 49, 4, '玉米', 'yumi', 'ym', '斤', '', NULL, '', NULL, NULL);
+INSERT INTO `nx_department_dis_goods` VALUES (50, 1, NULL, 50, 4, '圆茄子', 'yuanqiezi', 'yqz', '斤', '', '', '', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -720,22 +748,21 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_department_independent_goods`;
 CREATE TABLE `nx_department_independent_goods` (
   `nx_department_independent_goods_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_DIG_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DIG_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIG_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIG_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DIG_department_father_id` int(20) DEFAULT NULL,
   `nx_DIG_department_id` int(20) DEFAULT NULL,
   `nx_DIG_alarm_rate` int(2) DEFAULT NULL,
-  `nx_DIG_goods_pinyin` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DIG_goods_py` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIG_goods_pinyin` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIG_goods_py` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_department_independent_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department_independent_goods
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department_independent_goods` VALUES (1, '纸杯', NULL, NULL, 2, NULL, 'zhibei', 'zb');
-INSERT INTO `nx_department_independent_goods` VALUES (2, '筷子', NULL, NULL, 2, NULL, 'kuaizi', 'kz');
+INSERT INTO `nx_department_independent_goods` VALUES (1, '餐盒', NULL, NULL, 1, NULL, 'canhe', 'ch');
 COMMIT;
 
 -- ----------------------------
@@ -749,13 +776,13 @@ CREATE TABLE `nx_department_orders` (
   `nx_DO_dis_goods_id` int(20) DEFAULT NULL COMMENT '部门订单社区商品id',
   `nx_DO_dis_goods_father_id` int(20) DEFAULT NULL COMMENT '批发商父级商品id',
   `nx_DO_dep_dis_goods_id` int(20) DEFAULT NULL,
-  `nx_DO_dep_dis_goods_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格',
-  `nx_DO_quantity` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请数量',
-  `nx_DO_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请规格',
-  `nx_DO_remark` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请备注',
-  `nx_DO_weight` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单重量',
-  `nx_DO_price` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单商品单价',
-  `nx_DO_subtotal` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请商品小计',
+  `nx_DO_dep_dis_goods_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格',
+  `nx_DO_quantity` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请数量',
+  `nx_DO_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请规格',
+  `nx_DO_remark` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请备注',
+  `nx_DO_weight` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单重量',
+  `nx_DO_price` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单商品单价',
+  `nx_DO_subtotal` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请商品小计',
   `nx_DO_department_id` int(20) DEFAULT NULL COMMENT '部门订单部门id',
   `nx_DO_department_father_id` int(20) DEFAULT NULL,
   `nx_DO_distributer_id` int(20) DEFAULT NULL COMMENT '部门订单批发商id',
@@ -766,40 +793,30 @@ CREATE TABLE `nx_department_orders` (
   `nx_DO_pick_user_id` int(20) DEFAULT NULL COMMENT '部门订单商品称重用户id',
   `nx_DO_account_user_id` int(20) DEFAULT NULL COMMENT '部门订单商品输入单价用户id',
   `nx_DO_buy_status` tinyint(2) DEFAULT NULL COMMENT '部门订单商品进货状态',
-  `nx_DO_apply_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请时间',
-  `nx_DO_arrive_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单送达时间',
+  `nx_DO_apply_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单申请时间',
+  `nx_DO_arrive_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门订单送达时间',
   `nx_DO_purchase_goods_id` int(20) DEFAULT NULL COMMENT '订单采购商品id',
-  `nx_DO_apply_only_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DO_apply_only_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DO_apply_only_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DO_apply_only_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DO_goods_type` tinyint(2) DEFAULT NULL,
   `nx_DO_ind_goods_id` int(20) DEFAULT NULL,
-  `nx_DO_ind_goods_py` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DO_operation_time` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DO_apply_what_day` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '星期几',
+  `nx_DO_ind_goods_py` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DO_operation_time` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DO_apply_what_day` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '星期几',
   `nx_DO_is_agent` tinyint(2) DEFAULT NULL,
+  `nx_DO_apply_weeks_year` int(4) DEFAULT NULL COMMENT '本年第几周',
   PRIMARY KEY (`nx_department_orders_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department_orders
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department_orders` VALUES (8, NULL, NULL, 56, NULL, 23, NULL, '2', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 2, '10-11', '11:37', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (9, NULL, NULL, 57, NULL, 24, NULL, '3', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 3, '10-11', '11:37', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (10, NULL, NULL, 58, NULL, 25, NULL, '3', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 4, '10-11', '11:37', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (11, NULL, NULL, 59, NULL, 26, NULL, '1', '个', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 5, '10-11', '11:37', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (12, NULL, NULL, 61, NULL, 28, NULL, '4', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 8, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (13, NULL, NULL, 74, NULL, 33, NULL, '2', '个', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 10, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (14, NULL, NULL, 73, NULL, 32, NULL, '3', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 9, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (15, NULL, NULL, 114, NULL, 38, NULL, '2', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 11, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (16, NULL, NULL, 158, NULL, 41, NULL, '2', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 14, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (17, NULL, NULL, 181, NULL, 43, NULL, '2', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 12, '10-11', '11:38', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (18, NULL, NULL, 185, NULL, 42, NULL, '3', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 13, '10-11', '11:39', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (19, NULL, NULL, 187, NULL, 44, NULL, '4', '斤', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 6, '10-11', '11:39', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (20, NULL, NULL, 189, NULL, 50, NULL, '3', '盒', '', NULL, NULL, NULL, 2, 2, 3, NULL, NULL, 1, 2, NULL, NULL, 1, '2020-10-11', '2020-10-12', 7, '10-11', '11:39', 0, NULL, NULL, NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (21, NULL, NULL, NULL, NULL, NULL, NULL, '200捆', NULL, NULL, NULL, NULL, NULL, 2, 2, NULL, NULL, NULL, 0, 2, NULL, NULL, 0, '2020-10-11', '2020-10-12', NULL, '10-11', '11:40', 1, 2, 'kz', NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (22, NULL, NULL, NULL, NULL, NULL, NULL, '100个', NULL, NULL, NULL, NULL, NULL, 2, 2, NULL, NULL, NULL, 0, 2, NULL, NULL, 0, '2020-10-11', '2020-10-12', NULL, '10-11', '11:40', 1, 1, 'zb', NULL, '星期日', 0);
-INSERT INTO `nx_department_orders` VALUES (23, NULL, NULL, 140, NULL, 51, NULL, '89', '根', '', NULL, NULL, NULL, 4, 3, 1, NULL, NULL, 1, 3, NULL, NULL, 1, '2020-10-11', '2020-10-12', 15, '10-11', '12:12', 0, NULL, NULL, NULL, '星期日', 0);
+INSERT INTO `nx_department_orders` VALUES (1, NULL, NULL, 1, NULL, 2, NULL, '2', '根', '', '3', '2', '6.0', 1, 1, 1, NULL, NULL, 4, 1, NULL, NULL, 0, '2020-10-14', '2020-10-15', NULL, '10-14', '17:25', 0, NULL, NULL, NULL, '星期三', 0, 52);
+INSERT INTO `nx_department_orders` VALUES (2, NULL, NULL, 54, NULL, 1, NULL, '1', '颗', '', '8', '1', '8.0', 1, 1, 1, NULL, NULL, 4, 1, NULL, NULL, 0, '2020-10-14', '2020-10-15', NULL, '10-14', '17:29', 0, NULL, NULL, NULL, '星期三', 0, 52);
+INSERT INTO `nx_department_orders` VALUES (3, NULL, NULL, 3, NULL, 3, NULL, '3', '斤', '', '5', '2', '10.0', 1, 1, 1, NULL, NULL, 4, 1, NULL, NULL, 0, '2020-10-14', '2020-10-15', NULL, '10-14', '17:29', 0, NULL, NULL, NULL, '星期三', 0, 52);
+INSERT INTO `nx_department_orders` VALUES (4, NULL, NULL, 5, NULL, 5, NULL, '25', '斤', '', '25', '3', '75.0', 1, 1, 1, NULL, NULL, 4, 1, NULL, NULL, 0, '2020-10-14', '2020-10-15', NULL, '10-14', '17:29', 0, NULL, NULL, NULL, '星期三', 0, 52);
+INSERT INTO `nx_department_orders` VALUES (5, NULL, NULL, 11, NULL, 7, NULL, '1', '根', '', '5', '6', '30.0', 1, 1, 1, NULL, NULL, 4, 1, NULL, NULL, 0, '2020-10-14', '2020-10-15', NULL, '10-14', '17:29', 0, NULL, NULL, NULL, '星期三', 0, 52);
 COMMIT;
 
 -- ----------------------------
@@ -809,40 +826,53 @@ DROP TABLE IF EXISTS `nx_department_standard`;
 CREATE TABLE `nx_department_standard` (
   `nx_department_standard_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '部门规格id',
   `nx_DDS_dds_goods_id` int(20) DEFAULT NULL COMMENT '部门商品id',
-  `nx_DDS_standard_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门规格名称',
+  `nx_DDS_standard_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门规格名称',
   `nx_DDS_standard_sort` int(10) DEFAULT NULL COMMENT '部门规格排序',
   PRIMARY KEY (`nx_department_standard_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department_standard
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department_standard` VALUES (1, 1, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (2, 3, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (3, 15, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (4, 17, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (5, 18, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (6, 19, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (7, 20, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (8, 21, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (9, 22, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (10, 23, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (11, 24, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (12, 25, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (13, 26, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (14, 27, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (15, 28, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (16, 29, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (17, 33, '个', NULL);
-INSERT INTO `nx_department_standard` VALUES (18, 34, '捆', NULL);
-INSERT INTO `nx_department_standard` VALUES (19, 37, '把', NULL);
-INSERT INTO `nx_department_standard` VALUES (20, 46, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (21, 47, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (22, 48, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (23, 49, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (24, 50, '根', NULL);
-INSERT INTO `nx_department_standard` VALUES (25, 51, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (1, 1, '颗', NULL);
+INSERT INTO `nx_department_standard` VALUES (2, 2, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (3, 3, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (4, 4, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (5, 5, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (6, 6, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (7, 7, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (8, 8, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (9, 9, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (10, 10, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (11, 11, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (12, 11, '节', NULL);
+INSERT INTO `nx_department_standard` VALUES (13, 12, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (14, 13, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (15, 14, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (16, 15, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (17, 16, '把', NULL);
+INSERT INTO `nx_department_standard` VALUES (18, 20, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (19, 21, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (20, 22, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (21, 23, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (22, 24, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (23, 26, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (24, 27, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (25, 28, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (26, 30, '颗', NULL);
+INSERT INTO `nx_department_standard` VALUES (27, 32, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (28, 34, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (29, 36, '颗', NULL);
+INSERT INTO `nx_department_standard` VALUES (30, 37, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (31, 39, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (32, 41, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (33, 43, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (34, 44, '颗', NULL);
+INSERT INTO `nx_department_standard` VALUES (35, 45, '个', NULL);
+INSERT INTO `nx_department_standard` VALUES (36, 46, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (37, 49, '根', NULL);
+INSERT INTO `nx_department_standard` VALUES (38, 50, '个', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -852,25 +882,24 @@ DROP TABLE IF EXISTS `nx_department_user`;
 CREATE TABLE `nx_department_user` (
   `nx_department_user_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '订货部门用户id',
   `nx_DU_department_id` int(20) DEFAULT NULL COMMENT '订货部门id',
-  `nx_DU_wx_avartra_url` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信头像',
-  `nx_DU_wx_nick_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信昵称',
-  `nx_DU_wx_open_id` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信openid',
-  `nx_DU_wx_phone` varchar(15) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信手机号码',
+  `nx_DU_wx_avartra_url` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信头像',
+  `nx_DU_wx_nick_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信昵称',
+  `nx_DU_wx_open_id` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信openid',
+  `nx_DU_wx_phone` varchar(15) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货部门用户微信手机号码',
   `nx_DU_admin` tinyint(2) DEFAULT NULL COMMENT '订货部门用户是否是管理员',
   `nx_DU_distributer_id` int(20) DEFAULT NULL COMMENT '订货部门批发商id',
   `nx_DU_url_change` tinyint(2) DEFAULT NULL,
   `nx_DU_department_father_id` int(20) DEFAULT NULL,
-  `nx_DU_join_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DU_join_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_department_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_department_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_department_user` VALUES (1, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', '李君', 'ofoiw4v7UK6wVYTdDmEL4fMjG9ts', NULL, 1, 1, 0, 1, '2020-10-11');
-INSERT INTO `nx_department_user` VALUES (2, 2, 'https://thirdwx.qlogo.cn/mmopen/vi_32/YTBiagAQnZiae8FfVjLGjNiadyccGNgibddlK5SKWTttFFxSFRzic9U52duO0bb8AUrLXgIyu9D6bne8kGn66MJCmEw/132', 'Fangfang', 'ofoiw4ku3lL8p520R-9sNSUNKXNQ', NULL, 1, 3, 0, 2, '2020-10-11');
-INSERT INTO `nx_department_user` VALUES (3, 3, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', '李君', 'ofoiw4v7UK6wVYTdDmEL4fMjG9ts', NULL, 1, 1, 0, 3, '2020-10-11');
+INSERT INTO `nx_department_user` VALUES (1, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJrPWubwbROMC55HdcicQicia2M7OvqibxBkD7FC0icTHV08UmUYIphSo03ZQdG52WDs1cCws1ADPoIeLA/132', '李君', 'ofoiw4v7UK6wVYTdDmEL4fMjG9ts', NULL, 1, 1, 0, 1, '2020-10-14');
+INSERT INTO `nx_department_user` VALUES (2, 1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/0Ds5EDzz2BFk2SiaaH5L2REHysxRUQPvLibWpjJx7v6PEP6aleKXzP1rtzXiaUQLVbqcdibGpea8Eu6cL8U1FIoLjg/132', '沛谊', 'ofoiw4jymo11t1boCKwp_JTuwu9U', NULL, 1, 1, 0, 1, '2020-10-14');
 COMMIT;
 
 -- ----------------------------
@@ -898,24 +927,22 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_distributer`;
 CREATE TABLE `nx_distributer` (
   `nx_distributer_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商id',
-  `nx_distributer_name` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商名称',
-  `nx_distributer_lan` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商位置经度',
-  `nx_distributer_lun` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商位置纬度',
+  `nx_distributer_name` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商名称',
+  `nx_distributer_lan` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商位置经度',
+  `nx_distributer_lun` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商位置纬度',
   `nx_distributer_business_type` tinyint(2) DEFAULT NULL COMMENT '批发商商业类型',
-  `nx_distributer_manager` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_distributer_phone` varchar(30) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_distributer_address` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_distributer_manager` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_distributer_phone` varchar(30) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_distributer_address` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_distributer_img` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_distributer` VALUES (1, '粒子配送', NULL, NULL, NULL, '李树国', '13910825707', '京贸物联批发市场D-102', 'uploadImage/r.jpg');
-INSERT INTO `nx_distributer` VALUES (2, '李树国配送', NULL, NULL, NULL, '李树国', '13910825707', '京贸物联批发市场D-102', 'uploadImage/r.jpg');
-INSERT INTO `nx_distributer` VALUES (3, '青一', NULL, NULL, NULL, '李树国', '13910825707', '京贸物联批发市场D-102', 'uploadImage/r.jpg');
+INSERT INTO `nx_distributer` VALUES (1, '李树国配送', NULL, NULL, NULL, '李树国', '13910825707', '京贸物联批发市场D-102', 'uploadImage/r.jpg');
 COMMIT;
 
 -- ----------------------------
@@ -936,9 +963,9 @@ DROP TABLE IF EXISTS `nx_distributer_alias`;
 CREATE TABLE `nx_distributer_alias` (
   `nx_distributer_alias_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_DA_dis_goods_id` int(20) DEFAULT NULL,
-  `nx_DA_alias_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DA_alias_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_alias_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_alias
@@ -951,17 +978,6 @@ INSERT INTO `nx_distributer_alias` VALUES (4, 9, '莲菜');
 INSERT INTO `nx_distributer_alias` VALUES (5, 10, '洋芋');
 INSERT INTO `nx_distributer_alias` VALUES (6, 18, '豆角');
 INSERT INTO `nx_distributer_alias` VALUES (7, 47, '圣女果');
-INSERT INTO `nx_distributer_alias` VALUES (8, 53, '红萝卜');
-INSERT INTO `nx_distributer_alias` VALUES (9, 54, '红苕');
-INSERT INTO `nx_distributer_alias` VALUES (10, 54, '地瓜');
-INSERT INTO `nx_distributer_alias` VALUES (11, 57, '红萝卜');
-INSERT INTO `nx_distributer_alias` VALUES (12, 58, '红苕');
-INSERT INTO `nx_distributer_alias` VALUES (13, 58, '地瓜');
-INSERT INTO `nx_distributer_alias` VALUES (14, 63, '莲菜');
-INSERT INTO `nx_distributer_alias` VALUES (15, 64, '洋芋');
-INSERT INTO `nx_distributer_alias` VALUES (16, 72, '豆角');
-INSERT INTO `nx_distributer_alias` VALUES (17, 101, '圣女果');
-INSERT INTO `nx_distributer_alias` VALUES (18, 194, '红萝卜');
 COMMIT;
 
 -- ----------------------------
@@ -1002,9 +1018,9 @@ CREATE TABLE `nx_distributer_customer` (
 DROP TABLE IF EXISTS `nx_distributer_daytime`;
 CREATE TABLE `nx_distributer_daytime` (
   `nx_week_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_day_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_day_open` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_day_close` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_open` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_day_close` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_dis_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_week_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -1018,15 +1034,13 @@ CREATE TABLE `nx_distributer_department` (
   `nx_DD_distributer_id` int(20) DEFAULT NULL,
   `nx_DD_department_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_dep_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_department
 -- ----------------------------
 BEGIN;
 INSERT INTO `nx_distributer_department` VALUES (1, 1, 1);
-INSERT INTO `nx_distributer_department` VALUES (2, 3, 2);
-INSERT INTO `nx_distributer_department` VALUES (3, 1, 3);
 COMMIT;
 
 -- ----------------------------
@@ -1055,43 +1069,57 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_distributer_father_goods`;
 CREATE TABLE `nx_distributer_father_goods` (
   `nx_distributer_father_goods_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_dfg_father_goods_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dfg_father_goods_img` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dfg_father_goods_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dfg_father_goods_img` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_dfg_father_goods_sort` int(4) DEFAULT NULL,
-  `nx_dfg_father_goods_color` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dfg_father_goods_color` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_dfg_fathers_father_id` int(20) DEFAULT NULL,
   `nx_dfg_father_goods_level` tinyint(2) DEFAULT NULL,
   `nx_dfg_distributer_id` int(20) DEFAULT NULL,
   `nx_dfg_goods_amount` int(4) DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_father_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_father_goods
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_distributer_father_goods` VALUES (5, '根茎类', NULL, NULL, NULL, 6, 2, 1, 2);
-INSERT INTO `nx_distributer_father_goods` VALUES (6, '新鲜蔬菜', NULL, NULL, NULL, 7, 1, 1, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (7, '生鲜', NULL, NULL, NULL, NULL, 0, 1, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (8, '根茎类', NULL, NULL, NULL, 9, 2, 3, 16);
-INSERT INTO `nx_distributer_father_goods` VALUES (9, '新鲜蔬菜', NULL, NULL, NULL, 10, 1, 3, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (10, '生鲜', NULL, NULL, NULL, NULL, 0, 3, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (11, '茄果瓜类', NULL, NULL, NULL, 9, 2, 3, 34);
-INSERT INTO `nx_distributer_father_goods` VALUES (12, '叶菜类', NULL, NULL, NULL, 9, 2, 3, 40);
-INSERT INTO `nx_distributer_father_goods` VALUES (13, '豆腐制品', NULL, NULL, NULL, 14, 2, 1, 1);
-INSERT INTO `nx_distributer_father_goods` VALUES (14, '豆腐制品咸菜', NULL, NULL, NULL, 7, 1, 1, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (15, '葱姜蒜椒香料', NULL, NULL, NULL, 9, 2, 3, 25);
-INSERT INTO `nx_distributer_father_goods` VALUES (16, '鲜菌菇', NULL, NULL, NULL, 9, 2, 3, 14);
-INSERT INTO `nx_distributer_father_goods` VALUES (17, '进口水果', NULL, NULL, NULL, 18, 2, 3, 1);
-INSERT INTO `nx_distributer_father_goods` VALUES (18, '新鲜水果', NULL, NULL, NULL, 10, 1, 3, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (19, '豆腐制品', NULL, NULL, NULL, 20, 2, 3, 3);
-INSERT INTO `nx_distributer_father_goods` VALUES (20, '豆腐制品咸菜', NULL, NULL, NULL, 10, 1, 3, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (21, '茄果瓜类', NULL, NULL, NULL, 6, 2, 1, 1);
-INSERT INTO `nx_distributer_father_goods` VALUES (22, '根茎类', NULL, NULL, NULL, 23, 2, 2, 3);
-INSERT INTO `nx_distributer_father_goods` VALUES (23, '新鲜蔬菜', NULL, NULL, NULL, 24, 1, 2, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (24, '生鲜', NULL, NULL, NULL, NULL, 0, 2, NULL);
-INSERT INTO `nx_distributer_father_goods` VALUES (25, '主食', NULL, NULL, '#20afb8', 26, 2, 1, 1);
-INSERT INTO `nx_distributer_father_goods` VALUES (26, '食品', NULL, NULL, NULL, 7, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (1, '根茎类', NULL, NULL, '#20afb8', 2, 2, 1, 14);
+INSERT INTO `nx_distributer_father_goods` VALUES (2, '新鲜蔬菜', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (3, '生鲜', NULL, NULL, NULL, NULL, 0, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (4, '茄果瓜类', NULL, NULL, '#20afb8', 2, 2, 1, 34);
+INSERT INTO `nx_distributer_father_goods` VALUES (5, '叶菜类', NULL, NULL, '#20afb8', 2, 2, 1, 30);
+INSERT INTO `nx_distributer_father_goods` VALUES (6, '葱姜蒜椒香料', NULL, NULL, '#20afb8', 2, 2, 1, 25);
+INSERT INTO `nx_distributer_father_goods` VALUES (7, '鲜菌菇', NULL, NULL, '#20afb8', 2, 2, 1, 14);
+INSERT INTO `nx_distributer_father_goods` VALUES (8, '国产水果', NULL, NULL, '#20afb8', 9, 2, 1, 55);
+INSERT INTO `nx_distributer_father_goods` VALUES (9, '新鲜水果', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (10, '进口水果', NULL, NULL, '#20afb8', 9, 2, 1, 1);
+INSERT INTO `nx_distributer_father_goods` VALUES (11, '豆腐制品', NULL, NULL, '#20afb8', 12, 2, 1, 8);
+INSERT INTO `nx_distributer_father_goods` VALUES (12, '豆腐制品咸菜', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (13, '半加工豆制品', NULL, NULL, '#20afb8', 12, 2, 1, 5);
+INSERT INTO `nx_distributer_father_goods` VALUES (14, '咸菜', NULL, NULL, '#20afb8', 12, 2, 1, 4);
+INSERT INTO `nx_distributer_father_goods` VALUES (15, '熟食', NULL, NULL, '#20afb8', 12, 2, 1, 2);
+INSERT INTO `nx_distributer_father_goods` VALUES (16, '猪肉', NULL, NULL, '#20afb8', 17, 2, 1, 28);
+INSERT INTO `nx_distributer_father_goods` VALUES (17, '肉禽蛋', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (18, '牛肉', NULL, NULL, '#20afb8', 17, 2, 1, 23);
+INSERT INTO `nx_distributer_father_goods` VALUES (19, '羊肉', NULL, NULL, '#20afb8', 17, 2, 1, 18);
+INSERT INTO `nx_distributer_father_goods` VALUES (20, '鸡鸭鸽', NULL, NULL, '#20afb8', 17, 2, 1, 31);
+INSERT INTO `nx_distributer_father_goods` VALUES (21, '蛋', NULL, NULL, '#20afb8', 17, 2, 1, 10);
+INSERT INTO `nx_distributer_father_goods` VALUES (22, '米', NULL, NULL, '#20afb8', 23, 2, 1, 2);
+INSERT INTO `nx_distributer_father_goods` VALUES (23, '粮油调味', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (24, '食用油', NULL, NULL, '#20afb8', 23, 2, 1, 6);
+INSERT INTO `nx_distributer_father_goods` VALUES (25, '面', NULL, NULL, '#20afb8', 23, 2, 1, 2);
+INSERT INTO `nx_distributer_father_goods` VALUES (26, '杂粮', NULL, NULL, '#20afb8', 23, 2, 1, 3);
+INSERT INTO `nx_distributer_father_goods` VALUES (27, '调味品', NULL, NULL, '#20afb8', 23, 2, 1, 25);
+INSERT INTO `nx_distributer_father_goods` VALUES (28, '南北干货', NULL, NULL, '#20afb8', 23, 2, 1, 12);
+INSERT INTO `nx_distributer_father_goods` VALUES (29, '方便食品', NULL, NULL, '#20afb8', 23, 2, 1, 2);
+INSERT INTO `nx_distributer_father_goods` VALUES (30, '烘培原料', NULL, NULL, '#20afb8', 23, 2, 1, 1);
+INSERT INTO `nx_distributer_father_goods` VALUES (31, '鱼类', NULL, NULL, '#20afb8', 32, 2, 1, 23);
+INSERT INTO `nx_distributer_father_goods` VALUES (32, '海鲜水产', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (33, '虾类', NULL, NULL, '#20afb8', 32, 2, 1, 15);
+INSERT INTO `nx_distributer_father_goods` VALUES (34, '主食', NULL, NULL, '#20afb8', 35, 2, 1, 6);
+INSERT INTO `nx_distributer_father_goods` VALUES (35, '食品', NULL, NULL, NULL, 3, 1, 1, NULL);
+INSERT INTO `nx_distributer_father_goods` VALUES (36, '干果食品', NULL, NULL, '#20afb8', 35, 2, 1, 4);
 COMMIT;
 
 -- ----------------------------
@@ -1104,168 +1132,431 @@ CREATE TABLE `nx_distributer_goods` (
   `nx_dg_distributer_id` int(20) DEFAULT NULL COMMENT '批发商id',
   `nx_dg_goods_status` tinyint(2) DEFAULT NULL COMMENT '商品状态',
   `nx_dg_goods_is_weight` tinyint(2) DEFAULT NULL COMMENT '是否称重',
-  `nx_dg_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
-  `nx_dg_goods_detail` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品详细',
-  `nx_dg_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
-  `nx_dg_goods_pinyin` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音',
-  `nx_dg_goods_py` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音简拼',
+  `nx_dg_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
+  `nx_dg_goods_detail` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品详细',
+  `nx_dg_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
+  `nx_dg_goods_pinyin` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音',
+  `nx_dg_goods_py` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '社区商品拼音简拼',
   `nx_dg_nx_goods_id` int(10) DEFAULT NULL COMMENT 'nxGoodsId',
-  `nx_dg_nx_father_img` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进货方式',
-  `nx_dg_nx_father_id` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT 'nxGoodsFatherId',
+  `nx_dg_nx_father_img` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进货方式',
+  `nx_dg_nx_father_id` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT 'nxGoodsFatherId',
   `nx_dg_nx_grand_id` int(20) DEFAULT NULL COMMENT 'nxGoodsGrandid',
   `nx_dg_nx_great_grand_id` int(20) DEFAULT NULL COMMENT 'nxGreatGrandid',
   `nx_dg_pull_off` tinyint(2) DEFAULT NULL COMMENT '是否下架',
-  `nx_dg_goods_brand` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dg_goods_place` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_goods_brand` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_goods_place` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_dg_nx_goods_father_color` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=410 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_goods
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_distributer_goods` VALUES (55, 8, 3, NULL, NULL, '白萝卜', '', '斤', 'bailuobu', 'blb', 45096, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (56, 8, 3, NULL, NULL, '卞萝卜', '', '斤', 'bianluobu', 'blb', 45097, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (57, 8, 3, NULL, NULL, '胡萝卜', '', '斤', 'huluobu', 'hlb', 45094, 'goodsImage/1.jpg', '111', 11, 1, 0, '', '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (58, 8, 3, NULL, NULL, '红薯', '普通', '斤', 'hongshu', 'hs', 45104, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (59, 8, 3, NULL, NULL, '绿萝卜', NULL, '斤', 'lüluobu', 'llb', 45590, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (60, 8, 3, NULL, NULL, '凉薯', '', '斤', 'liangshu', 'ls', 45107, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (61, 8, 3, NULL, NULL, '蜜薯', '', '斤', 'mishu', 'ms', 45558, 'goodsImage/1.jpg', '111', 11, 1, 0, '', '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (62, 8, 3, NULL, NULL, '麻山药', '', '斤', 'mashanyao', 'msy', 45101, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (63, 8, 3, NULL, NULL, '藕', '', '斤', 'ou', 'o', 45103, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (64, 8, 3, NULL, NULL, '土豆', '', '斤', 'tudou', 'td', 44678, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (65, 8, 3, NULL, NULL, '铁棍山药', NULL, '斤', 'tiegunshanyao', 'tgsy', 17600014, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (66, 8, 3, NULL, NULL, '莴笋', '', '斤', 'wosun', 'ws', 45100, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (67, 8, 3, NULL, NULL, '心里美', '', '斤', 'xinlimei', 'xlm', 45095, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (68, 8, 3, NULL, NULL, '新土豆', '', '斤', 'xintudou', 'xtd', 45093, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (69, 8, 3, NULL, NULL, '芋头', '', '斤', 'yutou', 'yt', 45106, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (70, 8, 3, NULL, NULL, '樱桃萝卜', '', '斤', 'yingtaoluobu', 'ytlb', 45109, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (71, 11, 3, NULL, NULL, '白不老', '', '斤', 'baibulao', 'bbl', 45148, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (72, 11, 3, NULL, NULL, '扁豆', '', '斤', 'biandou', 'bd', 45146, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (73, 11, 3, NULL, NULL, '荸荠', '', '斤', 'biji', 'bj', 45160, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (74, 11, 3, NULL, NULL, '板栗南瓜', '', '斤', 'banlinangua', 'blng', 45159, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (75, 11, 3, NULL, NULL, '长茄子', '', '斤', 'changqiezi', 'cqz', 45135, 'goodsImage/3.jpg', '112', 11, 1, 0, '', '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (76, 11, 3, NULL, NULL, '冬春笋', '', '斤', 'dongchunsun', 'dcs', 45163, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (77, 11, 3, NULL, NULL, '吊冬瓜', '', '斤', 'diaodonggua', 'ddg', 45138, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (78, 11, 3, NULL, NULL, '地冬瓜', '', '斤', 'didonggua', 'ddg', 45139, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (79, 11, 3, NULL, NULL, '豆王', '', '斤', 'douwang', 'dw', 45145, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (80, 11, 3, NULL, NULL, '广茄', '', '斤', 'guangqie', 'gq', 45155, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (81, 11, 3, NULL, NULL, '黄瓜', '', '斤', 'huanggua', 'hg', 45132, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (82, 11, 3, NULL, NULL, '荷兰瓜', NULL, '斤', 'helangua', 'hlg', 45592, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (83, 11, 3, NULL, NULL, '花生', '', '斤', 'huasheng', 'hs', 45164, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (84, 11, 3, NULL, NULL, '菜花', '', '斤', 'caihua', 'ch', 45141, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (85, 11, 3, NULL, NULL, '架豆', '', '斤', 'jiadou', 'jd', 45137, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (86, 11, 3, NULL, NULL, '豇豆', '', '斤', 'jiangdou', 'jd', 45147, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (87, 11, 3, NULL, NULL, '金丝南瓜', '', '斤', 'jinsinangua', 'jsng', 45158, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (88, 11, 3, NULL, NULL, '苦瓜', '', '斤', 'kugua', 'kg', 45151, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (89, 11, 3, NULL, NULL, '毛豆', '', '斤', 'maodou', 'md', 45150, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (90, 11, 3, NULL, NULL, '南北瓜', '', '斤', 'nanbeigua', 'nbg', 45153, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (91, 11, 3, NULL, NULL, '秋葵', NULL, '斤', 'qiukui', 'qk', 45594, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (92, 11, 3, NULL, NULL, '丝瓜', '', '斤', 'sigua', 'sg', 45152, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (93, 11, 3, NULL, NULL, '散菜花', '', '斤', 'sancaihua', 'sch', 45142, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (94, 11, 3, NULL, NULL, '甜豆', NULL, '斤', 'tiandou', 'td', 45597, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (95, 11, 3, NULL, NULL, '豌豆', '', '斤', 'wandou', 'wd', 45162, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (96, 11, 3, NULL, NULL, '西胡芦', '', '斤', 'xihulu', 'xhl', 45140, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (97, 11, 3, NULL, NULL, '西红柿', '', '斤', 'xihongshi', 'xhs', 45130, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (98, 11, 3, NULL, NULL, '西兰花', NULL, '斤', 'xilanhua', 'xlh', 45599, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (99, 11, 3, NULL, NULL, '小毛冬瓜', '', '斤', 'xiaomaodonggua', 'xmdg', 45144, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (100, 11, 3, NULL, NULL, '线茄', '', '斤', 'xianqie', 'xq', 45156, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (101, 11, 3, NULL, NULL, '小西红柿', NULL, '斤', 'xiaoxihongshi', 'xxhs', 17600016, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (102, 11, 3, NULL, NULL, '油豆', '', '斤', 'youdou', 'yd', 45149, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (103, 11, 3, NULL, NULL, '玉米', '', '斤', 'yumi', 'ym', 45161, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (104, 11, 3, NULL, NULL, '圆茄子', '', '斤', 'yuanqiezi', 'yqz', 45136, 'goodsImage/3.jpg', '112', 11, 1, 0, '', '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (105, 12, 3, NULL, NULL, '菠菜', '', '斤', 'bocai', 'bc', 45168, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (106, 12, 3, NULL, NULL, '菜心', '', '斤', 'caixin', 'cx', 45197, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (107, 12, 3, NULL, NULL, '穿心莲', '', '斤', 'chuanxinlian', 'cxl', 45204, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (108, 12, 3, NULL, NULL, '大白菜', '', '斤', 'dabaicai', 'dbc', 45165, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (109, 12, 3, NULL, NULL, '盖菜', '', '斤', 'gaicai', 'gc', 45195, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (110, 12, 3, NULL, NULL, '甘蓝', '', '斤', 'ganlan', 'gl', 45171, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (111, 12, 3, NULL, NULL, '茴香', '', '斤', 'huixiang', 'hx', 45176, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (112, 12, 3, NULL, NULL, '黄心菜', '', '斤', 'huangxincai', 'hxc', 45181, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (113, 12, 3, NULL, NULL, '蒿子秆', '', '斤', 'haozigan', 'hzg', 45190, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (114, 12, 3, NULL, NULL, '荠菜', '', '斤', 'jicai', 'jc', 45200, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (115, 12, 3, NULL, NULL, '韭菜', '', '斤', 'jiucai', 'jc', 45174, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (116, 12, 3, NULL, NULL, '菊花菜', '', '斤', 'juhuacai', 'jhc', 45194, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (117, 12, 3, NULL, NULL, '芥兰', '', '斤', 'jielan', 'jl', 45196, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (118, 12, 3, NULL, NULL, '芥兰苗', NULL, '斤', 'jielanmiao', 'jlm', 45589, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (119, 12, 3, NULL, NULL, '鸡毛菜', '', '斤', 'jimaocai', 'jmc', 45199, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (120, 12, 3, NULL, NULL, '快菜', '', '斤', 'kuaicai', 'kc', 45202, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (121, 12, 3, NULL, NULL, '苦菊', '', '斤', 'kuju', 'kj', 45203, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (122, 12, 3, NULL, NULL, '空心菜', '', '斤', 'kongxincai', 'kxc', 45198, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (123, 12, 3, NULL, NULL, '落地球', NULL, '斤', 'luodiqiu', 'ldq', 45593, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (124, 12, 3, NULL, NULL, '兰花', NULL, '把', 'lanhua', 'lh', 45588, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (125, 12, 3, NULL, NULL, '罗马生菜', NULL, '斤', 'luomashengcai', 'lmsc', 45600, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (126, 12, 3, NULL, NULL, '木耳菜', '', '斤', 'muercai', 'mec', 45205, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (127, 12, 3, NULL, NULL, '奶白菜', '', '斤', 'naibaicai', 'nbc', 45187, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (128, 12, 3, NULL, NULL, '芹菜', '', '斤', 'qincai', 'qc', 45167, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (129, 12, 3, NULL, NULL, '叶生菜', '', '斤', 'sanshengcai', 'ssc', 45188, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (130, 12, 3, NULL, NULL, '茼蒿', '', '斤', 'tonghao', 'th', 45189, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (131, 12, 3, NULL, NULL, '豌豆苗', '', '斤', 'wandoumiao', 'wdm', 45201, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (132, 12, 3, NULL, NULL, '娃娃菜', NULL, '包', 'wawacai', 'wwc', 17600076, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (133, 12, 3, NULL, NULL, '娃娃菜', '', '斤', 'wawacai', 'wwc', 45166, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (134, 12, 3, NULL, NULL, '小白菜', '', '斤', 'xiaobaicai', 'xbc', 45185, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (135, 12, 3, NULL, NULL, '苋菜', '', '斤', 'xiancai', 'xc', 45193, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (136, 12, 3, NULL, NULL, '香菜', '', '斤', 'xiangcai', 'xc', 45173, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (137, 12, 3, NULL, NULL, '香椿苗', NULL, '斤', 'xiangchunmiao', 'xcm', 45598, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (138, 12, 3, NULL, NULL, '香芹', '', '斤', 'xiangqin', 'xq', 45191, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (139, 12, 3, NULL, NULL, '西芹', '', '斤', 'xiqin', 'xq', 45182, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (140, 5, 1, NULL, NULL, '白萝卜', '', '斤', 'bailuobu', 'blb', 45096, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (142, 13, 1, NULL, NULL, '盒豆腐', '韧豆腐', '盒', 'hedoufu', 'hdf', 17600005, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (143, 12, 3, NULL, NULL, '油菜', '', '斤', 'youcai', 'yc', 45172, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (144, 12, 3, NULL, NULL, '油麦菜', '', '斤', 'youmaicai', 'ymc', 45180, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (145, 12, 3, NULL, NULL, '圆生菜', NULL, '斤', 'yuanshengcai', 'ysc', 45563, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (146, 12, 3, NULL, NULL, '紫甘蓝', NULL, '斤', 'ziganlan', 'zgl', 17600015, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (147, 12, 3, NULL, NULL, '芝麻菜', NULL, '斤', 'zhimacai', 'zmc', 45591, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (148, 15, 3, NULL, NULL, '彩椒(红)', '', '斤', 'caijiao(hong)', 'cj(h)', 45126, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (149, 15, 3, NULL, NULL, '彩椒(黄)', NULL, '斤', 'caijiao(huang)', 'cj(h)', 45580, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (150, 15, 3, NULL, NULL, '大葱', '', '斤', 'dacong', 'dc', 45114, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (151, 15, 3, NULL, NULL, '大葱', NULL, '斤', 'dacong', 'dc', 17600011, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '本地', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (152, 15, 3, NULL, NULL, '黄葱头', '', '斤', 'huangcongtou', 'hct', 45112, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (153, 15, 3, NULL, NULL, '杭椒', NULL, '斤', 'hangjiao', 'hj', 17600027, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (154, 15, 3, NULL, NULL, '红尖椒', NULL, '斤', 'hongjianjiao', 'hjj', 45582, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (155, 15, 3, NULL, NULL, '姜', '', '斤', 'jiang', 'j', 45116, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (156, 15, 3, NULL, NULL, '尖椒', '', '斤', 'jianjiao', 'jj', 45110, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (157, 15, 3, NULL, NULL, '螺丝椒', NULL, '斤', 'luosijiao', 'lsj', 45579, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (158, 15, 3, NULL, NULL, '毛葱', NULL, '斤', 'maocong', 'mc', 45560, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (159, 15, 3, NULL, NULL, '麻椒', NULL, '斤', 'majiao', 'mj', 45583, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (160, 15, 3, NULL, NULL, '美人椒', NULL, '斤', 'meirenjiao', 'mrj', 45581, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (161, 15, 3, NULL, NULL, '青椒', NULL, '斤', 'qingjiao', 'qj', 45566, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (162, 15, 3, NULL, NULL, '青蒜', '', '斤', 'qingsuan', 'qs', 45127, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (163, 15, 3, NULL, NULL, '蒜', '', '斤', 'suan', 's', 45117, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (164, 15, 3, NULL, NULL, '蒜黄', '', '斤', 'suanhuang', 'sh', 45121, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (165, 15, 3, NULL, NULL, '蒜米', NULL, '斤', 'suanmi', 'sm', 17600012, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (166, 15, 3, NULL, NULL, '蒜苗', '', '斤', 'suanmiao', 'sm', 45119, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (167, 15, 3, NULL, NULL, '香葱', '', '斤', 'xiangcong', 'xc', 45128, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (168, 15, 3, NULL, NULL, '小葱', '', '斤', 'xiaocong', 'xc', 45115, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (169, 15, 3, NULL, NULL, '线椒', '', '斤', 'xianjiao', 'xj', 45123, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (170, 15, 3, NULL, NULL, '小米椒', '', '斤', 'xiaomijiao', 'xmj', 45125, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (171, 15, 3, NULL, NULL, '新蒜', '', '斤', 'xinsuan', 'xs', 45118, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (172, 15, 3, NULL, NULL, '紫葱头', '', '斤', 'zicongtou', 'zct', 45113, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (173, 16, 3, NULL, NULL, '白玉菇', NULL, '50克/袋', 'baiyugu', 'byg', 17600022, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (174, 16, 3, NULL, NULL, '白玉菇', '', '斤', 'baiyugu', 'byg', 45208, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (175, 16, 3, NULL, NULL, '海鲜菇', NULL, '4斤/包', 'haixiangu', 'hxg', 45584, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (176, 16, 3, NULL, NULL, '海鲜菇', NULL, '50克/袋', 'haixiangu', 'hxg', 17600023, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (177, 16, 3, NULL, NULL, '鸡腿菇', '', '斤', 'jituigu', 'jtg', 45211, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (178, 16, 3, NULL, NULL, '金针菇', NULL, '5斤/包', 'jinzhengu', 'jzg', 17600020, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (179, 16, 3, NULL, NULL, '金针菇', '', '斤', 'jinzhengu', 'jzg', 45212, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (180, 16, 3, NULL, NULL, '金针菇', NULL, '50克/袋', 'jinzhengu', 'jzg', 17600019, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (181, 16, 3, NULL, NULL, '口蘑', '', '斤', 'koumo', 'km', 45209, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (182, 16, 3, NULL, NULL, '平菇', '', '斤', 'pinggu', 'pg', 45206, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (183, 16, 3, NULL, NULL, '杏鲍菇', NULL, '5斤/包', 'xingbaogu', 'xbg', 17600021, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (184, 16, 3, NULL, NULL, '杏鲍菇', '', '斤', 'xingbaogu', 'xbg', 45210, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (185, 16, 3, NULL, NULL, '香菇', '', '斤', 'xianggu', 'xg', 45207, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (186, 16, 3, NULL, NULL, '蟹味菇', NULL, '斤', 'xieweigu', 'xwg', 45585, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (187, 17, 3, NULL, NULL, '进口香蕉', NULL, '斤', 'jinkouxiangjiao', 'jkxj', 17600024, 'goodsImage/logo.jpg', '122', 12, 1, 0, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (188, 19, 3, NULL, NULL, '盒豆腐', '韧豆腐', '盒', 'hedoufu', 'hdf', 17600005, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (189, 19, 3, NULL, NULL, '盒豆腐', '北豆腐', '盒', 'hedoufu', 'hdf', 31116, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (190, 19, 3, NULL, NULL, '盒豆腐', '鲜豆腐', '盒', 'hedoufu', 'hdf', 17600004, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, NULL);
-INSERT INTO `nx_distributer_goods` VALUES (191, 21, 1, NULL, NULL, '白不老', '', '斤', 'baibulao', 'bbl', 45148, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (192, 22, 2, NULL, NULL, '白萝卜', '', '斤', 'bailuobu', 'blb', 45096, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (193, 22, 2, NULL, NULL, '卞萝卜', '', '斤', 'bianluobu', 'blb', 45097, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (194, 22, 2, NULL, NULL, '胡萝卜', '', '斤', 'huluobu', 'hlb', 45094, 'goodsImage/1.jpg', '111', 11, 1, 0, '', '', NULL);
-INSERT INTO `nx_distributer_goods` VALUES (196, 5, 1, NULL, NULL, '卞萝卜', '', '斤', 'bianluobu', 'blb', 45097, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
-INSERT INTO `nx_distributer_goods` VALUES (197, 25, 1, NULL, NULL, '大饼', NULL, '张', 'dabing', 'db', 17600089, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (1, 1, 1, NULL, NULL, '白萝卜', '', '斤', 'bailuobu', 'blb', 45096, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (2, 1, 1, NULL, NULL, '卞萝卜', '', '斤', 'bianluobu', 'blb', 45097, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (3, 1, 1, NULL, NULL, '胡萝卜', '', '斤', 'huluobu', 'hlb', 45094, 'goodsImage/1.jpg', '111', 11, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (4, 1, 1, NULL, NULL, '红薯', '普通', '斤', 'hongshu', 'hs', 45104, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (5, 1, 1, NULL, NULL, '绿萝卜', NULL, '斤', 'lüluobu', 'llb', 45590, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (7, 1, 1, NULL, NULL, '蜜薯', '', '斤', 'mishu', 'ms', 45558, 'goodsImage/1.jpg', '111', 11, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (8, 1, 1, NULL, NULL, '麻山药', '', '斤', 'mashanyao', 'msy', 45101, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (9, 1, 1, NULL, NULL, '藕', '', '斤', 'ou', 'o', 45103, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (10, 1, 1, NULL, NULL, '土豆', '', '斤', 'tudou', 'td', 44678, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (11, 1, 1, NULL, NULL, '铁棍山药', NULL, '斤', 'tiegunshanyao', 'tgsy', 17600014, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (12, 1, 1, NULL, NULL, '莴笋', '', '斤', 'wosun', 'ws', 45100, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (13, 1, 1, NULL, NULL, '心里美', '', '斤', 'xinlimei', 'xlm', 45095, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (14, 1, 1, NULL, NULL, '新土豆', '', '斤', 'xintudou', 'xtd', 45093, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (15, 1, 1, NULL, NULL, '芋头', '', '斤', 'yutou', 'yt', 45106, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (16, 1, 1, NULL, NULL, '樱桃萝卜', '', '斤', 'yingtaoluobu', 'ytlb', 45109, 'goodsImage/1.jpg', '111', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (17, 4, 1, NULL, NULL, '白不老', '', '斤', 'baibulao', 'bbl', 45148, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (18, 4, 1, NULL, NULL, '扁豆', '', '斤', 'biandou', 'bd', 45146, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (19, 4, 1, NULL, NULL, '荸荠', '', '斤', 'biji', 'bj', 45160, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (20, 4, 1, NULL, NULL, '板栗南瓜', '', '斤', 'banlinangua', 'blng', 45159, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (21, 4, 1, NULL, NULL, '长茄子', '', '斤', 'changqiezi', 'cqz', 45135, 'goodsImage/3.jpg', '112', 11, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (22, 4, 1, NULL, NULL, '冬春笋', '', '斤', 'dongchunsun', 'dcs', 45163, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (23, 4, 1, NULL, NULL, '吊冬瓜', '', '斤', 'diaodonggua', 'ddg', 45138, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (24, 4, 1, NULL, NULL, '地冬瓜', '', '斤', 'didonggua', 'ddg', 45139, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (25, 4, 1, NULL, NULL, '豆王', '', '斤', 'douwang', 'dw', 45145, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (26, 4, 1, NULL, NULL, '广茄', '', '斤', 'guangqie', 'gq', 45155, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (27, 4, 1, NULL, NULL, '黄瓜', '', '斤', 'huanggua', 'hg', 45132, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (28, 4, 1, NULL, NULL, '荷兰瓜', NULL, '斤', 'helangua', 'hlg', 45592, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (29, 4, 1, NULL, NULL, '花生', '', '斤', 'huasheng', 'hs', 45164, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (30, 4, 1, NULL, NULL, '菜花', '', '斤', 'caihua', 'ch', 45141, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (31, 4, 1, NULL, NULL, '架豆', '', '斤', 'jiadou', 'jd', 45137, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (32, 4, 1, NULL, NULL, '豇豆', '', '斤', 'jiangdou', 'jd', 45147, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (33, 4, 1, NULL, NULL, '金丝南瓜', '', '斤', 'jinsinangua', 'jsng', 45158, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (34, 4, 1, NULL, NULL, '苦瓜', '', '斤', 'kugua', 'kg', 45151, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (35, 4, 1, NULL, NULL, '毛豆', '', '斤', 'maodou', 'md', 45150, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (36, 4, 1, NULL, NULL, '南北瓜', '', '斤', 'nanbeigua', 'nbg', 45153, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (37, 4, 1, NULL, NULL, '秋葵', NULL, '斤', 'qiukui', 'qk', 45594, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (38, 4, 1, NULL, NULL, '丝瓜', '', '斤', 'sigua', 'sg', 45152, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (39, 4, 1, NULL, NULL, '散菜花', '', '斤', 'sancaihua', 'sch', 45142, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (40, 4, 1, NULL, NULL, '甜豆', NULL, '斤', 'tiandou', 'td', 45597, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (41, 4, 1, NULL, NULL, '豌豆', '', '斤', 'wandou', 'wd', 45162, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (42, 4, 1, NULL, NULL, '西胡芦', '', '斤', 'xihulu', 'xhl', 45140, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (43, 4, 1, NULL, NULL, '西红柿', '', '斤', 'xihongshi', 'xhs', 45130, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (44, 4, 1, NULL, NULL, '西兰花', NULL, '斤', 'xilanhua', 'xlh', 45599, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (45, 4, 1, NULL, NULL, '小毛冬瓜', '', '斤', 'xiaomaodonggua', 'xmdg', 45144, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (46, 4, 1, NULL, NULL, '线茄', '', '斤', 'xianqie', 'xq', 45156, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (47, 4, 1, NULL, NULL, '小西红柿', NULL, '斤', 'xiaoxihongshi', 'xxhs', 17600016, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (48, 4, 1, NULL, NULL, '油豆', '', '斤', 'youdou', 'yd', 45149, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (49, 4, 1, NULL, NULL, '玉米', '', '斤', 'yumi', 'ym', 45161, 'goodsImage/3.jpg', '112', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (50, 4, 1, NULL, NULL, '圆茄子', '', '斤', 'yuanqiezi', 'yqz', 45136, 'goodsImage/3.jpg', '112', 11, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (51, 5, 1, NULL, NULL, '菠菜', '', '斤', 'bocai', 'bc', 45168, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (52, 5, 1, NULL, NULL, '菜心', '', '斤', 'caixin', 'cx', 45197, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (53, 5, 1, NULL, NULL, '穿心莲', '', '斤', 'chuanxinlian', 'cxl', 45204, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (54, 5, 1, NULL, NULL, '大白菜', '', '斤', 'dabaicai', 'dbc', 45165, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (55, 5, 1, NULL, NULL, '盖菜', '', '斤', 'gaicai', 'gc', 45195, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (56, 5, 1, NULL, NULL, '甘蓝', '', '斤', 'ganlan', 'gl', 45171, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (57, 5, 1, NULL, NULL, '茴香', '', '斤', 'huixiang', 'hx', 45176, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (58, 5, 1, NULL, NULL, '黄心菜', '', '斤', 'huangxincai', 'hxc', 45181, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (59, 5, 1, NULL, NULL, '蒿子秆', '', '斤', 'haozigan', 'hzg', 45190, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (60, 5, 1, NULL, NULL, '荠菜', '', '斤', 'jicai', 'jc', 45200, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (61, 5, 1, NULL, NULL, '韭菜', '', '斤', 'jiucai', 'jc', 45174, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (62, 5, 1, NULL, NULL, '菊花菜', '', '斤', 'juhuacai', 'jhc', 45194, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (63, 5, 1, NULL, NULL, '芥兰', '', '斤', 'jielan', 'jl', 45196, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (64, 5, 1, NULL, NULL, '芥兰苗', NULL, '斤', 'jielanmiao', 'jlm', 45589, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (65, 5, 1, NULL, NULL, '鸡毛菜', '', '斤', 'jimaocai', 'jmc', 45199, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (66, 5, 1, NULL, NULL, '快菜', '', '斤', 'kuaicai', 'kc', 45202, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (67, 5, 1, NULL, NULL, '苦菊', '', '斤', 'kuju', 'kj', 45203, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (68, 5, 1, NULL, NULL, '空心菜', '', '斤', 'kongxincai', 'kxc', 45198, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (69, 5, 1, NULL, NULL, '落地球', NULL, '斤', 'luodiqiu', 'ldq', 45593, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (70, 5, 1, NULL, NULL, '兰花', NULL, '把', 'lanhua', 'lh', 45588, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (71, 5, 1, NULL, NULL, '罗马生菜', NULL, '斤', 'luomashengcai', 'lmsc', 45600, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (72, 5, 1, NULL, NULL, '木耳菜', '', '斤', 'muercai', 'mec', 45205, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (73, 5, 1, NULL, NULL, '奶白菜', '', '斤', 'naibaicai', 'nbc', 45187, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (74, 5, 1, NULL, NULL, '芹菜', '', '斤', 'qincai', 'qc', 45167, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (75, 5, 1, NULL, NULL, '叶生菜', '', '斤', 'sanshengcai', 'ssc', 45188, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (76, 5, 1, NULL, NULL, '茼蒿', '', '斤', 'tonghao', 'th', 45189, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (77, 5, 1, NULL, NULL, '豌豆苗', '', '斤', 'wandoumiao', 'wdm', 45201, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (78, 5, 1, NULL, NULL, '娃娃菜', NULL, '包', 'wawacai', 'wwc', 17600076, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (79, 5, 1, NULL, NULL, '娃娃菜', '', '斤', 'wawacai', 'wwc', 45166, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (80, 5, 1, NULL, NULL, '小白菜', '', '斤', 'xiaobaicai', 'xbc', 45185, 'goodsImage/4.jpg', '113', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (81, 6, 1, NULL, NULL, '彩椒(红)', '', '斤', 'caijiao(hong)', 'cj(h)', 45126, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (82, 6, 1, NULL, NULL, '彩椒(黄)', NULL, '斤', 'caijiao(huang)', 'cj(h)', 45580, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (83, 6, 1, NULL, NULL, '大葱', '', '斤', 'dacong', 'dc', 45114, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (84, 6, 1, NULL, NULL, '大葱', NULL, '斤', 'dacong', 'dc', 17600011, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '本地', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (85, 6, 1, NULL, NULL, '黄葱头', '', '斤', 'huangcongtou', 'hct', 45112, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (86, 6, 1, NULL, NULL, '杭椒', NULL, '斤', 'hangjiao', 'hj', 17600027, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (87, 6, 1, NULL, NULL, '红尖椒', NULL, '斤', 'hongjianjiao', 'hjj', 45582, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (88, 6, 1, NULL, NULL, '姜', '', '斤', 'jiang', 'j', 45116, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (89, 6, 1, NULL, NULL, '尖椒', '', '斤', 'jianjiao', 'jj', 45110, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (90, 6, 1, NULL, NULL, '螺丝椒', NULL, '斤', 'luosijiao', 'lsj', 45579, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (91, 6, 1, NULL, NULL, '毛葱', NULL, '斤', 'maocong', 'mc', 45560, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (92, 6, 1, NULL, NULL, '麻椒', NULL, '斤', 'majiao', 'mj', 45583, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (93, 6, 1, NULL, NULL, '美人椒', NULL, '斤', 'meirenjiao', 'mrj', 45581, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (94, 6, 1, NULL, NULL, '青椒', NULL, '斤', 'qingjiao', 'qj', 45566, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (95, 6, 1, NULL, NULL, '青蒜', '', '斤', 'qingsuan', 'qs', 45127, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (96, 6, 1, NULL, NULL, '蒜', '', '斤', 'suan', 's', 45117, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (97, 6, 1, NULL, NULL, '蒜黄', '', '斤', 'suanhuang', 'sh', 45121, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (98, 6, 1, NULL, NULL, '蒜米', NULL, '斤', 'suanmi', 'sm', 17600012, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (99, 6, 1, NULL, NULL, '蒜苗', '', '斤', 'suanmiao', 'sm', 45119, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (100, 6, 1, NULL, NULL, '香葱', '', '斤', 'xiangcong', 'xc', 45128, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (101, 6, 1, NULL, NULL, '小葱', '', '斤', 'xiaocong', 'xc', 45115, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (102, 6, 1, NULL, NULL, '线椒', '', '斤', 'xianjiao', 'xj', 45123, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (103, 6, 1, NULL, NULL, '小米椒', '', '斤', 'xiaomijiao', 'xmj', 45125, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (104, 6, 1, NULL, NULL, '新蒜', '', '斤', 'xinsuan', 'xs', 45118, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (105, 6, 1, NULL, NULL, '紫葱头', '', '斤', 'zicongtou', 'zct', 45113, 'goodsImage/2.jpg', '114', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (106, 7, 1, NULL, NULL, '白玉菇', NULL, '50克/袋', 'baiyugu', 'byg', 17600022, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (107, 7, 1, NULL, NULL, '白玉菇', '', '斤', 'baiyugu', 'byg', 45208, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (108, 7, 1, NULL, NULL, '海鲜菇', NULL, '4斤/包', 'haixiangu', 'hxg', 45584, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (109, 7, 1, NULL, NULL, '海鲜菇', NULL, '50克/袋', 'haixiangu', 'hxg', 17600023, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (110, 7, 1, NULL, NULL, '鸡腿菇', '', '斤', 'jituigu', 'jtg', 45211, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (111, 7, 1, NULL, NULL, '金针菇', '', '斤', 'jinzhengu', 'jzg', 45212, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (112, 7, 1, NULL, NULL, '金针菇', NULL, '50克/袋', 'jinzhengu', 'jzg', 17600019, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (113, 7, 1, NULL, NULL, '金针菇', NULL, '5斤/包', 'jinzhengu', 'jzg', 17600020, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (114, 7, 1, NULL, NULL, '口蘑', '', '斤', 'koumo', 'km', 45209, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (115, 7, 1, NULL, NULL, '平菇', '', '斤', 'pinggu', 'pg', 45206, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (116, 7, 1, NULL, NULL, '杏鲍菇', NULL, '5斤/包', 'xingbaogu', 'xbg', 17600021, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (117, 7, 1, NULL, NULL, '杏鲍菇', '', '斤', 'xingbaogu', 'xbg', 45210, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (118, 7, 1, NULL, NULL, '香菇', '', '斤', 'xianggu', 'xg', 45207, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (119, 7, 1, NULL, NULL, '蟹味菇', NULL, '斤', 'xieweigu', 'xwg', 45585, 'goodsImage/logo.jpg', '115', 11, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (120, 8, 1, NULL, NULL, '百香果', '', '斤', 'baixiangguo', 'bxg', 45217, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (121, 8, 1, NULL, NULL, '草莓', '', '斤', 'caomei', 'cm', 45222, 'goodsImage/logo.jpg', '121', 12, 1, 0, '甜宝奶油', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (122, 8, 1, NULL, NULL, '橙子', '', '斤', 'chengzi', 'cz', 45258, 'goodsImage/logo.jpg', '121', 12, 1, 0, '伦晚', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (123, 8, 1, NULL, NULL, '贡梨', '', '斤', 'gongli', 'gl', 45237, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (124, 8, 1, NULL, NULL, '皇冠梨', '', '斤', 'huangguanli', 'hgl', 45236, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (125, 8, 1, NULL, NULL, '火龙果', '白心', '斤', 'huolongguo', 'hlg', 45226, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (126, 8, 1, NULL, NULL, '火龙果', '红心', '斤', 'huolongguo', 'hlg', 45225, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (127, 8, 1, NULL, NULL, '哈密瓜', '', '斤', 'hamigua', 'hmg', 45272, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (128, 8, 1, NULL, NULL, '香梨', '', '斤', 'kuerlexiangli', 'kelxl', 45241, 'goodsImage/logo.jpg', '121', 12, 1, 0, '库尔勒', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (129, 8, 1, NULL, NULL, '芦柑', '', '斤', 'lugan', 'lg', 45252, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (130, 8, 1, NULL, NULL, '芒果', '', '斤', 'mangguo', 'mg', 45301, 'goodsImage/logo.jpg', '121', 12, 1, 0, '红金龙', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (131, 8, 1, NULL, NULL, '芒果', '', '斤', 'mangguo', 'mg', 45302, 'goodsImage/logo.jpg', '121', 12, 1, 0, '高乐密', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (132, 8, 1, NULL, NULL, '芒果', '青皮', '斤', 'mangguo', 'mg', 45303, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (133, 8, 1, NULL, NULL, '木瓜', '', '斤', 'mugua', 'mg', 45227, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (134, 8, 1, NULL, NULL, '猕猴桃', '', '斤', 'mihoutao', 'mht', 45263, 'goodsImage/logo.jpg', '121', 12, 1, 0, '海沃德', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (135, 8, 1, NULL, NULL, '猕猴桃', '', '斤', 'mihoutao', 'mht', 45262, 'goodsImage/logo.jpg', '121', 12, 1, 0, '徐香', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (136, 8, 1, NULL, NULL, '柠檬', '', '斤', 'ningmeng', 'nm', 45230, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (137, 8, 1, NULL, NULL, '苹果', '', '斤', 'pingguo', 'pg', 45284, 'goodsImage/logo.jpg', '121', 12, 1, 0, '富士', '烟台', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (138, 8, 1, NULL, NULL, '苹果', '', '斤', 'pingguo', 'pg', 45290, 'goodsImage/logo.jpg', '121', 12, 1, 0, '国光', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (139, 8, 1, NULL, NULL, '苹果', '辽宁寒富', '斤', 'pingguo', 'pg', 45291, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (140, 8, 1, NULL, NULL, '苹果', '新疆阿克苏', '斤', 'pingguo', 'pg', 45289, 'goodsImage/logo.jpg', '121', 12, 1, 0, '冰糖心', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (141, 8, 1, NULL, NULL, '葡萄', '阳光玫瑰', '斤', 'putao', 'pt', 45293, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (142, 8, 1, NULL, NULL, '葡萄', '玫瑰香', '斤', 'putao', 'pt', 45296, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (143, 8, 1, NULL, NULL, '葡萄', '红宝石', '斤', 'putao', 'pt', 45297, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (144, 8, 1, NULL, NULL, '青葡萄', '贵妃青', '斤', 'putao', 'pt', 45298, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (145, 8, 1, NULL, NULL, '脐橙', '', '斤', 'qicheng', 'qc', 45248, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (146, 8, 1, NULL, NULL, '柿饼', '', '斤', 'shibing', 'sb', 45228, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (147, 8, 1, NULL, NULL, '桑葚', '', '斤', 'sangshen', 'ss', 45218, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (148, 8, 1, NULL, NULL, '沙糖桔', '', '斤', 'shatangjie', 'stj', 45246, 'goodsImage/logo.jpg', '121', 12, 1, 0, '中果', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (149, 8, 1, NULL, NULL, '山楂', '', '斤', 'shanzha', 'sz', 45232, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (150, 8, 1, NULL, NULL, '柿子', '', '斤', 'shizi', 'sz', 45224, 'goodsImage/logo.jpg', '121', 12, 1, 0, '磨盘', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (151, 8, 1, NULL, NULL, '桃', '', '斤', 'tao', 't', 45261, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (152, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45282, 'goodsImage/logo.jpg', '121', 12, 1, 0, '博阳九号', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (153, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45274, 'goodsImage/logo.jpg', '121', 12, 1, 0, '黄金瓜', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (154, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45283, 'goodsImage/logo.jpg', '121', 12, 1, 0, '白糖罐', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (155, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45275, 'goodsImage/logo.jpg', '121', 12, 1, 0, '网纹', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (156, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45278, 'goodsImage/logo.jpg', '121', 12, 1, 0, '羊角蜜', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (157, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45276, 'goodsImage/logo.jpg', '121', 12, 1, 0, '长香玉', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (158, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45277, 'goodsImage/logo.jpg', '121', 12, 1, 0, '玉姑', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (159, 8, 1, NULL, NULL, '甜瓜', '', '斤', 'tiangua', 'tg', 45279, 'goodsImage/logo.jpg', '121', 12, 1, 0, '花蕾', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (160, 8, 1, NULL, NULL, '甜瓜', '西州密', '斤', 'tiangua', 'tg', 45280, 'goodsImage/logo.jpg', '121', 12, 1, 0, '绿宝', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (161, 8, 1, NULL, NULL, '提子', '', '斤', 'tizi', 'tz', 45294, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (162, 8, 1, NULL, NULL, '沃柑', '', '斤', 'wogan', 'wg', 45250, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (163, 8, 1, NULL, NULL, '血橙', '', '斤', 'xuecheng', 'xc', 45249, 'goodsImage/logo.jpg', '121', 12, 1, 0, '二月红|中华红', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (164, 8, 1, NULL, NULL, '西瓜', '', '斤', 'xigua', 'xg', 45265, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (165, 8, 1, NULL, NULL, '西瓜', '', '斤', 'xigua', 'xg', 45264, 'goodsImage/logo.jpg', '121', 12, 1, 0, '麒麟', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (166, 8, 1, NULL, NULL, '雪花梨', '', '斤', 'xuehuali', 'xhl', 45235, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (167, 8, 1, NULL, NULL, '香蕉', '', '斤', 'xiangjiao', 'xj', 45269, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (168, 8, 1, NULL, NULL, '小金桔', '', '斤', 'xiaojinjie', 'xjj', 45254, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (169, 8, 1, NULL, NULL, '雪梨', NULL, '斤', 'xueli', 'xl', 17600028, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (170, 8, 1, NULL, NULL, '鸭梨', '', '斤', 'yali', 'yl', 45234, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (171, 8, 1, NULL, NULL, '樱桃', '', '斤', 'yingtao', 'yt', 45306, 'goodsImage/logo.jpg', '121', 12, 1, 0, '美早', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (172, 8, 1, NULL, NULL, '油桃', '', '斤', 'youtao', 'yt', 45259, 'goodsImage/logo.jpg', '121', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (173, 8, 1, NULL, NULL, '柚子', '红心', '斤', 'youzi', 'yz', 45255, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (174, 8, 1, NULL, NULL, '柚子', '白心', '斤', 'youzi', 'yz', 45256, 'goodsImage/logo.jpg', '121', 12, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (175, 10, 1, NULL, NULL, '进口香蕉', NULL, '斤', 'jinkouxiangjiao', 'jkxj', 17600024, 'goodsImage/logo.jpg', '122', 12, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (176, 11, 1, NULL, NULL, '盒豆腐', '鲜豆腐', '盒', 'hedoufu', 'hdf', 17600004, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (177, 11, 1, NULL, NULL, '盒豆腐', '韧豆腐', '盒', 'hedoufu', 'hdf', 17600005, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (178, 11, 1, NULL, NULL, '盒豆腐', '北豆腐', '盒', 'hedoufu', 'hdf', 31116, 'goodsImage/logo.jpg', '131', 13, 1, 0, '白玉', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (179, 11, 1, NULL, NULL, '老豆腐', NULL, '斤', 'laodoufu', 'ldf', 31112, 'goodsImage/logo.jpg', '131', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (180, 11, 1, NULL, NULL, '卤水豆腐', '', '斤', 'lushuidoufu', 'lsdf', 31111, 'goodsImage/logo.jpg', '131', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (181, 11, 1, NULL, NULL, '嫩豆腐', NULL, '斤', 'nendoufu', 'ndf', 31113, 'goodsImage/logo.jpg', '131', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (182, 11, 1, NULL, NULL, '鸭血', '火锅', '斤', 'yaxue', 'yx', 17600007, 'goodsImage/logo.jpg', '131', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (183, 11, 1, NULL, NULL, '鸭血', NULL, '盒', 'yaxue', 'yx', 17600006, 'goodsImage/logo.jpg', '131', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (184, 13, 1, NULL, NULL, '东北拉皮', NULL, '袋', 'dongbeilapi', 'dblp', 17600025, 'goodsImage/logo.jpg', '132', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (185, 13, 1, NULL, NULL, '豆泡', NULL, '斤', 'doupao', 'dp', 31114, 'goodsImage/logo.jpg', '132', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (186, 13, 1, NULL, NULL, '豆皮', NULL, '斤', 'doupi', 'dp', 31117, 'goodsImage/logo.jpg', '132', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (187, 13, 1, NULL, NULL, '三河豆腐丝', NULL, '斤', 'sanhedoufusi', 'shdfs', 31115, 'goodsImage/logo.jpg', '132', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (188, 13, 1, NULL, NULL, '熏干', NULL, '斤', 'xungan', 'xg', 31118, 'goodsImage/logo.jpg', '132', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (189, 14, 1, NULL, NULL, '大头菜', NULL, '斤', 'datoucai', 'dtc', 17600008, 'goodsImage/logo.jpg', '133', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (190, 14, 1, NULL, NULL, '芥菜丝', NULL, '斤', 'jiecaisi', 'jcs', 17600009, 'goodsImage/logo.jpg', '133', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (191, 14, 1, NULL, NULL, '玫瑰咸菜', NULL, '斤', 'meiguixiancai', 'mgxc', 17600010, 'goodsImage/logo.jpg', '133', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (192, 14, 1, NULL, NULL, '酸菜', NULL, '袋', 'suancai', 'sc', 17600100, 'goodsImage/logo.jpg', '133', 13, 1, 0, '刘', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (193, 15, 1, NULL, NULL, '灌肠', NULL, '斤', 'guanchang', 'gc', 17600026, 'goodsImage/logo.jpg', '134', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (194, 15, 1, NULL, NULL, '哈尔滨红肠', NULL, '斤', 'haerbinhongchang', 'hebhc', 17600030, 'goodsImage/logo.jpg', '134', 13, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (195, 16, 1, NULL, NULL, '棒骨', '', '斤', 'banggu', 'bg', 45413, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (196, 16, 1, NULL, NULL, '纯排骨', '', '斤', 'chunpaigu', 'cpg', 45410, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (197, 16, 1, NULL, NULL, '纯腔骨', '', '斤', 'chunqianggu', 'cqg', 45411, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (198, 16, 1, NULL, NULL, '纯瘦肉', '', '斤', 'chunshourou', 'csr', 45405, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (199, 16, 1, NULL, NULL, '肥膘肉', '', '斤', 'feibiaorou', 'fbr', 45420, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (200, 16, 1, NULL, NULL, '后臀尖', '', '斤', 'houtunjian', 'htj', 45399, 'goodsImage/logo.jpg', '141', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (201, 16, 1, NULL, NULL, '护心肉', '', '斤', 'huxinrou', 'hxr', 45422, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (202, 16, 1, NULL, NULL, '后肘', '', '斤', 'houzhou', 'hz', 45407, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (203, 16, 1, NULL, NULL, '腔排骨', '', '斤', 'qiangpaigu', 'qpg', 45412, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (204, 16, 1, NULL, NULL, '前臀尖', '', '斤', 'qiantunjian', 'qtj', 45397, 'goodsImage/logo.jpg', '141', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (205, 16, 1, NULL, NULL, '前肘', '', '斤', 'qianzhou', 'qz', 45406, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (206, 16, 1, NULL, NULL, '通脊', '', '斤', 'tongji', 'tj', 45404, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (207, 16, 1, NULL, NULL, '五花肉', '', '斤', 'wuhuarou', 'whr', 45401, 'goodsImage/logo.jpg', '141', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (208, 16, 1, NULL, NULL, '猪板油', '', '斤', 'zhubanyou', 'zby', 45419, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (209, 16, 1, NULL, NULL, '猪肠', '', '斤', 'zhuchang', 'zc', 45428, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (210, 16, 1, NULL, NULL, '猪肠头', '', '斤', 'zhuchangtou', 'zct', 45427, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (211, 16, 1, NULL, NULL, '猪肚', '', '斤', 'zhudu', 'zd', 45418, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (212, 16, 1, NULL, NULL, '猪耳', '', '斤', 'zhuer', 'ze', 45416, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (213, 16, 1, NULL, NULL, '猪肺', '', '斤', 'zhufei', 'zf', 45425, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (215, 16, 1, NULL, NULL, '猪肝', '', '斤', 'zhugan', 'zg', 45424, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (216, 16, 1, NULL, NULL, '猪口条', '', '斤', 'zhukoutiao', 'zkt', 45415, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (217, 16, 1, NULL, NULL, '猪脑', '', '斤', 'zhunao', 'zn', 45417, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (218, 16, 1, NULL, NULL, '猪皮', '', '斤', 'zhupi', 'zp', 45426, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (219, 16, 1, NULL, NULL, '猪蹄', '', '斤', 'zhuti', 'zt', 45409, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (220, 16, 1, NULL, NULL, '猪头', '', '斤', 'zhutou', 'zt', 45414, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (221, 16, 1, NULL, NULL, '猪尾巴', '', '斤', 'zhuweiba', 'zwb', 45408, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (222, 16, 1, NULL, NULL, '猪心', '', '斤', 'zhuxin', 'zx', 45423, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (223, 16, 1, NULL, NULL, '猪腰子', '', '斤', 'zhuyaozi', 'zyz', 45421, 'goodsImage/logo.jpg', '141', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (224, 18, 1, NULL, NULL, '肥牛', '', '斤', 'feiniu', 'fn', 45434, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (225, 18, 1, NULL, NULL, '精牛柳', '', '斤', 'jingniuliu', 'jnl', 45437, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (226, 18, 1, NULL, NULL, '牛鞭', '', '斤', 'niubian', 'nb', 45449, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (227, 18, 1, NULL, NULL, '精肥牛', '', '斤', 'jingfeiniu', 'jfn', 45435, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (228, 18, 1, NULL, NULL, '牛板筋', '', '斤', 'niubanjin', 'nbj', 45447, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (229, 18, 1, NULL, NULL, '牛百叶', '', '斤', 'niubaiye', 'nby', 45442, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (230, 18, 1, NULL, NULL, '牛肚', '', '斤', 'niudu', 'nd', 45441, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (231, 18, 1, NULL, NULL, '牛骨', '', '斤', 'niugu', 'ng', 45445, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (232, 18, 1, NULL, NULL, '牛黄喉', '', '斤', 'niuhuanghou', 'nhh', 45451, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (233, 18, 1, NULL, NULL, '牛后腱', '', '斤', 'niuhoujian', 'nhj', 45431, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (234, 18, 1, NULL, NULL, '牛后腿', '', '斤', 'niuhoutui', 'nht', 45433, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (235, 18, 1, NULL, NULL, '牛林', '', '斤', 'niulin', 'nl', 45439, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (236, 18, 1, NULL, NULL, '牛柳', '里脊', '斤', 'niuliu', 'nl', 45436, 'goodsImage/logo.jpg', '142', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (237, 18, 1, NULL, NULL, '牛腩', '', '斤', 'niunan', 'nn', 45438, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (238, 18, 1, NULL, NULL, '牛排骨', '', '斤', 'niupaigu', 'npg', 45446, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (239, 18, 1, NULL, NULL, '牛前腱', '', '斤', 'niuqianjian', 'nqj', 45430, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (240, 18, 1, NULL, NULL, '牛前腿', '', '斤', 'niuqiantui', 'nqt', 45432, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (241, 18, 1, NULL, NULL, '牛舌', '', '斤', 'niushe', 'ns', 45444, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (242, 18, 1, NULL, NULL, '牛上脑', '', '斤', 'niushangnao', 'nsn', 45452, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (243, 18, 1, NULL, NULL, '牛蹄筋', '', '斤', 'niutijin', 'ntj', 45448, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (244, 18, 1, NULL, NULL, '牛尾', '', '斤', 'niuwei', 'nw', 45450, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (245, 18, 1, NULL, NULL, '牛心', '', '斤', 'niuxin', 'nx', 45443, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (246, 18, 1, NULL, NULL, '牛腰子', '', '斤', 'niuyaozi', 'nyz', 45440, 'goodsImage/logo.jpg', '142', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (247, 19, 1, NULL, NULL, '去骨羊后腿', '', '斤', 'quguyanghoutui', 'qgyht', 45455, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (248, 19, 1, NULL, NULL, '去骨羊前腿', '', '斤', 'quguyangqiantui', 'qgyqt', 45454, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (249, 19, 1, NULL, NULL, '羊宝', '', '斤', 'yangbao', 'yb', 45468, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (250, 19, 1, NULL, NULL, '羊鞭', '', '斤', 'yangbian', 'yb', 45466, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (251, 19, 1, NULL, NULL, '羊肠', '', '斤', 'yangchang', 'yc', 45464, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (252, 19, 1, NULL, NULL, '羊肚', '', '斤', 'yangdu', 'yd', 45471, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (253, 19, 1, NULL, NULL, '羊肺', '', '斤', 'yangfei', 'yf', 45467, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (254, 19, 1, NULL, NULL, '羊肝', '', '斤', 'yanggan', 'yg', 45465, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (255, 19, 1, NULL, NULL, '羊骨头', '', '斤', 'yanggutou', 'ygt', 45469, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (256, 19, 1, NULL, NULL, '羊里脊', '', '斤', 'yangliji', 'ylj', 45472, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (257, 19, 1, NULL, NULL, '羊腩', '', '斤', 'yangnan', 'yn', 45470, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (258, 19, 1, NULL, NULL, '羊排骨', '', '斤', 'yangpaigu', 'ypg', 45461, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (259, 19, 1, NULL, NULL, '羊肉片', '', '斤', 'yangroupian', 'yrp', 45457, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (260, 19, 1, NULL, NULL, '羊尾巴油', '', '斤', 'yangweibayou', 'ywby', 45462, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (261, 19, 1, NULL, NULL, '羊小腿', '羊棒', '斤', 'yangxiaotui', 'yxt', 45463, 'goodsImage/logo.jpg', '143', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (262, 19, 1, NULL, NULL, '羊蝎子', '', '斤', 'yangxiezi', 'yxz', 45459, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (263, 19, 1, NULL, NULL, '羊腰窝', '', '斤', 'yangyaowo', 'yyw', 45456, 'goodsImage/logo.jpg', '143', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (264, 19, 1, NULL, NULL, '羊腰子', '挂油', '个', 'yangyaozi', 'yyz', 45458, 'goodsImage/logo.jpg', '143', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (265, 20, 1, NULL, NULL, '鹌鹑', '', '斤', 'anchun', 'ac', 45505, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (266, 20, 1, NULL, NULL, '北京填鸭', '', '斤', 'beijingtianya', 'bjty', 45500, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (267, 20, 1, NULL, NULL, '冻琵琶腿', '', '斤', 'dongpipatui', 'dppt', 45482, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (268, 20, 1, NULL, NULL, '鹅', '', '斤', 'e', 'e', 45502, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (269, 20, 1, NULL, NULL, '湖鸭', '', '斤', 'huya', 'hy', 45501, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (270, 20, 1, NULL, NULL, '鸡边腿', '', '斤', 'jibiantui', 'jbt', 45480, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (271, 20, 1, NULL, NULL, '鸡脖子', '去皮', '斤', 'jibozi', 'jbz', 45488, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (272, 20, 1, NULL, NULL, '鸡脖子', '带皮', '斤', 'jibozi', 'jbz', 45487, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (273, 20, 1, NULL, NULL, '鸡翅', '', '斤', 'jichi', 'jc', 45478, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (274, 20, 1, NULL, NULL, '鸡翅根', '', '斤', 'jichigen', 'jcg', 45492, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (275, 20, 1, NULL, NULL, '鸡翅中', '', '斤', 'jichizhong', 'jcz', 45479, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (276, 20, 1, NULL, NULL, '鸡肝', '', '斤', 'jigan', 'jg', 45486, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (277, 20, 1, NULL, NULL, '鸡架子', '', '斤', 'jijiazi', 'jjz', 45490, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (278, 20, 1, NULL, NULL, '鸡排腿', '', '斤', 'jipaitui', 'jpt', 45481, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (279, 20, 1, NULL, NULL, '鸡头', '', '斤', 'jitou', 'jt', 45489, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (280, 20, 1, NULL, NULL, '鸡心', '', '斤', 'jixin', 'jx', 45485, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (281, 20, 1, NULL, NULL, '鸡胸', '', '斤', 'jixiong', 'jx', 45477, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (282, 20, 1, NULL, NULL, '鸡油', '', '斤', 'jiyou', 'jy', 45491, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (283, 20, 1, NULL, NULL, '鸡胗', '', '斤', 'jizhen', 'jz', 45483, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (284, 20, 1, NULL, NULL, '鸡爪', '', '斤', 'jizhua', 'jz', 45484, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (285, 20, 1, NULL, NULL, '乳鸽', '', '只', 'ruge', 'rg', 45503, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (286, 20, 1, NULL, NULL, '肉鸡', '', '斤', 'rouji', 'rj', 45476, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (287, 20, 1, NULL, NULL, '三黄鸡', '净膛', '斤', 'sanhuangji', 'shj', 45498, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (288, 20, 1, NULL, NULL, '淘汰鸡', '', '斤', 'taotaiji', 'ttj', 45473, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (289, 20, 1, NULL, NULL, '乌鸡', '净膛', '斤', 'wuji', 'wj', 45499, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (290, 20, 1, NULL, NULL, '鸭肠', '', '斤', 'yachang', 'yc', 45493, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (291, 20, 1, NULL, NULL, '鸭肝', '', '斤', 'yagan', 'yg', 45494, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (292, 20, 1, NULL, NULL, '鸭头', '', '斤', 'yatou', 'yt', 45495, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (293, 20, 1, NULL, NULL, '鸭腿', '', '斤', 'yatui', 'yt', 45497, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (294, 20, 1, NULL, NULL, '鸭心', '', '斤', 'yaxin', 'yx', 45496, 'goodsImage/logo.jpg', '144', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (295, 20, 1, NULL, NULL, '仔鸡', '', '斤', 'ziji', 'zj', 45475, 'goodsImage/logo.jpg', '144', 14, 1, 0, '', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (296, 21, 1, NULL, NULL, '鹌鹑蛋', '', '斤', 'anchundan', 'acd', 45512, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (297, 21, 1, NULL, NULL, '柴鸡蛋', '', '斤', 'chaijidan', 'cjd', 45513, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (298, 21, 1, NULL, NULL, '鹅蛋', '', '斤', 'edan', 'ed', 45511, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (299, 21, 1, NULL, NULL, '鸽子蛋', '', '个', 'gezidan', 'gzd', 45516, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (300, 21, 1, NULL, NULL, '鸡蛋', '', '斤', 'jidan', 'jd', 45506, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (301, 21, 1, NULL, NULL, '松花蛋', '', '斤', 'songhuadan', 'shd', 45510, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (302, 21, 1, NULL, NULL, '生鸭蛋', '', '斤', 'shengyadan', 'syd', 45508, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (303, 21, 1, NULL, NULL, '熟鸭蛋', '', '斤', 'shuyadan', 'syd', 45509, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (304, 21, 1, NULL, NULL, '鸵鸟蛋', '', '个', 'tuoniaodan', 'tnd', 45515, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (305, 21, 1, NULL, NULL, '乌鸡蛋', '', '斤', 'wujidan', 'wjd', 45514, 'goodsImage/logo.jpg', '145', 14, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (306, 22, 1, NULL, NULL, '稻花香', NULL, '斤', 'daohuaxiang', 'dhx', 17600078, 'goodsImage/logo.jpg', '151', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (307, 22, 1, NULL, NULL, '长粒香', NULL, '斤', 'zhanglixiang', 'zlx', 17600077, 'goodsImage/logo.jpg', '151', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (308, 24, 1, NULL, NULL, '菜籽油', NULL, '桶', 'caiziyou', 'czy', 17600071, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (309, 24, 1, NULL, NULL, '花椒油', NULL, '瓶', 'huajiaoyou', 'hjy', 17600038, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (310, 24, 1, NULL, NULL, '蚝油', NULL, '瓶', 'haoyou', 'hy', 17600042, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (311, 24, 1, NULL, NULL, '色拉油', NULL, '桶', 'selayou', 'sly', 17600072, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (312, 24, 1, NULL, NULL, '香油', NULL, '瓶', 'xiangyou', 'xy', 17600037, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (313, 24, 1, NULL, NULL, '蒸鱼豉油', NULL, '瓶', 'zhengyuchiyou', 'zycy', 17600059, 'goodsImage/logo.jpg', '152', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (315, 25, 1, NULL, NULL, '五得利', '三星', '斤', 'wudeli', 'wdl', 17600080, 'goodsImage/logo.jpg', '153', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (317, 26, 1, NULL, NULL, '红豆', NULL, '斤', 'hongdou', 'hd', 17600074, 'goodsImage/logo.jpg', '154', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (318, 26, 1, NULL, NULL, '黑芝麻', NULL, '斤', 'heizhima', 'hzm', 17600075, 'goodsImage/logo.jpg', '154', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (319, 26, 1, NULL, NULL, '绿豆', NULL, '斤', 'lüdou', 'ld', 17600073, 'goodsImage/logo.jpg', '154', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (320, 27, 1, NULL, NULL, '奥尔良', NULL, '瓶', 'aoerliang', 'ael', 17600070, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (321, 27, 1, NULL, NULL, '白醋', NULL, '瓶', 'baicu', 'bc', 17600034, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (322, 27, 1, NULL, NULL, '白糖', NULL, '袋', 'baitang', 'bt', 17600044, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (323, 27, 1, NULL, NULL, '陈醋', NULL, '瓶', 'chencu', 'cc', 17600036, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (324, 27, 1, NULL, NULL, '淀粉', NULL, '袋', 'dianfen', 'df', 17600046, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (325, 27, 1, NULL, NULL, '东古', NULL, '瓶', 'donggu', 'dg', 17600033, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (326, 27, 1, NULL, NULL, '大料', NULL, '斤', 'daliao', 'dl', 17600062, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (327, 27, 1, NULL, NULL, '蕃茄酱', NULL, '瓶', 'fanqiejiang', 'fqj', 17600069, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (328, 27, 1, NULL, NULL, '干辣椒', NULL, '斤', 'ganlajiao', 'glj', 17600058, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (329, 27, 1, NULL, NULL, '桂皮', NULL, '斤', 'guipi', 'gp', 17600063, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (330, 27, 1, NULL, NULL, '红99', NULL, '袋', 'hong99', 'h99', 17600054, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (331, 27, 1, NULL, NULL, '黄豆酱', NULL, '瓶', 'huangdoujiang', 'hdj', 17600064, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (332, 27, 1, NULL, NULL, '鸡精', NULL, '袋', 'jijing', 'jj', 17600051, 'goodsImage/logo.jpg', '155', 15, 1, 0, '太太乐', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (333, 27, 1, NULL, NULL, '鸡精', NULL, '斤', 'jijing', 'jj', 17600052, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (334, 27, 1, NULL, NULL, '老抽', NULL, '500ml/瓶', 'laochou', 'lc', 17600032, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (335, 27, 1, NULL, NULL, '辣椒段', NULL, '斤', 'lajiaoduan', 'ljd', 17600055, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (336, 27, 1, NULL, NULL, '辣椒面', '细', '斤', 'lajiaomian', 'ljm', 17600057, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (337, 27, 1, NULL, NULL, '辣椒面', '粗', '斤', 'lajiaomian', 'ljm', 17600056, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (338, 27, 1, NULL, NULL, '米醋', NULL, '瓶', 'micu', 'mc', 17600035, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (339, 27, 1, NULL, NULL, '生抽', NULL, '500ml/瓶', 'shengchou', 'sc', 17600031, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (340, 27, 1, NULL, NULL, '生粉', NULL, '袋', 'shengfen', 'sf', 17600045, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (341, 27, 1, NULL, NULL, '蒜蓉酱', NULL, '袋', 'suanrongjiang', 'srj', 17600053, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (342, 27, 1, NULL, NULL, '十三香', NULL, '盒', 'shisanxiang', 'ssx', 17600040, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (343, 27, 1, NULL, NULL, '甜面酱', NULL, '袋', 'tianmianjiang', 'tmj', 17600050, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (344, 27, 1, NULL, NULL, '盐', NULL, '袋', 'yan', 'y', 17600041, 'goodsImage/logo.jpg', '155', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (345, 28, 1, NULL, NULL, '粉条', '', '100克/袋', 'fentiao', 'ft', 17600029, 'goodsImage/logo.jpg', '156', 15, 1, 0, '', '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (346, 28, 1, NULL, NULL, '粉条', NULL, '斤', 'fentiao', 'ft', 17600082, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (347, 28, 1, NULL, NULL, '枸杞子', NULL, '斤', 'gouqizi', 'gqz', 17600066, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (348, 28, 1, NULL, NULL, '枸杞子', NULL, '500克/袋', 'gouqizi', 'gqz', 17600083, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (349, 28, 1, NULL, NULL, '花生米', '', '斤', 'huashengmi', 'hsm', 17600047, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (350, 28, 1, NULL, NULL, '花生米', '小颗', '斤', 'huashengmi', 'hsm', 17600048, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (351, 28, 1, NULL, NULL, '花生米', '红皮', '斤', 'huashengmi', 'hsm', 17600049, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (352, 28, 1, NULL, NULL, '红枣', NULL, '斤', 'hongzao', 'hz', 17600067, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (353, 28, 1, NULL, NULL, '红枣', NULL, '斤', 'hongzao', 'hz', 17600068, 'goodsImage/logo.jpg', '156', 15, 1, 0, '灰枣', NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (354, 28, 1, NULL, NULL, '红枣', NULL, '1000克/袋', 'hongzao', 'hz', 17600084, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (355, 28, 1, NULL, NULL, '木耳', NULL, '斤', 'muer', 'me', 17600043, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (356, 28, 1, NULL, NULL, '银耳', NULL, '斤', 'yiner', 'ye', 17600065, 'goodsImage/logo.jpg', '156', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (357, 29, 1, NULL, NULL, '臭豆腐', NULL, '瓶', 'choudoufu', 'cdf', 17600061, 'goodsImage/logo.jpg', '157', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (358, 29, 1, NULL, NULL, '豆腐乳', NULL, '瓶', 'doufuru', 'dfr', 17600060, 'goodsImage/logo.jpg', '157', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (359, 30, 1, NULL, NULL, '安琪', NULL, '大包', 'anqi', 'aq', 17600039, 'goodsImage/logo.jpg', '158', 15, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (360, 31, 1, NULL, NULL, '草鱼', '', '斤', 'caoyu', 'cy', 45325, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (361, 31, 1, NULL, NULL, '多宝鱼', '', '斤', 'duobaoyu', 'dby', 45351, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (362, 31, 1, NULL, NULL, '淡水鲈鱼', '', '斤', 'danshuiluyu', 'dsly', 45341, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (363, 31, 1, NULL, NULL, '带鱼', '进口', '斤', 'daiyu', 'dy', 45356, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (364, 31, 1, NULL, NULL, '带鱼', '国产', '斤', 'daiyu', 'dy', 45353, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (365, 31, 1, NULL, NULL, '国产白鲴鱼', '', '斤', 'guochanbaiguyu', 'gcbgy', 45343, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (366, 31, 1, NULL, NULL, '嘎鱼', '', '斤', 'gayu', 'gy', 45339, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (367, 31, 1, NULL, NULL, '桂鱼', '', '斤', 'guiyu', 'gy', 45338, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (368, 31, 1, NULL, NULL, '黑鱼', '', '斤', 'heiyu', 'hy', 45337, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (369, 31, 1, NULL, NULL, '黄鱼', '', '斤', 'huangyu', 'hy', 45357, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (370, 31, 1, NULL, NULL, '鲫鱼', '', '斤', 'jiyu', 'jy', 45328, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (371, 31, 1, NULL, NULL, '罗非鱼', '', '斤', 'luofeiyu', 'lfy', 45336, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (372, 31, 1, NULL, NULL, '鲢鱼', '', '斤', 'lianyu', 'ly', 45334, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (373, 31, 1, NULL, NULL, '鲤鱼', '', '斤', 'liyu', 'ly', 45322, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (374, 31, 1, NULL, NULL, '胖头鱼', '', '斤', 'pangtouyu', 'pty', 45331, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (375, 31, 1, NULL, NULL, '平鱼', '', '斤', 'pingyu', 'py', 45364, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (376, 31, 1, NULL, NULL, '青石斑鱼', '', '斤', 'qingshibanyu', 'qsby', 45352, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (377, 31, 1, NULL, NULL, '鲐鲅', '', '斤', 'taiba', 'tb', 45346, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (378, 31, 1, NULL, NULL, '鳎目鱼', '', '斤', 'tamuyu', 'tmy', 45348, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (379, 31, 1, NULL, NULL, '武昌鱼', '', '斤', 'wuchangyu', 'wcy', 45333, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (380, 31, 1, NULL, NULL, '鲟鱼', '', '斤', 'xunyu', 'xy', 45342, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (381, 31, 1, NULL, NULL, '燕鲅', '', '斤', 'yanba', 'yb', 45345, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (382, 31, 1, NULL, NULL, '左偏口鱼', '', '斤', 'zuopiankouyu', 'zpky', 45347, 'goodsImage/logo.jpg', '161', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (383, 33, 1, NULL, NULL, '澳洲龙虾', '', '斤', 'aozhoulongxia', 'azlx', 45320, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (384, 33, 1, NULL, NULL, '澳洲龙虾', '', '斤', 'aozhoulongxia', 'azlx', 45321, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (385, 33, 1, NULL, NULL, '斑节虾', '冻', '斤', 'banjiexia', 'bjx', 45317, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (386, 33, 1, NULL, NULL, '北极虾', '>100头|风冷', '斤', 'beijixia', 'bjx', 45315, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (387, 33, 1, NULL, NULL, '北极虾', '<100头|风冷', '斤', 'beijixia', 'bjx', 45316, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (388, 33, 1, NULL, NULL, '波士顿青龙虾', '活', '斤', 'boshidunqinglongxia', 'bsdqlx', 45313, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (389, 33, 1, NULL, NULL, '冰鲜白虾', '45-60头', '斤', 'bingxianbaixia', 'bxbx', 45309, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (390, 33, 1, NULL, NULL, '冰鲜白虾', '30-45头', '斤', 'bingxianbaixia', 'bxbx', 45308, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (391, 33, 1, NULL, NULL, '草虾', '', '斤', 'caoxia', 'cx', 45318, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (392, 33, 1, NULL, NULL, '活白虾', '45-60头', '斤', 'huobaixia', 'hbx', 45307, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (393, 33, 1, NULL, NULL, '基围虾', '40-60头', '斤', 'jiweixia', 'jwx', 45312, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (394, 33, 1, NULL, NULL, '基围虾', '20-40头', '斤', 'jiweixia', 'jwx', 45311, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (395, 33, 1, NULL, NULL, '明对虾', '', '斤', 'mingduixia', 'mdx', 45319, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (396, 33, 1, NULL, NULL, '琵琶虾', '活', '斤', 'pipaxia', 'ppx', 45310, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (397, 33, 1, NULL, NULL, '小青龙虾', '活', '斤', 'xiaoqinglongxia', 'xqlx', 45314, 'goodsImage/logo.jpg', '162', 16, 1, 0, NULL, '', '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (398, 34, 1, NULL, NULL, '大饼', NULL, '张', 'dabing', 'db', 17600089, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (399, 34, 1, NULL, NULL, '刀削面', NULL, '斤', 'daoxuemian', 'dxm', 17600087, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (400, 34, 1, NULL, NULL, '馒头', NULL, '个', 'mantou', 'mt', 17600088, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (401, 34, 1, NULL, NULL, '面条', '粗', '斤', 'miantiao', 'mt', 17600085, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (402, 34, 1, NULL, NULL, '面条', '细', '斤', 'miantiao', 'mt', 17600086, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (403, 34, 1, NULL, NULL, '烧饼', NULL, '个', 'shaobing', 'sb', 17600090, 'goodsImage/logo.jpg', '181', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (404, 36, 1, NULL, NULL, '酒鬼花生', '五香', '5斤/袋', 'jiuguihuasheng', 'jghs', 17600093, 'goodsImage/logo.jpg', '183', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (405, 36, 1, NULL, NULL, '酒鬼花生', '麻辣', '5斤/袋', 'jiuguihuasheng', 'jghs', 17600094, 'goodsImage/logo.jpg', '183', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (406, 36, 1, NULL, NULL, '腰果', '生', '斤', 'yaoguo', 'yg', 17600091, 'goodsImage/logo.jpg', '183', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (407, 36, 1, NULL, NULL, '腰果', '熟', '斤', 'yaoguo', 'yg', 17600092, 'goodsImage/logo.jpg', '183', 18, 1, 0, NULL, NULL, '#20afb8');
+INSERT INTO `nx_distributer_goods` VALUES (409, 25, 1, NULL, NULL, '面粉', NULL, '袋', 'mianfen', 'mf', 17600101, 'goodsImage/logo.jpg', '153', 15, 1, 0, '金沙河', NULL, '#20afb8');
 COMMIT;
 
 -- ----------------------------
@@ -1276,12 +1567,12 @@ CREATE TABLE `nx_distributer_purchase_batch` (
   `nx_distributer_purchase_batch_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商进货批次id',
   `nx_DPB_status` tinyint(2) DEFAULT NULL COMMENT '批发商进货批次状态',
   `nx_DPB_type` tinyint(2) DEFAULT NULL COMMENT '批发商进货批次类型',
-  `nx_DPB_time` varchar(12) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商进货批次时间',
+  `nx_DPB_time` varchar(12) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '批发商进货批次时间',
   `nx_DPB_pur_user_id` int(20) DEFAULT NULL COMMENT '批发商进货采购员id',
   `nx_DPB_distributer_id` int(20) DEFAULT NULL COMMENT '批发商id',
-  `nx_DPB_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DPB_hour` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DPB_minute` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DPB_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DPB_hour` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DPB_minute` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_purchase_batch_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -1293,50 +1584,21 @@ CREATE TABLE `nx_distributer_purchase_goods` (
   `nx_distributer_purchase_goods_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商采购商品id',
   `nx_DPG_dis_goods_id` int(20) DEFAULT NULL COMMENT '采购商品id',
   `nx_DPG_dis_goods_father_id` int(20) DEFAULT NULL COMMENT '采购父级商品id',
-  `nx_DPG_quantity` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
-  `nx_DPG_standard` varchar(6) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购规格',
+  `nx_DPG_quantity` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
+  `nx_DPG_standard` varchar(6) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购规格',
   `nx_DPG_status` tinyint(2) DEFAULT NULL COMMENT '采购状态',
   `nx_DPG_distributer_id` int(20) DEFAULT NULL COMMENT '采购批发商id',
   `nx_DPG_purchase_type` tinyint(2) DEFAULT NULL COMMENT '采购方式：“1 订单采购”“2 添加采购”',
-  `nx_DPG_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购时间',
+  `nx_DPG_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购时间',
   `nx_DPG_batch_id` int(20) DEFAULT NULL COMMENT '采购批次号',
   `nx_DPG_buy_user_id` int(20) DEFAULT NULL COMMENT '采购方式为“采购”的采购员id',
-  `nx_DPG_buy_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购单价',
-  `nx_DPG_buy_quantity` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
+  `nx_DPG_buy_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购单价',
+  `nx_DPG_buy_quantity` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '采购数量',
   `nx_DPG_orders_amount` int(10) DEFAULT NULL COMMENT '订单采购的订单数量',
   `nx_DPG_type_add_user_id` int(11) DEFAULT NULL COMMENT '添加采购用户id',
   `nx_DPG_apply_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_purchase_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
-
--- ----------------------------
--- Records of nx_distributer_purchase_goods
--- ----------------------------
-BEGIN;
-INSERT INTO `nx_distributer_purchase_goods` VALUES (1, 55, 8, '5', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (2, 56, 8, '3', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (3, 57, 8, '5', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (4, 58, 8, '4', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (5, 59, 8, '3', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (6, 187, 17, '6', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (7, 189, 19, '5', '盒', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (8, 61, 8, '6', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (9, 73, 11, '5', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (10, 74, 11, '3', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (11, 114, 12, '3', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (12, 181, 16, '3', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (13, 185, 16, '5', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (14, 158, 15, '8', '斤', 2, 3, 2, '11:59', NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (15, 140, 5, '4', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (16, 140, 5, '567', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (17, 140, 5, '21', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (18, 140, 5, '333', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (19, 191, 21, '4', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (20, 191, 21, '5', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (21, 140, 5, '999', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-11');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (22, 140, 5, '666', '斤', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-12');
-INSERT INTO `nx_distributer_purchase_goods` VALUES (23, 192, 22, '50', '斤', 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-10-12');
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Table structure for nx_distributer_standard
@@ -1345,89 +1607,216 @@ DROP TABLE IF EXISTS `nx_distributer_standard`;
 CREATE TABLE `nx_distributer_standard` (
   `nx_distributer_standard_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_DS_dis_goods_id` int(20) DEFAULT NULL,
-  `nx_DS_standard_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DS_standard_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DS_standard_scale` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DS_standard_error` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DS_standard_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DS_standard_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DS_standard_scale` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DS_standard_error` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DS_standard_sort` int(10) DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_standard_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_standard
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_distributer_standard` VALUES (9, 55, '根', 'uploadImage/wxbc686226ccc443f1.o6zAJsw3k3_I4jY0lYtqK1TqmM_c.0r30bxBpTNcFbabac3529edec5e2c86ba0c548932af5.jpg', NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (10, 56, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (11, 57, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (12, 58, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (13, 59, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (14, 60, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (15, 61, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (16, 62, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (17, 63, '节', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (18, 63, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (19, 64, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (20, 65, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (21, 66, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (22, 67, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (23, 68, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (24, 69, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (25, 70, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (26, 74, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (27, 75, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (28, 76, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (29, 77, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (30, 78, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (31, 80, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (32, 81, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (33, 82, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (34, 84, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (35, 87, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (36, 88, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (37, 90, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (38, 92, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (39, 93, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (40, 96, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (41, 97, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (42, 98, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (43, 99, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (44, 100, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (45, 103, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (46, 104, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (47, 105, '捆', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (48, 108, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (49, 111, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (50, 113, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (51, 115, '捆', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (52, 116, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (53, 122, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (54, 123, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (55, 125, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (56, 127, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (57, 129, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (58, 130, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (59, 134, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (60, 136, '捆', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (61, 137, '盒', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (62, 138, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (63, 139, '颗', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (64, 140, '根', 'uploadImage/wxbc686226ccc443f1.o6zAJsw3k3_I4jY0lYtqK1TqmM_c.0r30bxBpTNcFbabac3529edec5e2c86ba0c548932af5.jpg', NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (66, 145, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (67, 146, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (68, 148, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (69, 149, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (70, 150, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (71, 152, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (72, 159, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (73, 161, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (74, 164, '捆', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (75, 166, '把', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (76, 172, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (78, 192, '根', 'uploadImage/wxbc686226ccc443f1.o6zAJsw3k3_I4jY0lYtqK1TqmM_c.0r30bxBpTNcFbabac3529edec5e2c86ba0c548932af5.jpg', NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (79, 193, '个', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (80, 194, '根', NULL, NULL, NULL, NULL);
-INSERT INTO `nx_distributer_standard` VALUES (82, 196, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (1, 1, '根', 'uploadImage/wxbc686226ccc443f1.o6zAJsw3k3_I4jY0lYtqK1TqmM_c.0r30bxBpTNcFbabac3529edec5e2c86ba0c548932af5.jpg', NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (2, 2, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (3, 3, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (4, 4, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (5, 5, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (7, 7, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (8, 8, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (9, 9, '节', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (10, 9, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (11, 10, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (12, 11, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (13, 12, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (14, 13, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (15, 14, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (16, 15, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (17, 16, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (18, 20, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (19, 21, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (20, 22, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (21, 23, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (22, 24, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (23, 26, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (24, 27, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (25, 28, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (26, 30, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (27, 33, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (28, 34, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (29, 36, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (30, 38, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (31, 39, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (32, 42, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (33, 43, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (34, 44, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (35, 45, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (36, 46, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (37, 49, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (38, 50, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (39, 51, '捆', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (40, 54, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (41, 57, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (42, 59, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (43, 61, '捆', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (44, 62, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (45, 68, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (46, 69, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (47, 71, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (48, 73, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (49, 75, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (50, 76, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (51, 80, '颗', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (52, 81, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (53, 82, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (54, 83, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (55, 85, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (56, 92, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (57, 94, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (58, 97, '捆', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (59, 99, '把', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (60, 105, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (61, 120, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (62, 122, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (63, 123, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (64, 124, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (65, 125, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (66, 126, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (67, 127, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (68, 128, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (69, 129, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (70, 130, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (71, 131, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (72, 132, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (73, 133, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (74, 134, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (75, 135, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (76, 136, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (77, 137, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (78, 138, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (79, 139, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (80, 140, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (81, 145, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (82, 150, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (83, 151, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (84, 152, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (85, 153, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (86, 154, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (87, 155, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (88, 156, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (89, 157, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (90, 158, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (91, 159, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (92, 160, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (93, 162, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (94, 163, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (95, 164, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (96, 165, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (97, 166, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (98, 169, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (99, 170, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (100, 172, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (101, 173, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (102, 174, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (103, 186, '张', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (104, 188, '块', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (105, 189, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (106, 191, '块', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (107, 193, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (108, 194, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (109, 195, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (110, 202, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (111, 209, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (112, 210, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (113, 211, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (114, 212, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (115, 213, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (117, 215, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (118, 216, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (119, 217, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (120, 219, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (121, 220, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (122, 221, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (123, 222, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (124, 223, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (125, 226, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (126, 230, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (127, 231, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (128, 241, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (129, 244, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (130, 245, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (131, 246, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (132, 247, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (133, 248, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (134, 249, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (135, 250, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (136, 251, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (137, 252, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (138, 253, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (139, 254, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (140, 255, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (141, 261, '根', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (142, 263, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (143, 265, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (144, 266, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (145, 267, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (146, 268, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (147, 269, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (148, 270, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (149, 271, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (150, 272, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (151, 273, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (152, 274, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (153, 275, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (154, 276, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (155, 277, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (156, 278, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (157, 279, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (158, 281, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (159, 284, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (160, 286, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (161, 287, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (162, 288, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (163, 289, '只', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (164, 291, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (165, 292, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (166, 293, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (167, 294, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (168, 295, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (169, 298, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (170, 300, '箱', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (171, 300, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (172, 301, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (173, 302, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (174, 303, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (175, 305, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (176, 306, '袋', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (177, 307, '袋', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (178, 356, '个', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (179, 360, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (180, 361, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (181, 362, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (182, 363, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (183, 364, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (184, 365, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (185, 366, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (186, 367, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (187, 368, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (188, 369, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (189, 370, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (190, 371, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (191, 372, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (192, 373, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (193, 375, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (194, 376, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (195, 377, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (196, 378, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (197, 379, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (198, 380, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (199, 381, '条', NULL, NULL, NULL, NULL);
+INSERT INTO `nx_distributer_standard` VALUES (200, 382, '条', NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1455,22 +1844,21 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_distributer_user`;
 CREATE TABLE `nx_distributer_user` (
   `nx_distributer_user_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商用户id',
-  `nx_DIU_wx_avartra_url` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '用户名',
-  `nx_DIU_wx_nick_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '登陆密码',
-  `nx_DIU_wx_open_id` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DIU_wx_phone` varchar(15) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIU_wx_avartra_url` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '用户名',
+  `nx_DIU_wx_nick_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '登陆密码',
+  `nx_DIU_wx_open_id` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIU_wx_phone` varchar(15) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DIU_distributer_id` int(20) DEFAULT NULL,
   `nx_DIU_admin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`nx_distributer_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_distributer_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_distributer_user` VALUES (1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJmFzvphh03pmzPe490lSNn38SBB18VWm3fL8VGT0KibzOmKehqvLRHCicUicEtrzToAvFQnQJic4kibSQ/132', '李君', 'oX2485BL9V-FjEa7bKOkFJcqxD0E', NULL, 1, 1);
-INSERT INTO `nx_distributer_user` VALUES (2, 'https://thirdwx.qlogo.cn/mmopen/vi_32/A6HnsicWX5AqTPibokqX0mv49otOSQOejxnkRFyMl9xtjRhAnv4KeH6oiaHf7Qxv8k09M0Y2aQBSReQyFSdiajLlVw/132', '沛谊', 'oX2485P8vz6TSn0mB9Ld4HJJt4nU', NULL, 2, 1);
-INSERT INTO `nx_distributer_user` VALUES (3, 'https://thirdwx.qlogo.cn/mmopen/vi_32/3T3I4NXkxtjA27xp35ZIKe15O0QlCL7M9CFuR3ic0sSzpVg1XtzibKibXjygSTE6uMcOPaJYPvfSUUPaTYKSia4aiaQ/132', 'Fangfang', 'oX2485MI4LIv6BZecHp7zXBNKlA0', NULL, 3, 1);
+INSERT INTO `nx_distributer_user` VALUES (1, 'https://thirdwx.qlogo.cn/mmopen/vi_32/A6HnsicWX5AqTPibokqX0mv49otOSQOejxnkRFyMl9xtjRhAnv4KeH6oiaHf7Qxv8k0rt0xdgrUBNjCXfWV2Lpxng/132', '李树国配送💐 🌸 🐟 🍏', 'oX2485P8vz6TSn0mB9Ld4HJJt4nU', NULL, 1, 1);
+INSERT INTO `nx_distributer_user` VALUES (2, 'https://thirdwx.qlogo.cn/mmopen/vi_32/WY0NbVkYibXWooQSAoyAbUIbTudycp5YKoibAuQL1hmichDJ1axA5FVwOnIkknSyVDlNXteUZBUWwY86uyXLK9CGw/132', '知心爱人', 'oX2485BKhfwzWc9pevBqC71Oe2U8', NULL, 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -1482,7 +1870,7 @@ CREATE TABLE `nx_distributer_user_role` (
   `nx_DUR_user_id` int(20) DEFAULT NULL COMMENT '用户ID',
   `nx_DUR_role_id` int(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`nx_distributer_user_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
 
 -- ----------------------------
 -- Records of nx_distributer_user_role
@@ -1490,7 +1878,6 @@ CREATE TABLE `nx_distributer_user_role` (
 BEGIN;
 INSERT INTO `nx_distributer_user_role` VALUES (1, 1, 0);
 INSERT INTO `nx_distributer_user_role` VALUES (2, 2, 0);
-INSERT INTO `nx_distributer_user_role` VALUES (3, 3, 0);
 COMMIT;
 
 -- ----------------------------
@@ -1499,8 +1886,8 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_e_commerce`;
 CREATE TABLE `nx_e_commerce` (
   `nx_e_commerce_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_e_commerce_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_e_commerce_img` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_e_commerce_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_e_commerce_img` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_e_commerce_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -1556,19 +1943,19 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_goods`;
 CREATE TABLE `nx_goods` (
   `nx_goods_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '商品id',
-  `nx_goods_name` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
-  `nx_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
-  `nx_goods_detail` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品描述',
-  `nx_goods_brand` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品品牌',
-  `nx_goods_place` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品产地',
-  `nx_goods_pinyin` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '拼音',
-  `nx_goods_py` varchar(50) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '简拼',
+  `nx_goods_name` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
+  `nx_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品规格',
+  `nx_goods_detail` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品描述',
+  `nx_goods_brand` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品品牌',
+  `nx_goods_place` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品产地',
+  `nx_goods_pinyin` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '拼音',
+  `nx_goods_py` varchar(50) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '简拼',
   `nx_goods_father_id` int(20) DEFAULT NULL COMMENT '父级id',
   `nx_goods_sort` int(10) DEFAULT NULL COMMENT '商品排序',
-  `nx_goods_file` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '图片',
+  `nx_goods_file` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '图片',
   `nx_goods_standard_amount` int(2) DEFAULT NULL COMMENT '销售规格数量',
   PRIMARY KEY (`nx_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17600101 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17600102 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
 -- Records of nx_goods
@@ -2094,6 +2481,7 @@ INSERT INTO `nx_goods` VALUES (17600097, '钢丝球', '包', NULL, NULL, NULL, '
 INSERT INTO `nx_goods` VALUES (17600098, '百洁布', '包', NULL, NULL, NULL, 'baijiebu', 'bjb', 221, NULL, NULL, NULL);
 INSERT INTO `nx_goods` VALUES (17600099, '洗洁精', '桶', NULL, NULL, NULL, 'xijiejing', 'xjj', 221, NULL, NULL, NULL);
 INSERT INTO `nx_goods` VALUES (17600100, '酸菜', '袋', NULL, '刘', NULL, 'suancai', 'sc', 133, NULL, NULL, NULL);
+INSERT INTO `nx_goods` VALUES (17600101, '面粉', '袋', NULL, '金沙河', NULL, 'mianfen', 'mf', 153, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -2102,7 +2490,7 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_label`;
 CREATE TABLE `nx_label` (
   `nx_label_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_label_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_label_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_label_hot` int(10) DEFAULT NULL,
   `nx_label_type_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_label_id`)
@@ -2138,7 +2526,7 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_label_type`;
 CREATE TABLE `nx_label_type` (
   `nx_label_type_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_label_type_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_label_type_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_label_amount` int(20) DEFAULT NULL,
   `nx_label_type_sort` int(10) DEFAULT NULL,
   PRIMARY KEY (`nx_label_type_id`)
@@ -2160,8 +2548,8 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_order_template`;
 CREATE TABLE `nx_order_template` (
   `nx_order_template_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_OD_file_path` varchar(300) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_OD_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_OD_file_path` varchar(300) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_OD_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_OD_customer_user_id` int(20) DEFAULT NULL,
   `nx_OD_item_amount` int(6) DEFAULT NULL,
   PRIMARY KEY (`nx_order_template_id`)
@@ -2188,7 +2576,7 @@ CREATE TABLE `nx_order_template_item` (
   `nx_OT_amount` float(4,1) DEFAULT NULL,
   `nx_OT_order_template_id` int(20) DEFAULT NULL,
   `nx_OT_customer_user_id` int(20) DEFAULT NULL,
-  `nx_OT_dis_goods_color` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_OT_dis_goods_color` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_OT_item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2212,20 +2600,20 @@ CREATE TABLE `nx_orders` (
   `nx_orders_community_id` int(20) DEFAULT NULL COMMENT '订单社区id',
   `nx_orders_customer_id` int(20) DEFAULT NULL COMMENT '订单客户id',
   `nx_orders_user_id` int(20) DEFAULT NULL COMMENT '订单用户id',
-  `nx_orders_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单日期',
+  `nx_orders_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单日期',
   `nx_orders_status` tinyint(2) DEFAULT NULL COMMENT '订单状态',
-  `nx_orders_service` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送达时间',
+  `nx_orders_service` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送达时间',
   `nx_orders_amount` float(10,0) DEFAULT NULL COMMENT '订单总金额',
-  `nx_orders_service_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到日期',
-  `nx_orders_service_time` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到时间',
+  `nx_orders_service_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到日期',
+  `nx_orders_service_time` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单送到时间',
   `nx_orders_weigh_user_id` int(20) DEFAULT NULL COMMENT '订单称重用户id',
   `nx_orders_delivery_user_id` int(20) DEFAULT NULL COMMENT '订单配送员工id',
   `nx_orders_sub_amount` int(10) DEFAULT NULL COMMENT '订单子商品数量',
   `nx_orders_sub_finished` int(10) DEFAULT NULL COMMENT '订单子商品完成数量',
-  `nx_orders_weigh_number` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单称重订单号',
+  `nx_orders_weigh_number` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单称重订单号',
   `nx_orders_payment_status` tinyint(2) DEFAULT NULL COMMENT '订单支付状态',
-  `nx_orders_payment_send_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付发送时间',
-  `nx_orders_payment_time` varchar(0) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付时间',
+  `nx_orders_payment_send_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付发送时间',
+  `nx_orders_payment_time` varchar(0) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单支付时间',
   `nx_orders_type` tinyint(2) DEFAULT NULL COMMENT '订单类型 0先付款1后付款',
   PRIMARY KEY (`nx_orders_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -2241,9 +2629,9 @@ CREATE TABLE `nx_orders_sub` (
   `nx_OS_community_goods_id` int(20) DEFAULT NULL COMMENT '子订单社区商品id',
   `nx_OS_community_goods_father_id` int(20) DEFAULT NULL COMMENT '子订单商品父id',
   `nx_OS_quantity` float(10,1) DEFAULT NULL COMMENT '子订单申请数量',
-  `nx_OS_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请规格',
+  `nx_OS_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请规格',
   `nx_OS_price` float(10,1) DEFAULT NULL COMMENT '子订单申请商品单价',
-  `nx_OS_remark` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请备注',
+  `nx_OS_remark` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '子订单申请备注',
   `nx_OS_weight` float(10,1) DEFAULT NULL COMMENT '子订单申请商品称重',
   `nx_OS_subtotal` float(10,1) DEFAULT NULL COMMENT '子订单申请商品小计',
   `nx_OS_status` tinyint(2) DEFAULT NULL COMMENT '子订单申请商品状态',
@@ -2267,15 +2655,15 @@ DROP TABLE IF EXISTS `nx_promote`;
 CREATE TABLE `nx_promote` (
   `nx_promote_id` int(20) NOT NULL AUTO_INCREMENT,
   `nx_promote_cg_id` int(20) DEFAULT NULL,
-  `nx_orignal_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_standard` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_weight` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_expired` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_storage` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_words` varchar(1000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_recommand_goods` varchar(1000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_promote_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_orignal_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_standard` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_weight` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_expired` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_storage` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_words` varchar(1000) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_recommand_goods` varchar(1000) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_promote_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_promote_community_id` int(20) DEFAULT NULL,
   `nx_promote_cg_father_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_promote_id`)
@@ -2287,7 +2675,7 @@ CREATE TABLE `nx_promote` (
 DROP TABLE IF EXISTS `nx_purchase_standard`;
 CREATE TABLE `nx_purchase_standard` (
   `nx_purchase_standard_id` int(20) NOT NULL,
-  `nx_PS_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_PS_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_PS_nx_goods_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`nx_purchase_standard_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -2298,7 +2686,7 @@ CREATE TABLE `nx_purchase_standard` (
 DROP TABLE IF EXISTS `nx_route`;
 CREATE TABLE `nx_route` (
   `nx_route_id` int(20) NOT NULL COMMENT '线路id',
-  `nx_route_name` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '线路名称',
+  `nx_route_name` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '线路名称',
   PRIMARY KEY (`nx_route_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2316,11 +2704,11 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_standard`;
 CREATE TABLE `nx_standard` (
   `nx_standard_id` int(20) NOT NULL AUTO_INCREMENT,
-  `nx_standard_name` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_standard_name` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_s_goods_id` int(20) DEFAULT NULL,
-  `nx_standard_file_path` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_standard_scale` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_standard_error` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_standard_file_path` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_standard_scale` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_standard_error` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_standard_sort` int(10) DEFAULT NULL,
   PRIMARY KEY (`nx_standard_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -2564,10 +2952,10 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_supplier`;
 CREATE TABLE `nx_supplier` (
   `nx_supplier_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '供货商id',
-  `nx_supplier_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
+  `nx_supplier_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
   `nx_supplier_father_goods_id` int(20) DEFAULT NULL COMMENT '供货商商品类别id',
   `nx_supplier_payment_type` tinyint(2) DEFAULT NULL COMMENT '供货商结算类别1现金，2记账',
-  `nx_supplier_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
+  `nx_supplier_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
   PRIMARY KEY (`nx_supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2585,12 +2973,12 @@ COMMIT;
 DROP TABLE IF EXISTS `nx_wx_orders`;
 CREATE TABLE `nx_wx_orders` (
   `nx_wx_orders_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '微信支付订单id',
-  `nx_wx_orders_out_trade_no` varchar(32) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '随机字符串32位',
-  `nx_wx_orders_body` varchar(128) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单主体',
-  `nx_wx_orders_detail` varchar(6000) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单详细',
-  `nx_wx_orders_attach` varchar(127) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '附加数据，如“深圳分店”',
+  `nx_wx_orders_out_trade_no` varchar(32) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '随机字符串32位',
+  `nx_wx_orders_body` varchar(128) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单主体',
+  `nx_wx_orders_detail` varchar(6000) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订单详细',
+  `nx_wx_orders_attach` varchar(127) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '附加数据，如“深圳分店”',
   `nx_wx_orders_total_fee` int(88) DEFAULT NULL COMMENT '支付金额单位“分”',
-  `nx_wx_orders_spbill_create_ip` varchar(64) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '支付api的机器ip',
+  `nx_wx_orders_spbill_create_ip` varchar(64) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '支付api的机器ip',
   PRIMARY KEY (`nx_wx_orders_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2788,12 +3176,12 @@ CREATE TABLE `zznx_department_nx_goods` (
   `nx_DNG_department_father_id` int(20) DEFAULT NULL,
   `nx_DNG_department_id` int(20) DEFAULT NULL,
   `nx_DNG_nx_goods_id` int(20) DEFAULT NULL,
-  `nx_DNG_nx_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_pinyin` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_py` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_pinyin` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_py` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DNG_nx_goods_sort` int(20) DEFAULT NULL,
-  `nx_DNG_nx_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_detail` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_detail` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DNG_alarm_rate` int(2) DEFAULT NULL,
   PRIMARY KEY (`nx_department_nx_goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
@@ -2829,10 +3217,10 @@ COMMIT;
 DROP TABLE IF EXISTS `zzz_nx_supplier`;
 CREATE TABLE `zzz_nx_supplier` (
   `nx_supplier_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '供货商id',
-  `nx_supplier_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
+  `nx_supplier_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
   `nx_supplier_father_goods_id` int(20) DEFAULT NULL COMMENT '供货商商品类别id',
   `nx_supplier_payment_type` tinyint(2) DEFAULT NULL COMMENT '供货商结算类别1现金，2记账',
-  `nx_supplier_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
+  `nx_supplier_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
   PRIMARY KEY (`nx_supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2856,14 +3244,14 @@ CREATE TABLE `zzznx_department_goods` (
   `nx_dg_nx_goods_father_id` int(20) DEFAULT NULL COMMENT 'nx商品父类id',
   `nx_dg_goods_is_weight` tinyint(2) DEFAULT NULL COMMENT '是否称重',
   `nx_dg_goods_status` tinyint(2) DEFAULT NULL COMMENT '商品状态',
-  `nx_dg_goods_price` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格',
-  `nx_dg_price_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格更新日期',
+  `nx_dg_goods_price` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格',
+  `nx_dg_price_date` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '部门商品价格更新日期',
   `nx_dg_distribute_id` int(20) DEFAULT NULL COMMENT '批发商id',
-  `nx_dg_order_quantity` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dg_order_standard` varchar(4) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dg_order_time` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dg_order_only_date` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_dg_order_only_time` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_order_quantity` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_order_standard` varchar(4) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_order_time` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_order_only_date` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_dg_order_only_time` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_department_goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2876,14 +3264,14 @@ CREATE TABLE `zzznx_department_independent_order` (
   `nx_DIO_department_id` int(20) DEFAULT NULL COMMENT '订货部门id',
   `nx_DIO_department_father_id` int(20) DEFAULT NULL COMMENT '订货父级部门id',
   `nx_DIO_apply_user_id` int(20) DEFAULT NULL COMMENT '订货用户id',
-  `nx_DIO_apply_time` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货时间',
-  `nx_DIO_apply_date` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货日期',
+  `nx_DIO_apply_time` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货时间',
+  `nx_DIO_apply_date` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货日期',
   `nx_DIO_apply_status` tinyint(2) DEFAULT NULL COMMENT '订单状态',
-  `nx_DIO_apply_quantity` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货数量',
-  `nx_DIO_apply_standard` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货规格',
-  `nx_DIO_apply_remark` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货备注',
+  `nx_DIO_apply_quantity` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货数量',
+  `nx_DIO_apply_standard` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货规格',
+  `nx_DIO_apply_remark` varchar(200) COLLATE utf16_czech_ci DEFAULT NULL COMMENT '订货备注',
   `nx_DIO_independent_goods_id` int(20) DEFAULT NULL,
-  `nx_DIO_operation_time` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DIO_operation_time` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
   PRIMARY KEY (`nx_dep_independent_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
@@ -2896,12 +3284,12 @@ CREATE TABLE `zzznx_department_nx_goods` (
   `nx_DNG_department_father_id` int(20) DEFAULT NULL,
   `nx_DNG_department_id` int(20) DEFAULT NULL,
   `nx_DNG_nx_goods_id` int(20) DEFAULT NULL,
-  `nx_DNG_nx_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_pinyin` varchar(100) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_py` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_name` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_pinyin` varchar(100) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_py` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DNG_nx_goods_sort` int(20) DEFAULT NULL,
-  `nx_DNG_nx_goods_standardname` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
-  `nx_DNG_nx_goods_detail` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_standardname` varchar(10) COLLATE utf16_czech_ci DEFAULT NULL,
+  `nx_DNG_nx_goods_detail` varchar(20) COLLATE utf16_czech_ci DEFAULT NULL,
   `nx_DNG_alarm_rate` int(2) DEFAULT NULL,
   PRIMARY KEY (`nx_department_nx_goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;

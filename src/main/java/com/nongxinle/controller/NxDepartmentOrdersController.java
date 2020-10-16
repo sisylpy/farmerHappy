@@ -394,7 +394,7 @@ public class NxDepartmentOrdersController {
             for (NxDepartmentOrdersEntity ordersEntity: ordersArr) {
                 if(ordersEntity.getNxDoApplyOnlyDate().equals(nxDoApplyOnlyDate)){
                     arr.add(ordersEntity);
-                    if(ordersEntity.getNxDoStatus() == 1 ){
+                    if(ordersEntity.getNxDoStatus() > 1 ){
                         complate = complate + 1;
                     }
                 }
@@ -411,9 +411,6 @@ public class NxDepartmentOrdersController {
         map2.put("totalCount", totalCount );
         return map2;
     }
-
-
-
 }
 
 

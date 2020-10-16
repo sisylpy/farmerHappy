@@ -47,6 +47,9 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	@Override
 	public void save(NxDepartmentOrdersEntity nxDepartmentOrders){
 
+		Calendar c = Calendar.getInstance();
+		int weeksInWeekYear = c.getWeeksInWeekYear();
+		nxDepartmentOrders.setNxDoApplyWeeksYear(weeksInWeekYear);
 		nxDepartmentOrders.setNxDoStatus(0);
 		nxDepartmentOrders.setNxDoBuyStatus(0);
 		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
