@@ -11,6 +11,7 @@ import com.nongxinle.entity.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 public interface NxDepartmentDisGoodsService {
 
@@ -24,7 +25,8 @@ public interface NxDepartmentDisGoodsService {
 
 	int queryDepGoodsTotal(Map<String, Object> map3);
 
-	List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
+	TreeSet<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
+//	List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
 
 	void save(NxDepartmentDisGoodsEntity nxDepartmentDisGoods);
 

@@ -11,7 +11,7 @@
 		left join nx_department as fatherOrdep on fatherOrdep.nx_department_id = ndo.nx_DO_department_father_id
 		left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dp.nx_DPG_dis_goods_id
 		left join nx_distributer_father_goods as dfg on dfg.nx_distributer_father_goods_id = dp.nx_DPG_dis_goods_father_id
-		where dp.nx_DPG_distributer_id = #{disId} and dp.nx_DPG_status &lt; #{status}
+		where dp.nx_DPG_distributer_id = #{disId} and  dp.nx_DPG_purchase_date = #{purchaseDate}
 		order by dp.nx_DPG_dis_goods_father_id, dp.nx_DPG_dis_goods_id
 	</select>
 
@@ -74,12 +74,17 @@
 		<result property="nxDoQuantity" column="nx_DO_quantity"/>
 		<result property="nxDoStandard" column="nx_DO_standard"/>
 		<result property="nxDoRemark" column="nx_DO_remark"/>
+		<result property="nxDoWeight" column="nx_DO_weight"/>
+		<result property="nxDoPrice" column="nx_DO_price"/>
+		<result property="nxDoSubtotal" column="nx_DO_subtotal"/>
 		<result property="nxDoStatus" column="nx_DO_status"/>
 		<result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+		<result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
 		<result property="nxDoDepartmentFatherId" column="nx_DO_department_father_id"/>
 		<result property="nxDoDisGoodsId" column="nx_DO_dis_goods_id"/>
 		<result property="nxDoDepartmentId" column="nx_DO_department_id"/>
 		<result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+		<result property="nxDoDepDisGoodsId" column="nx_DO_dep_dis_goods_id"/>
 		<association property="nxDepartmentEntity" resultMap="orderFatherDepartment"/>
 	</resultMap>
 
@@ -101,6 +106,7 @@
 		<result property="nxDpgOrdersAmount" column="nx_DPG_orders_amount"/>
 		<result property="nxDpgTypeAddUserId" column="nx_DPG_type_add_user_id"/>
 		<result property="nxDpgTime" column="nx_DPG_time"/>
+		<result property="nxDpgInputType" column="nx_DPG_input_type"/>
 		<association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
 		<collection property="nxDepartmentOrdersEntities" resultMap="depOrders"/>
 	</resultMap>
@@ -160,6 +166,10 @@
 		</where>
          order by nx_DPG_apply_date Desc
 	</select>
+	<select id="queryPurchaseGoodsTotal" resultType="java.lang.Integer">
+		select count(*) from nx_distributer_purchase_goods where nx_DPG_purchase_date = #{purchaseDate}
+			and nx_DPG_distributer_id = #{disId}
+	</select>
 
 	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerPurchaseGoodsEntity"
 			useGeneratedKeys="true" keyProperty="nxDistributerPurchaseGoodsId">
@@ -180,7 +190,9 @@
 		 	`nx_DPG_buy_quantity`,
 		 	`nx_DPG_orders_amount`,
 		 	`nx_DPG_type_add_user_id`,
-		 	`nx_DPG_apply_date`
+		 	`nx_DPG_apply_date`,
+		 	`nx_DPG_input_type`,
+		 	`nx_DPG_purchase_date`
 		)
 		values
 		(
@@ -199,7 +211,9 @@
 		 	#{nxDpgBuyQuantity},
 		 	#{nxDpgOrdersAmount},
 		 	#{nxDpgTypeAddUserId},
-		 	#{nxDpgApplyDate}
+		 	#{nxDpgApplyDate},
+		 	#{nxDpgInputType},
+		 	#{nxDpgPurchaseDate}
 		)
 	</insert>
 	 
@@ -220,6 +234,8 @@
 			<if test="nxDpgOrdersAmount != null">`nx_DPG_orders_amount` = #{nxDpgOrdersAmount}, </if>
 			<if test="nxDpgTypeAddUserId != null">`nx_DPG_type_add_user_id` = #{nxDpgTypeAddUserId}, </if>
 			<if test="nxDpgApplyDate != null">`nx_DPG_apply_date` = #{nxDpgApplyDate}, </if>
+			<if test="nxDpgInputType != null">`nx_DPG_input_type` = #{nxDpgInputType}, </if>
+			<if test="nxDpgPurchaseDate != null">`nx_DPG_purhchase_date` = #{nxDpgPurchaseDate}, </if>
 			<if test="nxDpgTime != null">`nx_DPG_time` = #{nxDpgTime}</if>
 		</set>
 		where nx_distributer_purchase_goods_id = #{nxDistributerPurchaseGoodsId}

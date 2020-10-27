@@ -331,7 +331,7 @@
          `nx_dg_nx_great_grand_id`,
          `nx_dg_pull_off`,
          `nx_dg_nx_goods_father_color`
-         )
+                  )
         values (#{nxDistributerGoodsId},
                 #{nxDgDistributerId},
                 #{nxDgGoodsStatus},

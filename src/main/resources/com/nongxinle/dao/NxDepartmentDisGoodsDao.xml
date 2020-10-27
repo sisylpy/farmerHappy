@@ -137,14 +137,14 @@
                ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
                ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
                ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
+               ddg.nx_DDG_department_father_id,
                dg.nx_distributer_goods_id,
                da.nx_DA_alias_name,da.nx_DA_dis_goods_id
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
                 left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
-        where nx_DDG_department_father_id = #{depId}
-          and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%')
-          or da.nx_DA_alias_name like concat('%', #{searchStr}, '%')
+        where (ddg.nx_DDG_department_father_id = #{depId} and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%'))
+          or (ddg.nx_DDG_department_father_id = #{depId} and da.nx_DA_alias_name like concat('%', #{searchStr}, '%'))
             order by dg.nx_DG_goods_py
 
 
@@ -159,7 +159,7 @@
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
                  left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
-        where nx_DDG_department_father_id = #{depId}
+        where ddg.nx_DDG_department_father_id = #{depId}
           and (ddg.nx_DDG_dep_goods_pinyin like concat('%', #{pinyin}, '%')
                    or ddg.nx_DDG_dep_goods_py like concat('%', #{pinyin}, '%')
                    or da.nx_DA_alias_name like concat('%', #{pinyin}, '%'))

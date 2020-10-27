@@ -43,7 +43,8 @@ public class NxDepartmentDisGoodsController {
         Map<String, Object> map = new HashMap<>();
         map.put("depId", depId);
         map.put("searchStr", searchStr);
-        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
+        TreeSet<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
+//        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
 
         Map<String, Object> map2 = new HashMap<>();
         map2.put("depId", depId);
@@ -122,22 +123,22 @@ public class NxDepartmentDisGoodsController {
 
         List<NxDistributerGoodsEntity> disGoods = nxDistributerGoodsService.queryDisGoodsByParams(map);
 
-        List<NxDistributerGoodsEntity> goodsEntities = new ArrayList<>();
-        for (NxDistributerGoodsEntity goods : disGoods) {
-            //查询部门商品是否添加了配送商商品
-            Map<String, Object> map1 = new HashMap<>();
-            map1.put("depFatherId", depFatherId);
-            map1.put("disGoodsId", goods.getNxDistributerGoodsId());
-            List<NxDepartmentDisGoodsEntity> ddgGoods = nxDepartmentDisGoodsService.queryAddDisDepGoods(map1);
-            if (ddgGoods.size() > 0) {
-                goods.setIsDownload(1);
-                goods.setDepartmentDisGoodsEntity(ddgGoods.get(0));
-                goodsEntities.add(goods);
-            } else {
-                goods.setIsDownload(0);
-                goodsEntities.add(goods);
-            }
-        }
+//        List<NxDistributerGoodsEntity> goodsEntities = new ArrayList<>();
+//        for (NxDistributerGoodsEntity goods : disGoods) {
+//            //查询部门商品是否添加了配送商商品
+//            Map<String, Object> map1 = new HashMap<>();
+//            map1.put("depFatherId", depFatherId);
+//            map1.put("disGoodsId", goods.getNxDistributerGoodsId());
+//            List<NxDepartmentDisGoodsEntity> ddgGoods = nxDepartmentDisGoodsService.queryAddDisDepGoods(map1);
+//            if (ddgGoods.size() > 0) {
+//                goods.setIsDownload(1);
+//                goods.setDepartmentDisGoodsEntity(ddgGoods.get(0));
+//                goodsEntities.add(goods);
+//            } else {
+//                goods.setIsDownload(0);
+//                goodsEntities.add(goods);
+//            }
+//        }
 
         Map<String, Object> map3 = new HashMap<>();
         map3.put("disId", disId );
@@ -146,13 +147,13 @@ public class NxDepartmentDisGoodsController {
 
 
 		//查询depGoods数量
-        Map<String, Object> map4 = new HashMap<>();
-        map4.put("depFatherId", depFatherId);
-        map4.put("disGoodsFatherId", fatherId);
-        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map4);
+//        Map<String, Object> map4 = new HashMap<>();
+//        map4.put("depFatherId", depFatherId);
+//        map4.put("disGoodsFatherId", fatherId);
+//        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map4);
         Map<String, Object> map5 = new HashMap<>();
-        map5.put("arr", goodsEntities);
-        map5.put("amount", disGoodsEntities.size());
+        map5.put("arr", disGoods);
+//        map5.put("amount", disGoodsEntities.size());
         List<Map<String, Object>> mapList = new ArrayList<>();
         mapList.add(map5);
 

@@ -89,6 +89,8 @@ public class NxDistributerGoodsEntity implements Serializable, Comparable  {
 
 	private String nxDgNxGoodsFatherColor;
 
+	private Integer nxDgGoodsStock;
+
 	private NxGoodsEntity nxGoodsEntity;
 
 	private List<NxDistributerStandardEntity> distributerStandardEntities;

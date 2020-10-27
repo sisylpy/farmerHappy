@@ -368,12 +368,12 @@ public class NxDistributerGoodsController {
 
 
 		for(int i = 1; i < departmentOrdersEntities.size(); i++) {
-			String nxDoApplyOnlyDate = departmentOrdersEntities.get(i-1).getNxDoApplyOnlyDate();
-				if(nxDoApplyOnlyDate.equals(departmentOrdersEntities.get(i).getNxDoApplyOnlyDate())){
+			String nxDoApplyOnlyDate = departmentOrdersEntities.get(i-1).getNxDoArriveOnlyDate();
+				if(nxDoApplyOnlyDate.equals(departmentOrdersEntities.get(i).getNxDoArriveOnlyDate())){
 					departmentOrdersEntities.get(i).setShowDate(false);
 				}
-			Integer nxDoApplyWeeksYear = departmentOrdersEntities.get(i - 1).getNxDoApplyWeeksYear();
-			if(nxDoApplyWeeksYear.equals(departmentOrdersEntities.get(i).getNxDoApplyWeeksYear())){
+			Integer nxDoApplyWeeksYear = departmentOrdersEntities.get(i - 1).getNxDoArriveWeeksYear();
+			if(nxDoApplyWeeksYear.equals(departmentOrdersEntities.get(i).getNxDoArriveWeeksYear())){
 				departmentOrdersEntities.get(i).setIsWeeks(false);
 			}
 		}

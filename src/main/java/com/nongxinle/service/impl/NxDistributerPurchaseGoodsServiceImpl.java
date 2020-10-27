@@ -107,4 +107,10 @@ public class NxDistributerPurchaseGoodsServiceImpl implements NxDistributerPurch
 		return nxDistributerPurchaseGoodsDao.queryPurchaseGoodsByParams(map2);
     }
 
+    @Override
+    public int queryPurchaseTotal(Map<String, Object> map2) {
+
+		return nxDistributerPurchaseGoodsDao.queryPurchaseGoodsTotal(map2);
+    }
+
 }

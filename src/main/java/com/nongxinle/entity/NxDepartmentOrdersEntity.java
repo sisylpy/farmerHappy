@@ -35,6 +35,7 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 	 *  部门订单社区商品id
 	 */
 	private Integer nxDoDisGoodsId;
+	private Integer nxDoDisGoodsFatherId;
 
 	private  Integer nxDoDepDisGoodsId;
 	private String  nxDoDepDisGoodsPrice;
@@ -105,13 +106,15 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 	 *  部门订单申请时间
 	 */
 	private String nxDoApplyDate;
+	private String nxDoApplyFullTime;
 
-	private String nxDoApplyOnlyDate;
-	private String nxDoApplyOnlyTime;
 	/**
 	 *  部门订单送达时间
 	 */
+	private String nxDoArriveOnlyDate;
 	private String nxDoArriveDate;
+	private Integer nxDoArriveWeeksYear;
+
 	/**
 	 * 采购商品id
 	 */
@@ -123,11 +126,12 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 
 	private String nxDoOperationTime;
 
-	private String nxDoApplyWhatDay;
+	private String nxDoArriveWhatDay;
 
 	private Integer nxDoIsAgent;
 
-	private Integer nxDoApplyWeeksYear;
+	private String nxDoApplyOnlyTime;
+
 
 
 
@@ -157,20 +161,19 @@ public class NxDepartmentOrdersEntity implements Serializable, Comparable{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		NxDepartmentOrdersEntity that = (NxDepartmentOrdersEntity) o;
-		return nxDoApplyOnlyDate.equals(that.nxDoApplyOnlyDate);
+		return nxDoArriveDate.equals(that.nxDoArriveDate);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nxDoApplyOnlyDate);
+		return Objects.hash(nxDoArriveDate);
 	}
 
 	@Override
 	public int compareTo(Object o) {
 		if (o instanceof NxDepartmentOrdersEntity) {
 			NxDepartmentOrdersEntity e = (NxDepartmentOrdersEntity) o;
-//			return this.nxDoApplyOnlyDate.compareTo(e.nxDoApplyOnlyDate);
-			return e.nxDoApplyOnlyDate.compareTo(this.nxDoApplyOnlyDate);
+			return e.nxDoArriveDate.compareTo(this.nxDoArriveDate);
 
 		}
 		return 0;

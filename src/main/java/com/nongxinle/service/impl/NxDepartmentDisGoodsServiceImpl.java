@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import com.nongxinle.dao.NxDepartmentDisGoodsDao;
 import com.nongxinle.service.NxDepartmentDisGoodsService;
@@ -63,7 +64,7 @@ public class NxDepartmentDisGoodsServiceImpl implements NxDepartmentDisGoodsServ
 
 
 	@Override
-	public List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map) {
+	public TreeSet<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map) {
 
 		return nxDepartmentDisGoodsDao.queryDepDisSearchStr (map);
 	}

@@ -3,14 +3,14 @@
 
 <mapper namespace="com.nongxinle.dao.NxDepartmentOrdersDao">
 
-
     <select id="disGetUnPlanPurchaseApplys" resultMap="unPlanPurchaseOrdersDisFatherGoods">
         select *
         from nx_department_orders as o
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = o.nx_DO_dis_goods_id
                  left join nx_distributer_father_goods as dfg on dfg.nx_distributer_father_goods_id = dg.nx_dg_dfg_goods_father_id
         left join nx_department as d on d.nx_department_id = o.nx_DO_department_id
-        where o.nx_DO_distributer_id = #{disId} and nx_DO_buy_status = 0 and o.nx_DO_status &lt; 1;
+        where o.nx_DO_distributer_id = #{disId} and nx_DO_buy_status = 0 and o.nx_DO_arrive_date  = #{arriveDate}
+        order by dfg.nx_distributer_father_goods_id, dg.nx_dg_goods_pinyin
     </select>
 
     <select id="queryDisOrdersByParams" resultMap="applys">
@@ -34,13 +34,16 @@
                 and  dor.nx_DO_status &lt; #{status}
             </if>
             <if test="onlyDate != null">
-                and  dor.nx_DO_apply_only_date &gt; #{onlyDate}
+                and  dor.nx_DO_arrive_only_date &gt; #{onlyDate}
             </if>
             <if test="goodsType != null">
                 and  dor.nx_DO_goods_type = #{goodsType}
             </if>
             <if test="applyDate != null">
                 and  dor.nx_DO_apply_date &gt; #{applyDate}
+            </if>
+            <if test="arriveDate != null">
+                and  dor.nx_DO_arrive_date = #{arriveDate}
             </if>
             <if test="userId != null">
                 and  dor.nx_DO_order_user_id = #{userId}
@@ -51,11 +54,14 @@
             <if test="depDisGoodsId != null">
                 and  dor.nx_DO_dep_dis_goods_id = #{depDisGoodsId}
             </if>
+            <if test="equalBuyStatus != null">
+                and  dor.nx_DO_buy_status = #{equalBuyStatus}
+            </if>
 
 
         </where>
         <if test="orderBy != null and orderBy == 'time'" >
-            order by  dor.nx_DO_apply_only_date, dor.nx_DO_apply_only_time DESC
+            order by  dor.nx_department_orders_id DESC
         </if>
 
 
@@ -66,11 +72,12 @@
 
     </select>
 
-    <select id="queryDistributerTodayOrders" resultMap="subDepartmentWithOrders">
+    <select id="queryDistributerTodayDepartments" resultMap="subDepartmentWithOrders">
         select  dor.nx_department_orders_id,
                 dor.nx_DO_nx_goods_id,
                 dor.nx_DO_order_user_id,
                 dor.nx_DO_apply_date,
+                dor.nx_DO_apply_only_time,
                 dor.nx_DO_quantity,
                 dor.nx_DO_standard,
                 dor.nx_DO_remark,
@@ -79,8 +86,8 @@
                 dor.nx_DO_weight,
                 dor.nx_DO_price,
                 dor.nx_DO_subtotal,
-                dor.nx_DO_apply_only_time,
-                dor.nx_DO_apply_only_date,
+                dor.nx_DO_apply_full_time,
+                dor.nx_DO_arrive_only_date,
                 dor.nx_DO_nx_goods_father_id,
                 dor.nx_DO_dis_goods_id,
                 dor.nx_DO_dep_dis_goods_price,
@@ -107,7 +114,7 @@
                  left join nx_department_independent_goods as ndig on ndig.nx_department_independent_goods_id = dor.nx_DO_ind_goods_id
                  left join nx_department as ds on ds.nx_department_id = dor.nx_DO_department_id
         where nx_DO_distributer_id = #{disId}
-          and nx_DO_status &lt; 3 order by dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
+          and  nx_DO_arrive_Date = #{arriveDate} order by ds.nx_department_id, dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
     </select>
 
 
@@ -207,8 +214,11 @@
         <result property="nxDoNxGoodsId" column="nx_DO_nx_goods_id"/>
         <result property="nxDoOrderUserId" column="nx_DO_order_user_id"/>
         <result property="nxDoApplyDate" column="nx_DO_apply_date"/>
-        <result property="nxDoApplyOnlyDate" column="nx_DO_apply_only_date"/>
         <result property="nxDoApplyOnlyTime" column="nx_DO_apply_only_time"/>
+        <result property="nxDoApplyFullTime" column="nx_DO_apply_full_time"/>
+        <result property="nxDoArriveOnlyDate" column="nx_DO_arrive_only_date"/>
+        <result property="nxDoArriveDate" column="nx_DO_arrive_date"/>
+        <result property="nxDoArriveWhatDay" column="nx_DO_arrive_what_day"/>
         <result property="nxDoQuantity" column="nx_DO_quantity"/>
         <result property="nxDoStandard" column="nx_DO_standard"/>
         <result property="nxDoRemark" column="nx_DO_remark"/>
@@ -226,9 +236,7 @@
         <result property="nxDoDistributerId" column="nx_DO_distributer_id"/>
         <result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
         <result property="nxDoGoodsType" column="nx_DO_goods_type"/>
-        <result property="nxDoApplyOnlyDate" column="nx_DO_apply_only_date"/>
         <result property="nxDoOperationTime" column="nx_DO_operation_time"/>
-        <result property="nxDoApplyWhatDay" column="nx_DO_apply_what_day"/>
         <result property="nxDoIsAgent" column="nx_DO_is_agent"/>
         <result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
         <result property="nxDoDepDisGoodsId" column="nx_DO_dep_dis_goods_id"/>
@@ -250,8 +258,12 @@
     </resultMap>
     <resultMap id="disGoodsWithOrders" type="NxDistributerGoodsEntity">
         <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
-        <result property="nxDgGoodsName" column="nx_DG_goods_name"/>
-        <result property="nxDgGoodsStandardname" column="nx_Dg_goods_standardname"/>
+        <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
+        <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
+        <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
+        <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
+        <result property="nxDgGoodsPinyin" column="nx_dg_goods_pinyin"/>
         <collection property="nxDepartmentOrdersEntities" resultMap="orders"/>
     </resultMap>
 
@@ -271,26 +283,14 @@
         <result property="nxDepartmentFatherId" column="ds_nx_department_father_id"/>
         <result property="nxDepartmentIsGroupDep" column="ds_nx_department_is_group_dep"/>
         <collection property="nxDepartmentOrdersEntities" resultMap="applys"/>
-
     </resultMap>
 
-
-
-    <select id="queryNewOrders" resultType="java.lang.Integer">
-        select count(*)
-        from nx_department_orders where nx_DO_department_id = #{nxDepartmentId} and nx_DO_status = -1
-    </select>
-
-
-    <select id="queryFatherNewOrders" resultType="java.lang.Integer">
-        select count(*)
-        from nx_department_orders where nx_DO_department_father_id = #{nxDepartmentId} and nx_DO_status = -1
-    </select>
 
     <resultMap id="ordersForGoods" type="NxDepartmentOrdersEntity">
         <id property="nxDepartmentOrdersId" column="nx_department_orders_id"/>
         <result property="nxDoApplyDate" column="nx_DO_apply_date"/>
-        <result property="nxDoApplyOnlyDate" column="nx_DO_apply_only_date"/>
+        <result property="nxDoArriveOnlyDate" column="nx_DO_arrive_only_date"/>
+        <result property="nxDoApplyFullTime" column="nx_DO_apply_full_time"/>
         <result property="nxDoApplyOnlyTime" column="nx_DO_apply_only_time"/>
         <result property="nxDoQuantity" column="nx_DO_quantity"/>
         <result property="nxDoStandard" column="nx_DO_standard"/>
@@ -301,15 +301,17 @@
         <result property="nxDoSubtotal" column="nx_DO_subtotal"/>
         <result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
         <result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
+        <result property="nxDoArriveWhatDay" column="nx_DO_arrive_what_day"/>
+        <result property="nxDoArriveWeeksYear" column="nx_DO_arrive_weeks_year"/>
         <association property="nxDepartmentEntity" resultMap="orderDepartment"/>
-
     </resultMap>
+
     <select id="queryOrdersForDisGoods" resultMap="ordersForGoods">
         select * from nx_department_orders as dor
         left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
         left join nx_department as dep on dep.nx_department_id = dor.nx_DO_department_father_id
         where dor.nx_DO_distributer_id = #{disId} and dor.nx_DO_dis_goods_id = #{disGoodsId}
-        order by dor.nx_DO_apply_only_date, dor.nx_DO_apply_only_time
+        order by dor.nx_DO_arrive_weeks_year DESC, dor.nx_DO_arrive_date DESC
     </select>
 
 
@@ -319,6 +321,7 @@
          `nx_DO_nx_goods_id`,
          `nx_DO_nx_goods_father_id`,
          `nx_DO_dis_goods_id`,
+         `nx_DO_dis_goods_father_id`,
          `nx_DO_dep_dis_goods_id`,
          `nx_DO_dep_dis_goods_price`,
          `nx_DO_quantity`,
@@ -340,19 +343,22 @@
          `nx_DO_apply_date`,
          `nx_DO_arrive_date`,
          `nx_DO_purchase_goods_id`,
-         `nx_DO_apply_only_date`,
-         `nx_DO_apply_only_time`,
+         `nx_DO_arrive_only_date`,
+         `nx_DO_apply_full_time`,
          `nx_DO_goods_type`,
          `nx_DO_ind_goods_id`,
          `nx_DO_ind_goods_py`,
          `nx_DO_operation_time`,
-         `nx_DO_apply_what_day`,
-         `nx_DO_is_agent`
+         `nx_DO_arrive_what_day`,
+         `nx_DO_is_agent`,
+         `nx_DO_arrive_weeks_year`,
+         `nx_DO_apply_only_time`
          )
             values (#{nxDepartmentOrdersId},
                     #{nxDoNxGoodsId},
                     #{nxDoNxGoodsFatherId},
                     #{nxDoDisGoodsId},
+                    #{nxDoDisGoodsFatherId},
                     #{nxDoDepDisGoodsId},
                     #{nxDoDepDisGoodsPrice},
                     #{nxDoQuantity},
@@ -374,14 +380,16 @@
                     #{nxDoApplyDate},
                     #{nxDoArriveDate},
                     #{nxDoPurchaseGoodsId},
-                    #{nxDoApplyOnlyDate},
-                    #{nxDoApplyOnlyTime},
+                    #{nxDoArriveOnlyDate},
+                    #{nxDoApplyFullTime},
                     #{nxDoGoodsType},
                     #{nxDoIndGoodsId},
                     #{nxDoIndGoodsPy},
                     #{nxDoOperationTime},
-                    #{nxDoApplyWhatDay},
-                    #{nxDoIsAgent}
+                    #{nxDoArriveWhatDay},
+                    #{nxDoIsAgent},
+                    #{nxDoArriveWeeksYear},
+                    #{nxDoApplyOnlyTime}
             )
     </insert>
 
@@ -391,6 +399,7 @@
             <if test="nxDoNxGoodsId != null">`nx_DO_nx_goods_id` = #{nxDoNxGoodsId},</if>
             <if test="nxDoNxGoodsFatherId != null">`nx_DO_nx_goods_father_id` = #{nxDoNxGoodsFatherId},</if>
             <if test="nxDoDisGoodsId != null">`nx_DO_dis_goods_id` = #{nxDoDisGoodsId},</if>
+            <if test="nxDoDisGoodsFatherId != null">`nx_DO_dis_goods_father_id` = #{nxDoDisGoodsFatherId},</if>
             <if test="nxDoDepDisGoodsId != null">`nx_DO_dep_dis_goods_id` = #{nxDoDepDisGoodsId},</if>
             <if test="nxDoDepDisGoodsPrice != null">`nx_DO_dep_dis_goods_price` = #{nxDoDepDisGoodsPrice},</if>
             <if test="nxDoQuantity != null">`nx_DO_quantity` = #{nxDoQuantity},</if>
@@ -411,14 +420,16 @@
             <if test="nxDoBuyStatus != null">`nx_DO_buy_status` = #{nxDoBuyStatus},</if>
             <if test="nxDoApplyDate != null">`nx_DO_apply_date` = #{nxDoApplyDate},</if>
             <if test="nxDoPurchaseGoodsId != null">`nx_DO_purchase_goods_id` = #{nxDoPurchaseGoodsId},</if>
-            <if test="nxDoApplyOnlyDate != null">`nx_DO_apply_only_date` = #{nxDoApplyOnlyDate},</if>
-            <if test="nxDoApplyOnlyTime != null">`nx_DO_apply_only_time` = #{nxDoApplyOnlyTime},</if>
+            <if test="nxDoArriveOnlyDate != null">`nx_DO_arrive_only_date` = #{nxDoArriveOnlyDate},</if>
+            <if test="nxDoApplyFullTime != null">`nx_DO_apply_full_time` = #{nxDoApplyFullTime},</if>
             <if test="nxDoGoodsType != null">`nx_DO_goods_type` = #{nxDoGoodsType},</if>
             <if test="nxDoIndGoodsId != null">`nx_DO_ind_goods_id` = #{nxDoIndGoodsId},</if>
             <if test="nxDoIndGoodsPy != null">`nx_DO_ind_goods_py` = #{nxDoIndGoodsPy},</if>
             <if test="nxDoOperationTime != null">`nx_DO_operation_time` = #{nxDoOperationTime},</if>
-            <if test="nxDoApplyWhatDay != null">`nx_DO_apply_what_day` = #{nxDoApplyWhatDay},</if>
+            <if test="nxDoArriveWhatDay != null">`nx_DO_arrive_what_day` = #{nxDoArriveWhatDay},</if>
             <if test="nxDoIsAgent != null">`nx_DO_is_agent` = #{nxDoIsAgent},</if>
+            <if test="nxDoArriveWeeksYear != null">`nx_DO_arrive_weeks_year` = #{nxDoArriveWeeksYear},</if>
+            <if test="nxDoApplyOnlyTime != null">`nx_DO_apply_only_time` = #{nxDoApplyOnlyTime},</if>
             <if test="nxDoArriveDate != null">`nx_DO_arrive_date` = #{nxDoArriveDate}</if>
         </set>
         where nx_department_orders_id = #{nxDepartmentOrdersId}

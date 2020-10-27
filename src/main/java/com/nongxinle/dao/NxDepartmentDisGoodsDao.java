@@ -11,6 +11,7 @@ import com.nongxinle.entity.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 
 public interface NxDepartmentDisGoodsDao extends BaseDao<NxDepartmentDisGoodsEntity> {
@@ -25,7 +26,7 @@ public interface NxDepartmentDisGoodsDao extends BaseDao<NxDepartmentDisGoodsEnt
 
     int queryDisGoodsTotal(Map<String, Object> map3);
 
-    List<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
+    TreeSet<NxDepartmentDisGoodsEntity> queryDepDisSearchStr(Map<String, Object> map);
 
     List<NxDepartmentDisGoodsEntity> queryDepDisSearchPinyin(Map<String, Object> map);
 

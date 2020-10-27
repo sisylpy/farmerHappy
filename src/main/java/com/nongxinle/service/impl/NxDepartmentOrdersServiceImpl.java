@@ -23,11 +23,11 @@ import static com.nongxinle.utils.DateUtils.*;
 public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService {
 	@Autowired
 	private NxDepartmentOrdersDao nxDepartmentOrdersDao;
-
 	@Autowired
-	private NxDistributerUserDao nxDistributerUserDao;
-//	@Autowired
-//	private NxDistributerPurchaseGoodsService nxDPGService;
+	private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
+	@Autowired
+	private NxDistributerGoodsService dgService;
+
 	@Autowired
 	private NxDepartmentService nxDepartmentService;
 	@Autowired
@@ -40,22 +40,44 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	}
 
 	@Override
-	public List<NxDepartmentEntity> queryDistributerTodayOrders(Integer disId) {
-		return nxDepartmentOrdersDao.queryDistributerTodayOrders(disId);
+	public List<NxDepartmentEntity> queryDistributerTodayDepartments(Map<String, Object> map) {
+		return nxDepartmentOrdersDao.queryDistributerTodayDepartments(map);
 	}
 	
 	@Override
 	public void save(NxDepartmentOrdersEntity nxDepartmentOrders){
 
-		Calendar c = Calendar.getInstance();
-		int weeksInWeekYear = c.getWeeksInWeekYear();
-		nxDepartmentOrders.setNxDoApplyWeeksYear(weeksInWeekYear);
+		//判断是否是部门商品
+		Integer depDisGoodsId = nxDepartmentOrders.getNxDoDepDisGoodsId() ;
+		Integer nxDoGoodsType = nxDepartmentOrders.getNxDoGoodsType();
+		if(depDisGoodsId == null && nxDoGoodsType == 0){
+			//添加部门商品
+			System.out.println("shenmshigougjinaloii");
+			Integer doDisGoodsId = nxDepartmentOrders.getNxDoDisGoodsId();
+			NxDistributerGoodsEntity nxDistributerGoodsEntity = dgService.queryObject(doDisGoodsId);
+			String nxDgGoodsName = nxDistributerGoodsEntity.getNxDgGoodsName();
+
+			//
+			NxDepartmentDisGoodsEntity disGoodsEntity = new NxDepartmentDisGoodsEntity();
+			disGoodsEntity.setNxDdgDepGoodsName(nxDgGoodsName);
+			disGoodsEntity.setNxDdgDisGoodsId(doDisGoodsId);
+			disGoodsEntity.setNxDdgDisGoodsFatherId(nxDistributerGoodsEntity.getNxDgDfgGoodsFatherId());
+			disGoodsEntity.setNxDdgDepGoodsPinyin(nxDistributerGoodsEntity.getNxDgGoodsPinyin());
+			disGoodsEntity.setNxDdgDepGoodsPy(nxDistributerGoodsEntity.getNxDgGoodsPy());
+			disGoodsEntity.setNxDdgDepGoodsStandardname(nxDistributerGoodsEntity.getNxDgGoodsStandardname());
+			disGoodsEntity.setNxDdgDepartmentId(nxDepartmentOrders.getNxDoDepartmentId());
+			disGoodsEntity.setNxDdgDepartmentFatherId(nxDepartmentOrders.getNxDoDepartmentFatherId());
+			nxDepartmentDisGoodsService.save(disGoodsEntity);
+
+			Integer nxDepartmentDisGoodsId = disGoodsEntity.getNxDepartmentDisGoodsId();
+			nxDepartmentOrders.setNxDoDepDisGoodsId(nxDepartmentDisGoodsId);
+		}
+
 		nxDepartmentOrders.setNxDoStatus(0);
 		nxDepartmentOrders.setNxDoBuyStatus(0);
 		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
-		nxDepartmentOrders.setNxDoApplyOnlyDate(formatWhatDate(0));
+		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
 		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
-		nxDepartmentOrders.setNxDoArriveDate(formatWhatDay(1));
 		nxDepartmentOrdersDao.save(nxDepartmentOrders);
 
 		//如果是加急订单，则给批发商发送微信通知
@@ -103,8 +125,8 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	}
 
 	@Override
-	public List<NxDistributerFatherGoodsEntity>  disGetUnPlanPurchaseApplys(Integer disId) {
-		return nxDepartmentOrdersDao.disGetUnPlanPurchaseApplys(disId);
+	public List<NxDistributerFatherGoodsEntity>  disGetUnPlanPurchaseApplys(Map<String, Object> map) {
+		return nxDepartmentOrdersDao.disGetUnPlanPurchaseApplys(map);
 	}
 
 
@@ -149,16 +171,6 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 
 
 
-	@Override
-	public Integer queryNewOrders(Integer nxDepartmentId) {
-		return nxDepartmentOrdersDao.queryNewOrders(nxDepartmentId);
-	}
-//
-    @Override
-    public Integer queryFatherNewOrders(Integer nxDepartmentId) {
-
-		return nxDepartmentOrdersDao.queryFatherNewOrders(nxDepartmentId);
-	}
 
     @Override
     public List<NxDepartmentOrdersEntity> queryOrdersForDisGoods(Map<String, Object> map1) {

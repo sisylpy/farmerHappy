@@ -49,4 +49,6 @@ public interface NxDistributerPurchaseGoodsService {
 	List<NxDistributerPurchaseGoodsEntity> queryForDisGoods(Map<String, Object> map2);
 
     List<NxDistributerPurchaseGoodsEntity> queryPurchaseGoodsByParams(Map<String, Object> map2);
+
+	int queryPurchaseTotal(Map<String, Object> map2);
 }

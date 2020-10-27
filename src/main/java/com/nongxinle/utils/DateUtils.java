@@ -1,5 +1,6 @@
 package com.nongxinle.utils;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,6 +52,21 @@ public class DateUtils {
         String format1 = dateFormat2.format(whatDay);
         return format1;
     }
+
+    public static String getWeek(int what){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, what);
+        String weekday = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
+        return  weekday;
+    }
+    public static String getJustHao(int what){
+        Date whatDay = calendarDay(what).getTime();
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd");
+        String format1 = dateFormat2.format(whatDay);
+        return format1;
+    }
+
+
     public static  String formatWhatTime(int what) {
         Date whatDay = calendarDay(what).getTime();
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");

@@ -57,7 +57,7 @@ public class NxDepartmentBillController {
 		List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities = nxDepartmentBill.getNxDepartmentOrdersEntities();
 
 		for (NxDepartmentOrdersEntity orders : nxDepartmentOrdersEntities) {
-			orders.setNxDoStatus(4);
+			orders.setNxDoStatus(3);
 			nxDepartmentOrdersService.update(orders);
 		}
 		nxDepartmentBill.setNxDbStatus(0);
