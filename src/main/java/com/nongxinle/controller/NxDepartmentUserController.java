@@ -149,13 +149,18 @@ public class NxDepartmentUserController {
 		String openId = jsonObject.get("openid").toString();
 		if(openId != null){
 		NxDepartmentUserEntity depUserEntity = nxDepartmentUserService.queryDepUserByOpenId(openId);
+		if(depUserEntity != null){
 			Integer nxDepartmentUserId = depUserEntity.getNxDepartmentUserId();
 			Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(nxDepartmentUserId);
 
 //			List<NxDepartmentEntity> departmentEntities = nxDepartmentService.queryGroupInfo(openId);
 			return R.ok().put("data", stringObjectMap);
+		}else{
+			return R.error(-1,"请索要批发商二维码进行注册");
+		}
+
 		}else {
-			return R.error(-1,"请进行注册");
+			return R.error(-1,"请索要批发商二维码进行注册");
 		}
 	}
 
@@ -251,6 +256,7 @@ public class NxDepartmentUserController {
 	@RequestMapping(value = "/depUserLogin/{code}")
 	@ResponseBody
 	public R depUserLogin(@PathVariable String code) {
+
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
 		String orderAppID = myAPPIDConfig.getOrderAppID();
 		String orderScreat = myAPPIDConfig.getOrderScreat();
@@ -265,7 +271,6 @@ public class NxDepartmentUserController {
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
-		System.out.println(openId + "openididiiddi");
 		NxDepartmentUserEntity depUserEntity = nxDepartmentUserService.queryDepUserByOpenId(openId);
 		if(depUserEntity != null){
 			Integer nxDepartmentUserId = depUserEntity.getNxDepartmentUserId();

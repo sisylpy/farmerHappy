@@ -10,6 +10,7 @@
 	<resultMap id="standards" type="NxStandardEntity">
 		<id property="nxStandardId" column="nx_standard_id"/>
 		<result property="nxStandardName" column="nx_standard_name"/>
+		<result property="nxStandardScale" column="nx_standard_scale"/>
 	</resultMap>
 	<resultMap id="nxGoods" type="NxGoodsEntity">
 		<id property="nxGoodsId" column="nx_goods_id"/>

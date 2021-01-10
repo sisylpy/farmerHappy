@@ -23,11 +23,6 @@ public interface NxDistributerGoodsService {
 
 
 
-
-
-//	///////////
-
-
 	NxDistributerGoodsEntity queryObject(Integer nxDistributerGoodsId);
 	
 	List<NxDistributerGoodsEntity> queryList(Map<String, Object> map);
@@ -54,11 +49,9 @@ public interface NxDistributerGoodsService {
     List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchStr(Map<String, Object> map);
 
 
-
-    List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map1);
-
 	List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchPinyin(Map<String, Object> map2);
 
-//	Integer deleteDisGoods(Map<String, Object> map);
+    List<NxDistributerGoodsEntity> querydisGoodsByNxGoodsId(Integer nxSGoodsId);
+
 
 }

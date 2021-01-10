@@ -51,5 +51,11 @@ public class NxCommunityStandardServiceImpl implements NxCommunityStandardServic
 	public void deleteBatch(Integer[] nxCommunityStandardIds){
 		nxCommunityStandardDao.deleteBatch(nxCommunityStandardIds);
 	}
-	
+
+    @Override
+    public List<NxCommunityStandardEntity> queryComGoodsStandards(Integer comGoodsId) {
+
+		return nxCommunityStandardDao.queryComGoodsStandards(comGoodsId);
+    }
+
 }

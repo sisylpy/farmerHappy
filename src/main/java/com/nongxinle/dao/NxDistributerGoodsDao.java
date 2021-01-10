@@ -33,13 +33,9 @@ public interface NxDistributerGoodsDao extends BaseDao<NxDistributerGoodsEntity>
 
     NxDistributerGoodsEntity queryDisGoodsDetail(Integer disGoodsId);
 
-    List<NxGoodsEntity> queryDisGoodsCata(Integer disId);
-
     Integer querySubAmount(Integer nxGoodsId);
 
     List<NxDistributerGoodsEntity> queryDisGoodsFatherList(Map<String, Object> map);
-
-//    List<NxGoodsEntity> queryDisGoodsListWithFatherId(Map<String, Object> map);
 
     List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchStr(Map<String, Object> map);
 
@@ -47,9 +43,9 @@ public interface NxDistributerGoodsDao extends BaseDao<NxDistributerGoodsEntity>
 
     List<NxDistributerGoodsEntity> queryIfHasDisGoods(Map<String, Object> map1);
 
-
     List<NxDistributerGoodsEntity> queryIfFatherHasOtherDisGoods(Integer nxDgDfgGoodsFatherId);
 
-
     List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchPinyin(Map<String, Object> map2);
+
+    List<NxDistributerGoodsEntity> queryDisGoodsByNxGoodsId(Integer nxSGoodsId);
 }

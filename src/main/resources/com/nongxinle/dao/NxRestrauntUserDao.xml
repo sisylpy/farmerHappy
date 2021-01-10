@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nongxinle.dao.NxRestrauntUserDao">
+
+	<select id="queryObject" resultType="com.nongxinle.entity.NxRestrauntUserEntity">
+		select * from nx_restraunt_user where nx_restraunt_user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.nongxinle.entity.NxRestrauntUserEntity">
+		select * from nx_restraunt_user
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nx_restraunt_user
+	</select>
+
+    <select id="queryResUserByOpenId" resultType="com.nongxinle.entity.NxRestrauntUserEntity">
+		select * from  nx_restraunt_user where nx_RU_wx_open_id = #{openid}
+	</select>
+    <select id="queryAllResUsersByResId" resultType="com.nongxinle.entity.NxRestrauntUserEntity">
+		select * from nx_restraunt_user where nx_RU_restaurant_father_id = #{resId}
+	</select>
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxRestrauntUserEntity" useGeneratedKeys="true"
+            keyProperty="nxRestrauntUserId">
+		insert into nx_restraunt_user
+		(
+			`nx_restraunt_user_id`,
+			`nx_RU_restaurant_id`, 
+			`nx_RU_wx_avartra_url`, 
+			`nx_RU_wx_nick_name`, 
+			`nx_RU_wx_open_id`, 
+			`nx_RU_wx_phone`, 
+			`nx_RU_admin`, 
+			`nx_RU_com_id`, 
+			`nx_RU_url_change`, 
+			`nx_RU_restaurant_father_id`, 
+			`nx_RU_join_date`
+		)
+		values
+		(
+			#{nxRestrauntUserId},
+			#{nxRuRestaurantId}, 
+			#{nxRuWxAvartraUrl}, 
+			#{nxRuWxNickName}, 
+			#{nxRuWxOpenId}, 
+			#{nxRuWxPhone}, 
+			#{nxRuAdmin}, 
+			#{nxRuComId}, 
+			#{nxRuUrlChange}, 
+			#{nxRuRestaurantFatherId}, 
+			#{nxRuJoinDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.nongxinle.entity.NxRestrauntUserEntity">
+		update nx_restraunt_user
+		<set>
+			<if test="nxRuRestaurantId != null">`nx_RU_restaurant_id` = #{nxRuRestaurantId}, </if>
+			<if test="nxRuWxAvartraUrl != null">`nx_RU_wx_avartra_url` = #{nxRuWxAvartraUrl}, </if>
+			<if test="nxRuWxNickName != null">`nx_RU_wx_nick_name` = #{nxRuWxNickName}, </if>
+			<if test="nxRuWxOpenId != null">`nx_RU_wx_open_id` = #{nxRuWxOpenId}, </if>
+			<if test="nxRuWxPhone != null">`nx_RU_wx_phone` = #{nxRuWxPhone}, </if>
+			<if test="nxRuAdmin != null">`nx_RU_admin` = #{nxRuAdmin}, </if>
+			<if test="nxRuComId != null">`nx_RU_com_id` = #{nxRuComId}, </if>
+			<if test="nxRuUrlChange != null">`nx_RU_url_change` = #{nxRuUrlChange}, </if>
+			<if test="nxRuRestaurantFatherId != null">`nx_RU_restaurant_father_id` = #{nxRuRestaurantFatherId}, </if>
+			<if test="nxRuJoinDate != null">`nx_RU_join_date` = #{nxRuJoinDate}</if>
+		</set>
+		where nx_restraunt_user_id = #{nxRestrauntUserId}
+	</update>
+	
+	<delete id="delete">
+		delete from nx_restraunt_user where nx_restraunt_user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nx_restraunt_user where nx_restraunt_user_id in
+		<foreach item="nxRestrauntUserId" collection="array" open="(" separator="," close=")">
+			#{nxRestrauntUserId}
+		</foreach>
+	</delete>
+
+</mapper>

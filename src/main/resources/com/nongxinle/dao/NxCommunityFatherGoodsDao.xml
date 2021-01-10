@@ -3,6 +3,77 @@
 
 <mapper namespace="com.nongxinle.dao.NxCommunityFatherGoodsDao">
 
+
+	<resultMap id="fatherDisGoods" type="NxCommunityFatherGoodsEntity">
+		<id property="nxCommunityFatherGoodsId" column="father_nx_community_father_goods_id"/>
+		<result property="nxCfgFathersFatherId" column="father_nx_cfg_fathers_father_id"/>
+		<result property="nxCfgFatherGoodsName" column="father_nx_cfg_father_goods_name"/>
+		<result property="nxCfgGoodsAmount" column="father_nx_cfg_goods_amount"/>
+		<result property="nxCfgFatherGoodsColor" column="father_nx_cfg_father_goods_color"/>
+		<result property="nxCfgPriceAmount" column="father_nx_cfg_price_amount"/>
+		<result property="nxCfgPriceTwoAmount" column="father_nx_cfg_price_two_amount"/>
+		<result property="nxCfgPriceThreeAmount" column="father_nx_cfg_price_three_amount"/>
+	</resultMap>
+
+	<resultMap id="grandDisGoods" type="NxCommunityFatherGoodsEntity">
+		<id property="nxCommunityFatherGoodsId" column="grand_nx_community_father_goods_id"/>
+		<result property="nxCfgFathersFatherId" column="grand_nx_cfg_fathers_father_id"/>
+		<result property="nxCfgFatherGoodsName" column="grand_nx_cfg_father_goods_name"/>
+		<collection property="fatherGoodsEntities" resultMap="fatherDisGoods"/>
+	</resultMap>
+
+	<resultMap id="comGoodsCata" type="NxCommunityFatherGoodsEntity">
+		<id property="nxCommunityFatherGoodsId" column="greatGrand_nx_community_father_goods_id"/>
+		<result property="nxCfgFathersFatherId" column="greatGrand_nx_cfg_fathers_father_id"/>
+		<result property="nxCfgFatherGoodsName" column="greatGrand_nx_cfg_father_goods_name"/>
+		<collection property="fatherGoodsEntities" resultMap="grandDisGoods"/>
+	</resultMap>
+
+
+	<select id="queryComGoodsCata" resultMap="comGoodsCata">
+		select father.nx_community_father_goods_id 'father_nx_community_father_goods_id',
+			   father.nx_cfg_fathers_father_id 'father_nx_cfg_fathers_father_id',
+			   father.nx_cfg_father_goods_name 'father_nx_cfg_father_goods_name',
+			   father.nx_cfg_goods_amount 'father_nx_cfg_goods_amount',
+			   father.nx_cfg_father_goods_color 'father_nx_cfg_father_goods_color',
+			   father.nx_cfg_nx_goods_id 'father_nx_cfg_nx_goods_id',
+		       father.nx_cfg_price_amount 'father_nx_cfg_price_amount',
+		       father.nx_cfg_price_two_amount 'father_nx_cfg_price_two_amount',
+		       father.nx_cfg_price_three_amount 'father_nx_cfg_price_three_amount',
+			   grand.nx_community_father_goods_id 'grand_nx_community_father_goods_id',
+			   grand.nx_cfg_fathers_father_id 'grand_nx_cfg_fathers_father_id',
+			   grand.nx_cfg_father_goods_name 'grand_nx_cfg_father_goods_name',
+			   grand.nx_cfg_nx_goods_id 'grand_nx_cfg_nx_goods_id',
+			   greatGrand.nx_community_father_goods_id 'greatGrand_nx_community_father_goods_id',
+			   greatGrand.nx_cfg_fathers_father_id 'greatGrand_nx_cfg_fathers_father_id',
+			   greatGrand.nx_cfg_father_goods_name 'greatGrand_nx_cfg_father_goods_name',
+			   greatGrand.nx_cfg_nx_goods_id 'greatGrand_nx_cfg_nx_goods_id'
+		from nx_community_father_goods as father
+				 left join nx_community_father_goods as grand on  grand.nx_community_father_goods_id = father.nx_cfg_fathers_father_id
+				 left join nx_community_father_goods as greatGrand on greatGrand.nx_community_father_goods_id = grand.nx_cfg_fathers_father_id
+		<where>
+			<if test="comId != null">
+				and greatGrand.nx_cfg_community_id = #{comId}
+			</if>
+		   <if test="level != null and level == 1">
+			   and father.nx_cfg_price_amount > 0
+		   </if>
+			<if test="level != null and level == 2">
+				and father.nx_cfg_price_two_amount > 0
+			</if>
+			<if test="level != null and level == 3">
+				and father.nx_cfg_price_three_amount > 0
+			</if>
+
+		</where>
+		order by greatGrand.nx_cfg_nx_goods_id, grand.nx_cfg_nx_goods_id, father.nx_cfg_nx_goods_id
+	</select>
+
+	<select id="queryHasComFathersFather" resultType="com.nongxinle.entity.NxCommunityFatherGoodsEntity">
+		select * from nx_community_father_goods where nx_cfg_community_id = #{comId}
+													and nx_cfg_father_goods_name like  #{fathersFatherName}
+	</select>
+
 	<select id="queryObject" resultType="com.nongxinle.entity.NxCommunityFatherGoodsEntity">
 		select * from nx_community_father_goods where nx_community_father_goods_id = #{value}
 	</select>
@@ -18,10 +89,10 @@
 		select count(*) from nx_community_father_goods
 	</select>
     <select id="queryFatherGoods" resultType="com.nongxinle.entity.NxCommunityFatherGoodsEntity">
-		select * from nx_community_father_goods where nx_fathers_father_id = #{dgGoodsFatherId}
+		select * from nx_community_father_goods where nx_cfg_fathers_father_id = #{dgGoodsFatherId}
 	</select>
 	<select id="queryCataListByCommunityId" resultType="com.nongxinle.entity.NxCommunityFatherGoodsEntity">
-		select  * from nx_community_father_goods where nx_CFG_community_id = #{communityId} and nx_father_goods_level = 2 order by nx_father_goods_sort
+		select  * from nx_community_father_goods where nx_CFG_community_id = #{communityId} and nx_cfg_father_goods_level = 2 order by nx_cfg_father_goods_sort
 	</select>
 
 	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityFatherGoodsEntity"
@@ -29,40 +100,52 @@
 		insert into nx_community_father_goods
 		(
 			`nx_community_father_goods_id`,
-			`nx_father_goods_name`,
-			`nx_father_goods_img`,
-			`nx_father_goods_sort`,
-			`nx_father_goods_color`,
-		 	`nx_fathers_father_id`,
-		 	`nx_father_goods_level`,
-		 	`nx_CFG_community_id`,
-		 	`nx_CFG_goods_amount`
+			`nx_cfg_father_goods_name`,
+			`nx_cfg_father_goods_img`,
+			`nx_cfg_father_goods_sort`,
+			`nx_cfg_father_goods_color`,
+		 	`nx_cfg_fathers_father_id`,
+		 	`nx_cfg_father_goods_level`,
+		 	`nx_cfg_community_id`,
+		 	`nx_cfg_goods_amount`,
+		 	`nx_cfg_nx_goods_id`,
+		 	`nx_cfg_price_amount`,
+		 	`nx_cfg_price_two_amount`,
+		 	`nx_cfg_price_three_amount`
 		)
 		values
 		(
 			#{nxCommunityFatherGoodsId},
-			#{nxFatherGoodsName},
-			#{nxFatherGoodsImg},
-			#{nxFatherGoodsSort},
-			#{nxFatherGoodsColor},
-		 	#{nxFathersFatherId},
-		 	#{nxFatherGoodsLevel},
+			#{nxCfgFatherGoodsName},
+			#{nxCfgFatherGoodsImg},
+			#{nxCfgFatherGoodsSort},
+			#{nxCfgFatherGoodsColor},
+		 	#{nxCfgFathersFatherId},
+		 	#{nxCfgFatherGoodsLevel},
 		 	#{nxCfgCommunityId},
-		 	#{nxCfgGoodsAmount}
+		 	#{nxCfgGoodsAmount},
+		 	#{nxCfgNxGoodsId},
+			#{nxCfgPriceAmount},
+		 	#{nxCfgPriceTwoAmount},
+		 	#{nxCfgPriceThreeAmount}
 		)
 	</insert>
 	 
 	<update id="update" parameterType="com.nongxinle.entity.NxCommunityFatherGoodsEntity">
 		update nx_community_father_goods
 		<set>
-			<if test="nxFatherGoodsName != null">`nx_father_goods_name` = #{nxFatherGoodsName}, </if>
-			<if test="nxFatherGoodsImg != null">`nx_father_goods_img` = #{nxFatherGoodsImg}, </if>
-			<if test="nxFatherGoodsSort != null">`nx_father_goods_sort` = #{nxFatherGoodsSort}, </if>
-			<if test="nxFatherGoodsColor != null">`nx_father_goods_color` = #{nxFatherGoodsColor}, </if>
-			<if test="nxFathersFatherId != null">`nx_fathers_father_id` = #{nxFathersFatherId}, </if>
-			<if test="nxFatherGoodsLevel != null">`nx_father_goods_level` = #{nxFatherGoodsLevel}, </if>
-			<if test="nxCfgCommunityId != null">`nx_CFG_community_id` = #{nxCfgCommunityId}, </if>
-			<if test="nxCfgGoodsAmount != null">`nx_CFG_goods_amount` = #{nxCfgGoodsAmount}</if>
+			<if test="nxCfgFatherGoodsName != null">`nx_cfg_father_goods_name` = #{nxCfgFatherGoodsName}, </if>
+			<if test="nxCfgFatherGoodsImg != null">`nx_cfg_father_goods_img` = #{nxCfgFatherGoodsImg}, </if>
+			<if test="nxCfgFatherGoodsSort != null">`nx_cfg_father_goods_sort` = #{nxCfgFatherGoodsSort}, </if>
+			<if test="nxCfgFatherGoodsColor != null">`nx_cfg_father_goods_color` = #{nxCfgFatherGoodsColor}, </if>
+			<if test="nxCfgFathersFatherId != null">`nx_cfg_fathers_father_id` = #{nxCfgFathersFatherId}, </if>
+			<if test="nxCfgFatherGoodsLevel != null">`nx_cfg_father_goods_level` = #{nxCfgFatherGoodsLevel}, </if>
+			<if test="nxCfgCommunityId != null">`nx_cfg_community_id` = #{nxCfgCommunityId}, </if>
+			<if test="nxCfgNxGoodsId != null">`nx_cfg_nx_goods_id` = #{nxCfgNxGoodsId}, </if>
+			<if test="nxCfgPriceAmount != null">`nx_cfg_price_amount` = #{nxCfgPriceAmount}, </if>
+			<if test="nxCfgPriceTwoAmount != null">`nx_cfg_price_two_amount` = #{nxCfgPriceTwoAmount}, </if>
+			<if test="nxCfgPriceThreeAmount != null">`nx_cfg_price_three_amount` = #{nxCfgPriceThreeAmount}, </if>
+			<if test="nxCfgGoodsAmount != null">`nx_cfg_goods_amount` = #{nxCfgGoodsAmount}</if>
 		</set>
 		where nx_community_father_goods_id = #{nxCommunityFatherGoodsId}
 	</update>

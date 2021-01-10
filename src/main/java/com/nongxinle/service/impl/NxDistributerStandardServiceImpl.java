@@ -61,5 +61,11 @@ public class NxDistributerStandardServiceImpl implements NxDistributerStandardSe
 		nxDistributerStandardDao.deleteBatch(nxDistributerStandardIds);
 	}
 
+    @Override
+    public List<NxDistributerStandardEntity> queryDisStandardByParams(Map<String, Object> map) {
+
+		return nxDistributerStandardDao.queryDisStandardByParams(map);
+    }
+
 
 }

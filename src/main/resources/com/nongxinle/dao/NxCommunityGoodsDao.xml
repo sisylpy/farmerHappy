@@ -5,6 +5,105 @@
 
 
 
+	<select id="queryComGoodsQuickSearchPinyin" resultMap="cgGoods">
+		select *
+		from nx_community_goods as cg
+				 left join nx_community_standard as ds on ds.nx_CS_comm_goods_id = cg.nx_community_goods_id
+				 left join nx_community_alias as da on da.nx_CA_com_goods_id = cg.nx_community_goods_id
+		<where>
+			<if test="comId != null">
+				and nx_cg_community_id = #{comId}
+			</if>
+			<if test="pinyin != null">
+				and ( nx_cg_goods_pinyin like concat('%', #{pinyin}, '%')
+				or nx_cg_goods_py like concat('%', #{pinyin}, '%')
+				or da.nx_CA_alias_name like concat('%', #{pinyin}, '%'))
+			</if>
+			<if test="level != null and level == 1">
+				and  nx_cg_goods_price != 0
+			</if>
+			<if test="level != null and level == 2">
+				and  nx_cg_goods_two_price != 0
+			</if>
+			<if test="level != null and level == 3">
+				and  nx_cg_goods_three_price != 0
+			</if>
+		</where>
+		order by nx_cg_goods_pinyin;
+	</select>
+
+	<select id="queryComGoodsQuickSearchStr" resultMap="cgGoods">
+		select *
+		from nx_community_goods as cg
+				 left join nx_community_standard as ds on ds.nx_CS_comm_goods_id = cg.nx_community_goods_id
+				 left join nx_community_alias as da on da.nx_CA_com_goods_id = cg.nx_community_goods_id
+		<where>
+			<if test="comId != null">
+				and nx_cg_community_id = #{comId}
+			</if>
+			<if test="searchStr != null">
+				and ( nx_cg_goods_name like concat('%', #{searchStr}, '%')
+				or nx_ca_alias_name like concat('%', #{searchStr}, '%'))
+			</if>
+			<if test="level != null and level == 1">
+				and  nx_cg_goods_price != 0
+			</if>
+			<if test="level != null and level == 2">
+				and  nx_cg_goods_two_price != 0
+			</if>
+			<if test="level != null and level == 3">
+				and  nx_cg_goods_three_price != 0
+			</if>
+		</where>
+		 order by nx_cg_goods_pinyin
+	</select>
+	<select id="queryAddCommunityNxGoods" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
+		select *  from nx_community_goods
+		where nx_cg_community_id = #{comId}  and nx_cg_nx_goods_id = #{goodsId}
+	</select>
+
+
+	<select id="queryComGoodsByParams" resultMap="cgGoods">
+		select * from
+		(select * from  nx_community_goods
+		<where>
+
+			<if test="goodsId != null">
+				and nx_cg_nx_goods_id = #{goodsId}
+			</if>
+			<if test="type != null">
+				and nx_cg_sell_type = #{type}
+			</if>
+			<if test="cgFatherId != null">
+				and nx_cg_cfg_goods_father_id = #{cgFatherId}
+			</if>
+			<if test="serviceLevel != null and serviceLevel == 1">
+				and nx_cg_goods_price is not null and nx_cg_goods_price != 0
+			</if>
+			<if test="serviceLevel != null and serviceLevel == 2">
+				and nx_cg_goods_two_price is not null and nx_cg_goods_two_price != 0
+			</if>
+			<if test="serviceLevel != null and serviceLevel > 2">
+				and nx_cg_goods_three_price is not null and nx_cg_goods_two_price != 0
+			</if>
+		</where>
+		order by nx_cg_goods_py, nx_cg_goods_pinyin
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+		)as cg
+		left join nx_community_standard as cs on cs.nx_CS_comm_goods_id = cg.nx_community_goods_id
+		left join nx_community_alias as ca on ca.nx_CA_com_goods_id = cg.nx_community_goods_id
+		order by cg.nx_cg_goods_py, cg.nx_cg_goods_pinyin, cg.nx_cg_nx_goods_id
+	</select>
+
+	<select id="queryComGoodsHasNxGoodsFather" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
+		select *
+		from nx_community_goods
+		where nx_cg_community_id = #{comId}
+		  and nx_cg_nx_father_id = #{nxFatherId}
+	</select>
+
 	<select id="queryObject" resultMap="cgGoods">
 
 		select * from nx_community_goods as cg
@@ -24,38 +123,29 @@
 	</select>
 
 	<resultMap id="subOrders" type="NxCommunityOrdersSubEntity">
-		<id property="nxOrdersSubId" column="nx_orders_sub_id"/>
-		<result property="nxOsQuantity" column="nx_OS_quantity"/>
-		<result property="nxOsStandard" column="nx_OS_standard"/>
-		<result property="nxOsRemark" column="nx_OS_remark"/>
+		<id property="nxCommunityOrdersSubId" column="nx_community_order_sub_id"/>
+		<result property="nxCosQuantity" column="nx_COS_quantity"/>
+		<result property="nxCosStandard" column="nx_COS_standard"/>
+		<result property="nxCosRemark" column="nx_COS_remark"/>
 	</resultMap>
 
 	<resultMap id="dgGoodsWithSubOrder" type="NxCommunityGoodsEntity">
 		<id property="nxCommunityGoodsId" column="nx_community_goods_id"/>
 		<result property="nxCgGoodsPrice" column="nx_cg_goods_price"/>
+		<result property="nxCgGoodsPriceInteger" column="nx_cg_goods_price_integer"/>
 		<result property="nxCgGoodsPriceDecimal" column="nx_cg_goods_price_decimal"/>
+		<result property="nxCgSellType" column="nx_cg_sell_type"/>
 		<result property="nxCgGoodsIsWeight" column="nx_cg_goods_is_weight"/>
 		<result property="nxCgGoodsStatus" column="nx_cg_goods_status"/>
 		<result property="nxCgPurchaseQuantity" column="nx_cg_purchase_quantity"/>
 		<result property="nxCgBuyStatus" column="nx_cg_buy_status"/>
 		<result property="nxCgGoodsTotalHits" column="nx_cg_goods_total_hits"/>
 		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
-
-		<!--<association property="nxGoodsEntity" resultMap="nxGoods"/>-->
+		<result property="nxCgPullOff" column="nx_cg_pull_off"/>
 		<collection property="nxOrdersSubEntities" resultMap="subOrders"/>
 	</resultMap>
 
 
-	<!--<resultMap id="nxGoods" type="NxGoodsEntity">-->
-		<!--<id property="nxGoodsId" column="nx_goods_id"/>-->
-		<!--<result property="nxGoodsName" column="nx_goods_name"/>-->
-		<!--<result property="nxGoodsStandardname" column="nx_goods_standardname"/>-->
-		<!--<result property="nxGoodsBrand" column="nx_goods_brand"/>-->
-		<!--<result property="nxGoodsPlace" column="nx_goods_place"/>-->
-		<!--<result property="nxGoodsPy" column="nx_goods_py"/>-->
-		<!--<result property="nxGoodsFatherId" column="nx_goods_father_id"/>-->
-		<!--<result property="nxGoodsDetail" column="nx_goods_detail"/>-->
-	<!--</resultMap>-->
 	<resultMap id="nxSupplier" type="NxSupplierEntity">
 		<id property="nxSupplierId" column="nx_supplier_id"/>
 		<result property="nxSupplierName" column="nx_supplier_name"/>
@@ -68,7 +158,10 @@
 	<resultMap id="cgGoods" type="NxCommunityGoodsEntity">
 		<id property="nxCommunityGoodsId" column="nx_community_goods_id"/>
 		<result property="nxCgGoodsPrice" column="nx_cg_goods_price"/>
+		<result property="nxCgGoodsPriceInteger" column="nx_cg_goods_price_integer"/>
 		<result property="nxCgGoodsPriceDecimal" column="nx_cg_goods_price_decimal"/>
+		<result property="nxCgGoodsTwoPrice" column="nx_cg_goods_two_price"/>
+		<result property="nxCgGoodsThreePrice" column="nx_cg_goods_three_price"/>
 		<result property="nxCgGoodsIsWeight" column="nx_cg_goods_is_weight"/>
 		<result property="nxCgGoodsStatus" column="nx_cg_goods_status"/>
 		<result property="nxCgPurchaseQuantity" column="nx_cg_purchase_quantity"/>
@@ -76,38 +169,62 @@
 		<result property="nxCgGoodsTotalHits" column="nx_cg_goods_total_hits"/>
 		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
 		<result property="nxCgNxGoodsFilePath" column="nx_cg_nx_goods_file_path"/>
-		<result property="nxCgNxGoodsFatherId" column="nx_cg_goods_father_id"/>
+		<result property="nxCgNxFatherId" column="nx_cg_father__id"/>
 		<result property="nxCgCommunityId" column="nx_cg_community_id"/>
-		<result property="nxCgSupplierId" column="nx_cg_supplier_id"/>
-		<result property="nxCgNxGoodsId" column="nx_cg_goods_id"/>
 		<result property="nxCgBuyingPrice" column="nx_cg_buying_price"/>
 		<result property="nxCgGoodsType" column="nx_cg_goods_type"/>
-		<result property="nxCgCfGoodsFatherId" column="nx_cg_cf_goods_father_id"/>
+		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
+		<result property="nxCgCfgGoodsFatherId" column="nx_cg_cfg_goods_father_id"/>
 		<result property="nxCgSupplierId" column="nx_cg_supplier_id"/>
 		<result property="nxCgNxGoodsId" column="nx_cg_nx_goods_id"/>
 		<result property="nxCgGoodsName" column="nx_cg_goods_name"/>
 		<result property="nxCgGoodsDetail" column="nx_cg_goods_detail"/>
 		<result property="nxCgGoodsStandardname" column="nx_cg_goods_standardname"/>
+		<result property="nxCgExpectGrossProfit" column="nx_cg_expect_gross_profit"/>
+		<result property="nxCgRealityGrossProfit" column="nx_cg_reality_gross_profit"/>
 		<result property="nxCgGoodsStock" column="nx_cg_goods_stock"/>
 		<result property="nxCgGoodsPinyin" column="nx_cg_goods_pinyin"/>
 		<result property="nxCgGoodsPy" column="nx_cg_goods_py"/>
+		<result property="nxCgPullOff" column="nx_cg_pull_off"/>
 		<association property="nxCommunityEntity" resultMap="community"/>
 		<association property="nxSupplierEntity" resultMap="nxSupplier"/>
-		<collection property="nxCommunityStandardEntities" ofType="NxCommunityStandardEntity">
-			<id property="nxCommunityStandardId" column="nx_community_standard_id"/>
-			<result property="nxCsStandardName" column="nx_CS_standard_name"/>
-			<result property="nxCsStandardFilePath" column="nx_CS_standard_file_path"/>
-			<result property="nxCsStandardScale" column="nx_CS_standard_scale"/>
-			<result property="nxCsStandardError" column="nx_CS_standard_error"/>
-
-		</collection>
-
+		<collection property="nxCommunityStandardEntities" resultMap="comStandard" />
 	</resultMap>
 
-	<resultMap id="cgGoodsWithStandards" type="NxCommunityGoodsEntity">
+     <resultMap id="customerPrice" type="string">
+
+	 </resultMap>
+
+	<resultMap id="comStandard" type="NxCommunityStandardEntity">
+		<id property="nxCommunityStandardId" column="nx_community_standard_id"/>
+		<result property="nxCsStandardName" column="nx_CS_standard_name"/>
+		<result property="nxCsStandardScale" column="nx_CS_standard_scale"/>
+		<result property="nxCsStandardError" column="nx_CS_standard_error"/>
+	</resultMap>
+
+	<resultMap id="comAlias" type="NxCommunityAliasEntity">
+		<id property="nxCommunityAliasId" column="nx_community_alias_id"/>
+		<result property="nxCaAliasName" column="nx_CA_alias_name"/>
+	</resultMap>
+
+	<resultMap id="cgGoodsWithSupplier" type="NxCommunityGoodsEntity">
 		<id property="nxCommunityGoodsId" column="nx_community_goods_id"/>
+		<result property="nxCgGoodsName" column="nx_cg_goods_name"/>
+		<result property="nxCgGoodsStandardname" column="nx_cg_goods_standardname"/>
+		<result property="nxCgGoodsStandardWeight" column="nx_cg_goods_standard_weight"/>
+		<result property="nxCgGoodsBrand" column="nx_cg_goods_brand"/>
+		<result property="nxCgGoodsPlace" column="nx_cg_goods_place"/>
 		<result property="nxCgGoodsPrice" column="nx_cg_goods_price"/>
+		<result property="nxCgGoodsDetail" column="nx_cg_goods_detail"/>
+		<result property="nxCgBuyingPrice" column="nx_cg_buying_price"/>
+		<result property="nxCgSellType" column="nx_cg_sell_type"/>
+		<result property="nxCgGoodsPriceInteger" column="nx_cg_goods_price_integer"/>
 		<result property="nxCgGoodsPriceDecimal" column="nx_cg_goods_price_decimal"/>
+		<result property="nxCgGoodsTwoPrice" column="nx_cg_goods_two_price"/>
+		<result property="nxCgGoodsThreePrice" column="nx_cg_goods_three_price"/>
+		<result property="nxCgExpectGrossProfit" column="nx_cg_expect_gross_profit"/>
+		<result property="nxCgRealityGrossProfit" column="nx_cg_reality_gross_profit"/>
+		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
 		<result property="nxCgGoodsIsWeight" column="nx_cg_goods_is_weight"/>
 		<result property="nxCgGoodsStatus" column="nx_cg_goods_status"/>
 		<result property="nxCgPurchaseQuantity" column="nx_cg_purchase_quantity"/>
@@ -115,36 +232,26 @@
 		<result property="nxCgGoodsTotalHits" column="nx_cg_goods_total_hits"/>
 		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
 		<result property="nxCgNxGoodsFilePath" column="nx_cg_nx_goods_file_path"/>
-		<result property="nxCgCfGoodsFatherId" column="nx_cg_cf_goods_father_id"/>
-		<association property="nxGoodsEntity" javaType="NxGoodsEntity">
-			<id property="nxGoodsId" column="nx_goods_id"/>
-			<result property="nxGoodsName" column="nx_goods_name"/>
-			<result property="nxGoodsStandardname" column="nx_goods_standardname"/>
-			<result property="nxGoodsBrand" column="nx_goods_brand"/>
-			<result property="nxGoodsPlace" column="nx_goods_place"/>
-			<result property="nxGoodsPy" column="nx_goods_py"/>
-			<result property="nxGoodsFatherId" column="nx_goods_father_id"/>
-			<result property="nxGoodsDetail" column="nx_goods_detail"/>
-			<collection property="nxGoodsStandardEntities" resultMap="standardMap"/>
-		</association>
-
-		<collection property="dgStandardList" ofType="NxStandardEntity">
-			<id property="nxStandardId" column="nx_standard_id"/>
-			<result property="nxStandardName" column="nx_standard_name"/>
-		</collection>
+		<result property="nxCgCfgGoodsFatherId" column="nx_cg_cfg_goods_father_id"/>
+		<result property="nxCgSupplierId" column="nx_cg_supplier_id"/>
+		<result property="nxCgPullOff" column="nx_cg_pull_off"/>
+		<association property="nxSupplierEntity" resultMap="nxSupplier"/>
+		<collection property="nxCommunityStandardEntities" resultMap="comStandard" />
+		<collection property="nxCommunityAliasEntities" resultMap="comAlias"/>
 	</resultMap>
 
 	<resultMap id="standardMap" type="NxStandardEntity">
 		<id property="nxStandardId" column="nx_standard_id"/>
 		<result property="nxStandardName" column="nx_standard_name"/>
+		<result property="nxStandardScale" column="nx_standard_scale"/>
 	</resultMap>
 
 
 	<select id="queryCommunityGoods" resultMap="cgGoods">
 		select  * from nx_community_goods as cg
-# 			left join nx_goods as g on cg.nx_cg_nx_goods_id = g.nx_goods_id
 		left join nx_community as c on c.nx_community_id = cg.nx_cg_community_id
-		where cg.nx_cg_cf_goods_father_id = #{nxCommunityFatherGoodsId}
+		left join nx_supplier as sup on cg.nx_cg_supplier_id = sup.nx_supplier_id
+		where cg.nx_cg_cfg_goods_father_id = #{nxCommunityFatherGoodsId}
 		order by cg.nx_cg_goods_total_hits desc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
@@ -152,23 +259,17 @@
 	</select>
 
 	<select id="queryTotalByFatherId" resultType="java.lang.Integer">
-		select count(*) from nx_community_goods where nx_cg_nx_goods_father_id = #{fatherId}
+		select count(*) from nx_community_goods
+		where nx_cg_cfg_goods_father_id = #{fatherId}
 	</select>
 
 	<select id="queryDisDownloadGoods" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
-		select * from nx_community_goods where nx_cg_distribute_id = #{disId} and nx_cg_nx_goods_id = #{goodsId}
+		select * from nx_community_goods where nx_cg_community_id = #{comId} and nx_cg_nx_goods_id = #{goodsId}
 	</select>
 
 
 
 
-	<!--<select id="queryPurchaseGoods" resultMap="dgGoodsWithSubOrder">-->
-		<!--select * from nx_community_goods as cg-->
-			<!--left join nx_orders_sub as os on os.nx_OS_community_goods_id = cg.nx_community_goods_id-->
-		    <!--left join nx_goods as g on g.nx_goods_id = cg.nx_cg_nx_goods_id-->
-		<!--where nx_cg_buy_purchase_user_id = #{purchaserUserId} and   nx_cg_buy_status = #{status}-->
-	<!--</select>-->
-	<!---->
 	<select id="queryCommunityDownloadGoods" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
 		select * from nx_community_goods where nx_cg_community_id = #{communityId} and nx_cg_nx_goods_id = #{goodsId}
 	</select>
@@ -184,13 +285,14 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
 	<select id="queryHasNxGoodsFather" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
-		select * from nx_community_goods WHERE nx_cg_community_id = #{communityId}
-												  and nx_cg_nx_goods_father_id = #{nxFatherId}
+		select * from nx_community_goods WHERE nx_cg_community_id = #{communityId}											  and nx_cg_nx_father_id = #{nxFatherId}
 	</select>
+
 	<select id="queryStockGoods" resultType="com.nongxinle.entity.NxCommunityGoodsEntity">
 		select * from nx_community_goods where nx_cg_community_id = #{nxCommunityId}
-		                                   and nx_cg_goods_type = 2
+	       and nx_cg_goods_type = 2
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
@@ -204,23 +306,37 @@
 	</select>
 
 
+	<select id="queryComGoodsDetail" resultMap="cgGoodsWithSupplier">
+		select * from nx_community_goods as cg
+		left join nx_community_standard as cs on cs.nx_CS_comm_goods_id = cg.nx_community_goods_id
+		left join nx_community_alias as ca on ca.nx_CA_com_goods_id = cg.nx_community_goods_id
+		left join nx_supplier as sup on sup.nx_supplier_id = cg.nx_cg_supplier_id
+		where nx_community_goods_id = #{comGoodsId};
+	</select>
+
+
 	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityGoodsEntity"
 			useGeneratedKeys="true" keyProperty="nxCommunityGoodsId">
 		insert into nx_community_goods
 		(
 			`nx_community_goods_id`,
-			`nx_cg_distribute_id`,
+			`nx_cg_commerce_id`,
 			`nx_cg_community_id`,
 			`nx_cg_goods_status`,
 			`nx_cg_goods_is_weight`,
 			`nx_cg_goods_price`,
+		 	`nx_cg_goods_price_integer`,
 			`nx_cg_goods_price_decimal`,
+		 	`nx_cg_goods_two_price`,
+		 	`nx_cg_goods_three_price`,
 			`nx_cg_nx_goods_file_path`,
 			`nx_cg_goods_sell_type`,
-			`nx_cg_cf_goods_father_id`,
+			`nx_cg_cfg_goods_father_id`,
 			`nx_cg_nx_goods_id`,
-			`nx_cg_nx_goods_father_id`,
-			`nx_cg_nx_goods_father_img`,
+			`nx_cg_nx_father_id`,
+			`nx_cg_nx_father_img`,
+		 	`nx_cg_nx_grand_id`,
+		 	`nx_cg_nx_great_grand_id`,
 			`nx_cg_goods_total_hits`,
 			`nx_cg_purchase_quantity`,
 			`nx_cg_goods_buy_type`,
@@ -235,24 +351,36 @@
 		 	`nx_cg_goods_standardname`,
 		 	`nx_cg_goods_stock`,
 		 	`nx_cg_goods_pinyin`,
-		 	`nx_cg_goods_py`
-
+		 	`nx_cg_goods_py`,
+		 	`nx_cg_goods_standard_weight`,
+		   `nx_cg_nx_goods_father_color`,
+		 	`nx_cg_goods_brand`,
+		 	`nx_cg_goods_place`,
+		 	`nx_cg_pull_off`,
+		 	`nx_cg_sell_type`,
+		 	`nx_cg_expect_gross_profit`,
+		 	`nx_cg_reality_gross_profit`
 		)
 		values
 		(
 			#{nxCommunityGoodsId},
-			#{nxCgDistributeId},
+			#{nxCgCommerceId},
 			#{nxCgCommunityId},
 			#{nxCgGoodsStatus},
 			#{nxCgGoodsIsWeight},
 			#{nxCgGoodsPrice},
+		 	#{nxCgGoodsPriceInteger},
 		 	#{nxCgGoodsPriceDecimal},
+		 	#{nxCgGoodsTwoPrice},
+		 	#{nxCgGoodsThreePrice},
 		 	#{nxCgNxGoodsFilePath},
 			#{nxCgGoodsSellType},
-		 	#{nxCgCfGoodsFatherId},
+		 	#{nxCgCfgGoodsFatherId},
 		 	#{nxCgNxGoodsId},
-		 	#{nxCgNxGoodsFatherId},
-		 	#{nxCgNxGoodsFatherImg},
+		 	#{nxCgNxFatherId},
+		 	#{nxCgNxFatherImg},
+		 	#{nxCgNxGrandId},
+		 	#{nxCgNxGreatGrandId},
 		 	#{nxCgGoodsTotalHits},
 		 	#{nxCgPurchaseQuantity},
 		 	#{nxCgGoodsBuyType},
@@ -267,25 +395,38 @@
 		 	#{nxCgGoodsStandardname},
 		 	#{nxCgGoodsStock},
 		 	#{nxCgGoodsPinyin},
-		 	#{nxCgGoodsPy}
+		 	#{nxCgGoodsPy},
+		 	#{nxCgGoodsStandardWeight},
+		 	#{nxCgNxGoodsFatherColor},
+		 	#{nxCgGoodsBrand},
+		 	#{nxCgGoodsPlace},
+		 	#{nxCgPullOff},
+		 	#{nxCgSellType},
+		 	#{nxCgExpectGrossProfit},
+		 	#{nxCgRealityGrossProfit}
 		)
 	</insert>
 	 
 	<update id="update" parameterType="com.nongxinle.entity.NxCommunityGoodsEntity">
 		update nx_community_goods
 		<set>
-			<if test="nxCgDistributeId != null">`nxCgDistributeId` = #{nxCgDistributeId}, </if>
+			<if test="nxCgCommerceId != null">`nx_cg_commerce_id` = #{nxCgCommerceId}, </if>
 			<if test="nxCgCommunityId != null">`nx_cg_community_id` = #{nxCgCommunityId}, </if>
 			<if test="nxCgGoodsStatus != null">`nx_cg_goods_status` = #{nxCgGoodsStatus}, </if>
 			<if test="nxCgGoodsIsWeight != null">`nx_cg_goods_is_weight` = #{nxCgGoodsIsWeight}, </if>
 			<if test="nxCgGoodsPrice != null">`nx_cg_goods_price` = #{nxCgGoodsPrice}, </if>
+			<if test="nxCgGoodsPriceInteger != null">`nx_cg_goods_price_integer` = #{nxCgGoodsPriceInteger}, </if>
 			<if test="nxCgGoodsPriceDecimal != null">`nx_cg_goods_price_decimal` = #{nxCgGoodsPriceDecimal}, </if>
 			<if test="nxCgNxGoodsFilePath != null">`nx_cg_nx_goods_file_path` = #{nxCgNxGoodsFilePath}, </if>
+			<if test="nxCgGoodsTwoPrice != null">`nx_cg_goods_two_price` = #{nxCgGoodsTwoPrice}, </if>
+			<if test="nxCgGoodsThreePrice != null">`nx_cg_goods_three_price` = #{nxCgGoodsThreePrice}, </if>
 			<if test="nxCgGoodsSellType != null">`nx_cg_goods_sell_type` = #{nxCgGoodsSellType}, </if>
-			<if test="nxCgCfGoodsFatherId != null">`nx_cg_cf_goods_father_id` = #{nxCgCfGoodsFatherId}, </if>
+			<if test="nxCgCfgGoodsFatherId != null">`nx_cg_cfg_goods_father_id` = #{nxCgCfgGoodsFatherId}, </if>
 			<if test="nxCgNxGoodsId != null">`nx_cg_nx_goods_id` = #{nxCgNxGoodsId}, </if>
-			<if test="nxCgNxGoodsFatherId != null">`nx_cg_nx_goods_father_id` = #{nxCgNxGoodsFatherId}, </if>
-			<if test="nxCgNxGoodsFatherImg != null">`nx_cg_nx_goods_father_img` = #{nxCgNxGoodsFatherImg}, </if>
+			<if test="nxCgNxFatherId != null">`nx_cg_nx_father_id` = #{nxCgNxFatherId}, </if>
+			<if test="nxCgNxFatherImg != null">`nx_cg_nx_father_img` = #{nxCgNxFatherImg}, </if>
+			<if test="nxCgNxGrandId != null">`nx_cg_nx_grand_id` = #{nxCgNxGrandId}, </if>
+			<if test="nxCgNxGreatGrandId != null">`nx_cg_nx_great_grand_id` = #{nxCgNxGreatGrandId}, </if>
 			<if test="nxCgGoodsTotalHits != null">`nx_cg_goods_total_hits` = #{nxCgGoodsTotalHits}, </if>
 			<if test="nxCgPurchaseQuantity != null">`nx_cg_purchase_quantity` = #{nxCgPurchaseQuantity}, </if>
 			<if test="nxCgGoodsBuyType != null">`nx_cg_goods_buy_type` = #{nxCgGoodsBuyType}, </if>
@@ -300,6 +441,14 @@
 			<if test="nxCgGoodsStock != null">`nx_cg_goods_stock` = #{nxCgGoodsStock}, </if>
 			<if test="nxCgGoodsPinyin != null">`nx_cg_goods_pinyin` = #{nxCgGoodsPinyin}, </if>
 			<if test="nxCgGoodsPy != null">`nx_cg_goods_py` = #{nxCgGoodsPy}, </if>
+			<if test="nxCgGoodsStandardWeight != null">`nx_cg_goods_standard_weight` = #{nxCgGoodsStandardWeight}, </if>
+			<if test="nxCgNxGoodsFatherColor != null">`nx_cg_nx_goods_father_color` = #{nxCgNxGoodsFatherColor}, </if>
+			<if test="nxCgGoodsBrand != null">`nx_cg_goods_brand` = #{nxCgGoodsBrand}, </if>
+			<if test="nxCgGoodsPlace != null">`nx_cg_goods_place` = #{nxCgGoodsPlace}, </if>
+			<if test="nxCgPullOff != null">`nx_cg_pull_off` = #{nxCgPullOff}, </if>
+			<if test="nxCgSellType != null">`nx_cg_sell_type` = #{nxCgSellType}, </if>
+			<if test="nxCgExpectGrossProfit != null">`nx_cg_expect_gross_profit` = #{nxCgExpectGrossProfit}, </if>
+			<if test="nxCgRealityGrossProfit != null">`nx_cg_reality_gross_profit` = #{nxCgRealityGrossProfit}, </if>
 			<if test="nxCgGoodsType != null">`nx_cg_goods_type` = #{nxCgGoodsType}</if>
 		</set>
 		where nx_community_goods_id = #{nxCommunityGoodsId}

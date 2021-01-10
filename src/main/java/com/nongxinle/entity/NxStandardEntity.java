@@ -51,4 +51,6 @@ public class NxStandardEntity implements Serializable {
 	 */
 	private Integer nxStandardSort;
 
+	private Integer nxStandardWeight;
+
 }

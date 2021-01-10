@@ -48,6 +48,7 @@
 		<result property="nxDepartmentName" column="nx_department_name"/>
 		<result property="nxDepartmentDisId" column="nx_department_dis_id"/>
 		<result property="nxDepartmentType" column="nx_department_type"/>
+		<result property="nxDepartmentSettleType" column="nx_department_settle_type"/>
 		<result property="nxDepartmentIsGroupDep" column="nx_department_is_group_dep"/>
 		<result property="nxDepartmentSubAmount" column="nx_department_sub_amount"/>
 		<association property="nxDepartmentUserEntity" resultMap="depUser"/>
@@ -56,7 +57,7 @@
 
     <select id="queryMultiDepartmentByWxOpenId" resultMap="multiDepartment">
 		select  du.nx_DU_wx_open_id , d.nx_department_id, d.nx_department_name,d.nx_department_dis_id,
-		        d.nx_department_type, d.nx_department_is_group_dep, d.nx_department_sub_amount,
+		        d.nx_department_type, d.nx_department_settle_type, d.nx_department_is_group_dep, d.nx_department_sub_amount,
 		        ddu.nx_department_user_id, ddu.nx_DU_wx_nick_name , ddu.nx_DU_department_id,
 		        ddu.nx_DU_wx_open_id,
 		        ddu.nx_DU_url_change, ddu.nx_DU_join_date, ddu.nx_DU_wx_avartra_url,
@@ -69,7 +70,8 @@
 		where du.nx_DU_wx_open_id = #{openId}
 	</select>
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxDepartmentUserEntity"
+
+	<insert id="save" parameterType="com.nongxinle.entity.NxDepartmentUserEntity"
 			useGeneratedKeys="true" keyProperty="nxDepartmentUserId">
 		insert into nx_department_user
 		(

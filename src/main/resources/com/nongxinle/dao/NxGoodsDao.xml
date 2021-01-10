@@ -11,6 +11,7 @@
                g.nx_goods_brand           'nx_goods_brand',
                g.nx_goods_place           'nx_goods_place',
                g.nx_goods_standardname    'nx_goods_standardname',
+               g.nx_goods_standard_weight    'nx_goods_standard_weight',
                g.nx_goods_file            'nx_goods_file',
                g.nx_goods_standard_amount 'nx_goods_standard_amount',
                g.nx_goods_father_id       'nx_goods_father_id',
@@ -42,6 +43,7 @@
         <id property="nxGoodsId" column="nx_goods_id"/>
         <result property="nxGoodsName" column="nx_goods_name"/>
         <result property="nxGoodsStandardname" column="nx_goods_standardname"/>
+        <result property="nxGoodsStandardWeight" column="sub_nx_goods_standard_weight"/>
         <association property="fatherGoods" resultMap="father"/>
         <collection property="nxAliasEntities" resultMap="aliasList"/>
     </resultMap>
@@ -55,6 +57,7 @@
                 g.nx_goods_brand ,
                 g.nx_goods_place,
                g.nx_goods_standardname,
+               g.nx_goods_standard_weight,
                a.nx_als_goods_id,
                a.nx_alias_name
         from nx_goods as g
@@ -84,12 +87,13 @@
         ) as g
         left join nx_standard as st on st.nx_s_goods_id = g.nx_goods_id
         left join nx_alias as na on na.nx_als_goods_id = g.nx_goods_id
-        order by g.nx_goods_py, g.nx_goods_pinyin
+        order by g.nx_goods_py, g.nx_goods_pinyin, g.nx_goods_id
     </select>
 
     <resultMap id="standardList" type="NxStandardEntity">
         <id property="nxStandardId" column="nx_standard_id"/>
         <result property="nxStandardName" column="nx_standard_name"/>
+        <result property="nxStandardScale" column="nx_standard_scale"/>
         <result property="nxStandardFilePath" column="nx_standard_file_path"/>
     </resultMap>
     <resultMap id="aliasList" type="NxAliasEntity">
@@ -107,11 +111,11 @@
         <result property="nxGoodsName" column="grand_nx_goods_name"/>
         <result property="nxGoodsFile" column="grand_nx_goods_file"/>
     </resultMap>
+
     <resultMap id="greatGrandGoods" type="NxGoodsEntity">
         <id property="nxGoodsId" column="greatgrand_nx_goods_id"/>
         <result property="nxGoodsName" column="greatgrand_nx_goods_name"/>
         <result property="nxGoodsFile" column="greatgrand_nx_goods_file"/>
-
     </resultMap>
 
     <resultMap id="nxGoods" type="NxGoodsEntity">
@@ -122,6 +126,7 @@
         <result property="nxGoodsBrand" column="nx_goods_brand"/>
         <result property="nxGoodsFile" column="nx_goods_file"/>
         <result property="nxGoodsStandardname" column="nx_goods_standardname"/>
+        <result property="nxGoodsStandardWeight" column="nx_goods_standard_weight"/>
         <result property="nxGoodsFatherId" column="nx_goods_father_id"/>
         <result property="nxGoodsStandardAmount" column="nx_goods_standard_amount"/>
         <result property="nxGoodsPinyin" column="nx_goods_pinyin"/>
@@ -140,6 +145,7 @@
                g.nx_goods_brand           'nx_goods_brand',
                g.nx_goods_place           'nx_goods_place',
                g.nx_goods_standardname    'nx_goods_standardname',
+               g.nx_goods_standard_weight  'nx_goods_standard_weight',
                g.nx_goods_file            'nx_goods_file',
                g.nx_goods_standard_amount 'nx_goods_standard_amount',
                g.nx_goods_father_id       'nx_goods_father_id',
@@ -152,7 +158,7 @@
                grand.nx_goods_name        'grand_nx_goods_name',
                greatgrand.nx_goods_id     'greatgrand_nx_goods_id',
                greatgrand.nx_goods_name   'greatgrand_nx_goods_name',
-               s.nx_standard_name,
+               s.nx_standard_name, s.nx_standard_scale,
                s.nx_standard_id,
                s.nx_standard_file_path,
                s.nx_standard_scale
@@ -183,6 +189,7 @@
         <id property="nxGoodsId" column="nx_goods_id"/>
         <result property="nxGoodsName" column="nx_goods_name"/>
         <result property="nxGoodsStandardname" column="nx_goods_standardname"/>
+        <result property="nxGoodsStandardWeight" column="sub_nx_goods_standard_weight"/>
         <result property="nxGoodsDetail" column="nx_goods_detail"/>
         <result property="nxGoodsPlace" column="nx_goods_place"/>
         <result property="nxGoodsBrand" column="nx_goods_brand"/>
@@ -216,6 +223,7 @@
             <id property="nxGoodsId" column="sub_nx_goods_id"/>
             <result property="nxGoodsName" column="sub_nx_goods_name"/>
             <result property="nxGoodsStandardname" column="sub_nx_goods_standardname"/>
+            <result property="nxGoodsStandardWeight" column="sub_nx_goods_standard_weight"/>
             <result property="nxGoodsDetail" column="sub_nx_goods_detail"/>
             <result property="nxGoodsBrand" column="sub_nx_goods_brand"/>
             <result property="nxGoodsPlace" column="sub_nx_goods_place"/>
@@ -309,7 +317,8 @@
     </select>
 
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxGoodsEntity">
+    <insert id="save" parameterType="com.nongxinle.entity.NxGoodsEntity"
+            useGeneratedKeys="true" keyProperty="nxGoodsId">
         insert into nx_goods
         (`nx_goods_id`,
          `nx_goods_name`,
@@ -322,7 +331,9 @@
          `nx_goods_sort`,
          `nx_goods_detail`,
          `nx_goods_file`,
-         `nx_goods_standard_amount`)
+         `nx_goods_standard_amount`,
+         `nx_goods_standard_weight`
+         )
         values (#{nxGoodsId},
                 #{nxGoodsName},
                 #{nxGoodsStandardname},
@@ -334,7 +345,9 @@
                 #{nxGoodsSort},
                 #{nxGoodsDetail},
                 #{nxGoodsFile},
-                #{nxGoodsStandardAmount})
+                #{nxGoodsStandardAmount},
+                #{nxGoodsStandardWeight}
+                )
     </insert>
 
     <update id="update" parameterType="com.nongxinle.entity.NxGoodsEntity">
@@ -349,6 +362,7 @@
             <if test="nxGoodsFatherId != null">`nx_goods_father_id` = #{nxGoodsFatherId},</if>
             <if test="nxGoodsDetail != null">`nx_goods_detail` = #{nxGoodsDetail},</if>
             <if test="nxGoodsStandardAmount != null">`nx_goods_standard_amount` = #{nxGoodsStandardAmount},</if>
+            <if test="nxGoodsStandardWeight != null">`nx_goods_standard_weight` = #{nxGoodsStandardWeight},</if>
             <if test="nxGoodsSort != null">`nx_goods_sort` = #{nxGoodsSort}</if>
         </set>
         where nx_goods_id = #{nxGoodsId}

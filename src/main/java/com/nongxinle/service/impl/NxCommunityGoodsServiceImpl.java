@@ -1,6 +1,7 @@
 package com.nongxinle.service.impl;
 
 import com.nongxinle.entity.NxCommunityGoodsEntity;
+import com.nongxinle.entity.NxDistributerGoodsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,6 +113,42 @@ public class NxCommunityGoodsServiceImpl implements NxCommunityGoodsService {
 	@Override
 	public List<NxCommunityGoodsEntity> queryCommunityGoodsWithPinyin(Map<String, Object> map) {
 		return nxCommunityGoodsDao.queryCommunityGoodsWithPinyin(map);
+	}
+
+    @Override
+    public List<NxCommunityGoodsEntity> queryComGoodsHasNxGoodsFather(Map<String, Object> map) {
+
+		return nxCommunityGoodsDao.queryComGoodsHasNxGoodsFather(map);
+    }
+
+    @Override
+    public List<NxCommunityGoodsEntity> queryComGoodsByParams(Map<String, Object> map7) {
+
+		return nxCommunityGoodsDao.queryComGoodsByParams(map7);
+
+    }
+
+    @Override
+    public NxCommunityGoodsEntity queryComGoodsDetail(Integer comGoodsId) {
+
+		return nxCommunityGoodsDao.queryComGoodsDetail(comGoodsId);
+    }
+
+    @Override
+    public List<NxCommunityGoodsEntity> queryAddCommunityNxGoods(Map<String, Object> map) {
+
+		return nxCommunityGoodsDao.queryAddCommunityNxGoods(map);
+    }
+
+    @Override
+    public List<NxCommunityGoodsEntity> queryComGoodsQuickSearchStr(Map<String, Object> map) {
+
+		return nxCommunityGoodsDao.queryComGoodsQuickSearchStr(map);
+    }
+
+	@Override
+	public List<NxCommunityGoodsEntity> queryComGoodsQuickSearchPinyin(Map<String, Object> map2) {
+		return nxCommunityGoodsDao.queryComGoodsQuickSearchPinyin(map2);
 	}
 
 }

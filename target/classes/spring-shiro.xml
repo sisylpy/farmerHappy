@@ -39,13 +39,14 @@
 				/apply.html=anon
 				/sys/login=anon
 				/api/**=anon
+				/wx/** = anon
 				/uploadImage/**=anon
 				/goodsImage/**=anon
 	        	/captcha.jpg=anon
 				/i7948FzJJ6.txt=anon
 	        	/**=authc
 
-	        </value>
+			</value>
 	    </property>
 	</bean>
 	

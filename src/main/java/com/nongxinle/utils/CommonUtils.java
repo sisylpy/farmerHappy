@@ -10,6 +10,7 @@ package com.nongxinle.utils;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -26,6 +27,13 @@ public class CommonUtils {
                  .substring(0, 32);
     }
 
+    public static String generateBillTradeNo (String areaCode){
+        Random random = new Random();
+        int rannum= (int)(random.nextDouble()*(99999-10000 + 1))+ 10000;
+        String s1 = new StringBuilder(areaCode).append(rannum).toString();
+        return s1;
+    }
+
     public static String generateOutTradeNo (){
 
         String s = new SimpleDateFormat("yyyyMMdd").format(new Date()).toString();
@@ -34,10 +42,9 @@ public class CommonUtils {
                 .substring(0, 24);
         StringBuilder sb = new StringBuilder(s);
         String s1 = new StringBuilder(substring).append(sb).toString();
-
-
         return s1;
     }
+
 
     public static String MD5(String md5) {
         try {

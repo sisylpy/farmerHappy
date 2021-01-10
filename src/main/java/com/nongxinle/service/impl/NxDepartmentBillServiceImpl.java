@@ -47,5 +47,16 @@ public class NxDepartmentBillServiceImpl implements NxDepartmentBillService {
      return   nxDepartmentBillDao.queryBillsByParams(map);
     }
 
+    @Override
+    public NxDepartmentBillEntity querySalesBillApplys(Integer billId) {
+        return nxDepartmentBillDao.querySalesBillApplys(billId);
+    }
+
+    @Override
+    public int queryTotalByParams(Map<String, Object> map1) {
+
+		return nxDepartmentBillDao.queryTotalByParams(map1);
+    }
+
 
 }

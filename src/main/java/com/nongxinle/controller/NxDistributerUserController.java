@@ -7,6 +7,8 @@ package com.nongxinle.controller;
  * @date 2020-02-10 19:43:11
  */
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +20,18 @@ import com.nongxinle.utils.MyAPPIDConfig;
 import com.nongxinle.utils.WeChatUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nongxinle.entity.NxDistributerUserEntity;
 import com.nongxinle.service.NxDistributerUserService;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 
 @RestController
@@ -32,6 +40,33 @@ public class NxDistributerUserController {
 	@Autowired
 	private NxDistributerUserService nxDistributerUserService;
 
+	@RequestMapping(value = "/downLoadNumber/{value}")
+	public ResponseEntity downLoadNumber (@PathVariable String value, HttpSession session) throws Exception {
+
+		System.out.println("nihao");
+
+		//1,获取文件路径
+		ServletContext servletContext = session.getServletContext();
+		String realPath = servletContext.getRealPath("numberRecord/" + value + ".mp3");
+
+		System.out.println("kaknakreailpath" + value);
+		//2,把文件读取程序当中
+		InputStream io = new FileInputStream(realPath);
+		byte[] body = new byte[io.available()];
+		io.read(body);
+
+
+		//3,创建相应头
+		HttpHeaders httpHeaders = new HttpHeaders();
+		System.out.println(httpHeaders);
+
+		httpHeaders.add("Content-Disposition","attachment; filename=" +  value +".mp3");
+		httpHeaders.add("Content-Type","audio/mpeg");
+		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(body, httpHeaders, HttpStatus.OK);
+		System.out.println("---0000000=-========");
+		System.out.println(responseEntity);
+		return responseEntity;
+	}
 
 
 	@RequestMapping(value = "/getDisUsers/{disId}")

@@ -8,6 +8,7 @@ package com.nongxinle.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,5 +40,7 @@ public class NxSupplierEntity implements Serializable {
 	 *  供货商加入时间
 	 */
 	private String nxSupplierDate;
+
+	private List<NxCommunityGoodsEntity> nxCommunityGoodsEntities;
 
 }

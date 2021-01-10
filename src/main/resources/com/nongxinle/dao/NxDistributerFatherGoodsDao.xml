@@ -58,16 +58,20 @@
 		       father.nx_dfg_father_goods_name 'father_nx_dfg_father_goods_name',
 		       father.nx_dfg_goods_amount 'father_nx_dfg_goods_amount',
 		       father.nx_dfg_father_goods_color 'father_nx_dfg_father_goods_color',
+		       father.nx_dfg_nx_goods_id 'father_nx_dfg_nx_goods_id',
 			   grand.nx_distributer_father_goods_id 'grand_nx_distributer_father_goods_id',
 		       grand.nx_dfg_fathers_father_id 'grand_nx_dfg_fathers_father_id',
 		       grand.nx_dfg_father_goods_name 'grand_nx_dfg_father_goods_name',
+		       grand.nx_dfg_nx_goods_id 'grand_nx_dfg_nx_goods_id',
 			   greatGrand.nx_distributer_father_goods_id 'greatGrand_nx_distributer_father_goods_id',
 			   greatGrand.nx_dfg_fathers_father_id 'greatGrand_nx_dfg_fathers_father_id',
-			   greatGrand.nx_dfg_father_goods_name 'greatGrand_nx_dfg_father_goods_name'
+			   greatGrand.nx_dfg_father_goods_name 'greatGrand_nx_dfg_father_goods_name',
+			   greatGrand.nx_dfg_nx_goods_id 'greatGrand_nx_dfg_nx_goods_id'
 		from nx_distributer_father_goods as father
 		left join nx_distributer_father_goods as grand on  grand.nx_distributer_father_goods_id = father.nx_dfg_fathers_father_id
 		left join nx_distributer_father_goods as greatGrand on greatGrand.nx_distributer_father_goods_id = grand.nx_dfg_fathers_father_id
 		where greatGrand.nx_DFG_distributer_id = #{disId}
+		order by greatGrand.nx_dfg_nx_goods_id, grand.nx_dfg_nx_goods_id, father.nx_dfg_nx_goods_id
 	</select>
 
 	<select id="queryHasDisFathersFather" resultType="com.nongxinle.entity.NxDistributerFatherGoodsEntity">
@@ -107,7 +111,8 @@
 			`nx_dfg_fathers_father_id`,
 			`nx_dfg_father_goods_level`,
 			`nx_dfg_distributer_id`,
-			`nx_dfg_goods_amount`
+			`nx_dfg_goods_amount`,
+		 	`nx_dfg_nx_goods_id`
 		)
 		values
 		(
@@ -119,7 +124,8 @@
 			#{nxDfgFathersFatherId},
 			#{nxDfgFatherGoodsLevel},
 			#{nxDfgDistributerId},
-			#{nxDfgGoodsAmount}
+			#{nxDfgGoodsAmount},
+		 	#{nxDfgNxGoodsId}
 		)
 	</insert>
 	 
@@ -133,6 +139,7 @@
 			<if test="nxDfgFathersFatherId != null">`nx_dfg_fathers_father_id` = #{nxDfgFathersFatherId}, </if>
 			<if test="nxDfgFatherGoodsLevel != null">`nx_dfg_father_goods_level` = #{nxDfgFatherGoodsLevel}, </if>
 			<if test="nxDfgDistributerId != null">`nx_dfg_distributer_id` = #{nxDfgDistributerId}, </if>
+			<if test="nxDfgNxGoodsId != null">`nx_dfg_nx_goods_id` = #{nxDfgNxGoodsId}, </if>
 			<if test="nxDfgGoodsAmount != null">`nx_dfg_goods_amount` = #{nxDfgGoodsAmount}</if>
 		</set>
 		where nx_distributer_father_goods_id = #{nxDistributerFatherGoodsId}

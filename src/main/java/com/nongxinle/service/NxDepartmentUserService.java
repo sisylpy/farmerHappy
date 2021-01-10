@@ -36,4 +36,5 @@ public interface NxDepartmentUserService {
     List<NxDepartmentUserEntity> queryGroupAdminUserAmount(Integer nxDuDepartmentId);
 
     List<NxDepartmentEntity> queryMultiDepartmentByWxOpenId(String openId);
+
 }

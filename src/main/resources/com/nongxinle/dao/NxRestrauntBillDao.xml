@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nongxinle.dao.NxRestrauntBillDao">
+
+
+
+	<resultMap id="billWithApplys" type="NxRestrauntBillEntity">
+		<result property="nxRestrauntBillId" column="nx_restraunt_bill_id"/>
+		<result property="nxRbTotal" column="nx_rb_total"/>
+		<result property="nxRbTime" column="nx_rb_time"/>
+		<result property="nxRbDate" column="nx_rb_time"/>
+		<result property="nxRbMonth" column="nx_rb_month"/>
+		<result property="nxRbTradeNo" column="nx_rb_trade_no"/>
+		<collection property="nxRestrauntOrdersEntities" resultMap="applys"/>
+	</resultMap>
+
+	<resultMap id="applys" type="NxRestrauntOrdersEntity">
+		<id property="nxRestrauntOrdersId" column="nx_restraunt_orders_id"/>
+		<result property="nxRoNxGoodsId" column="nx_RO_nx_goods_id"/>
+		<result property="nxRoOrderUserId" column="nx_RO_order_user_id"/>
+		<result property="nxRoApplyDate" column="nx_RO_apply_date"/>
+		<result property="nxRoApplyOnlyTime" column="nx_RO_apply_only_time"/>
+		<result property="nxRoApplyFullTime" column="nx_RO_apply_full_time"/>
+		<result property="nxRoArriveOnlyDate" column="nx_RO_arrive_only_date"/>
+		<result property="nxRoArriveDate" column="nx_RO_arrive_date"/>
+		<result property="nxRoArriveWhatDay" column="nx_RO_arrive_what_day"/>
+		<result property="nxRoQuantity" column="nx_RO_quantity"/>
+		<result property="nxRoStandard" column="nx_RO_standard"/>
+		<result property="nxRoRemark" column="nx_RO_remark"/>
+		<result property="nxRoStatus" column="nx_RO_status"/>
+		<result property="nxRoWeight" column="nx_RO_weight"/>
+		<result property="nxRoPrice" column="nx_RO_price"/>
+		<result property="nxRoSubtotal" column="nx_RO_subtotal"/>
+		<result property="nxRoBuyStatus" column="nx_RO_buy_status"/>
+		<result property="nxRoNxGoodsFatherId" column="nx_RO_nx_goods_father_id"/>
+		<result property="nxRoRestrauntFatherId" column="nx_RO_restraunt_father_id"/>
+<!--		<result property="nxRoDisGoodsId" column="nx_RO_dis_goods_id"/>-->
+<!--		<result property="nxRoDepDisGoodsId" column="nx_RO_dep_dis_goods_id"/>-->
+<!--		<result property="nxRoDepDisGoodsPrice" column="nx_RO_dep_dis_goods_price"/>-->
+<!--		<result property="nxRorestrauntId" column="nx_RO_restraunt_id"/>-->
+<!--		<result property="nxRoDistributerId" column="nx_RO_distributer_id"/>-->
+		<result property="nxRoBuyStatus" column="nx_RO_buy_status"/>
+<!--		<result property="nxRoGoodsType" column="nx_RO_goods_type"/>-->
+		<result property="nxRoOperationTime" column="nx_RO_operation_time"/>
+		<result property="nxRoIsAgent" column="nx_RO_is_agent"/>
+		<result property="nxRoPurchaseGoodsId" column="nx_RO_purchase_goods_id"/>
+<!--		<result property="nxRoDepDisGoodsId" column="nx_RO_dep_dis_goods_id"/>-->
+		<association property="nxCommunityGoodsEntity" resultMap="comGoods"/>
+	</resultMap>
+	<resultMap id="comGoods" type="NxCommunityGoodsEntity">
+		<id property="nxCommunityGoodsId" column="nx_community_goods_id"/>
+		<result property="nxCgGoodsName" column="nx_cg_goods_name"/>
+		<result property="nxCgGoodsStandardname" column="nx_cg_goods_standardname"/>
+		<result property="nxCgGoodsBrand" column="nx_cg_goods_brand"/>
+		<result property="nxCgGoodsPlace" column="nx_cg_goods_place"/>
+		<result property="nxCgGoodsDetail" column="nx_cg_goods_detail"/>
+	</resultMap>
+	<select id="queryRestrauntBillApplys" resultMap="billWithApplys">
+		select *
+		from nx_restraunt_bill as b
+				 left join nx_restraunt_orders as dor on dor.nx_RO_bill_id = b.nx_restraunt_bill_id
+				 left join nx_community_goods as dg on dg.nx_community_goods_id = dor.nx_RO_com_goods_id
+		where nx_restraunt_bill_id = #{billId}
+	</select>
+
+
+	<select id="queryObject" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
+		select * from nx_restraunt_bill where nx_restraunt_bill_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
+		select * from nx_restraunt_bill 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nx_restraunt_bill 
+	</select>
+    <select id="queryRestrauntBillsByParams" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
+		select * from nx_restraunt_bill
+		<where>
+			<if test="resId != null">
+				nx_RB_restraunt_id = #{resId}
+			</if>
+			<if test="comId != null">
+				and nx_RB_com_id = #{comId}
+			</if>
+			<if test="status != null">
+				and nx_RB_status &lt; #{status}
+			</if>
+			<if test="statusEqual != null ">
+				and nx_RB_status = #{statusEqual}
+			</if>
+			<if test="month != null ">
+				and nx_RB_month = #{month}
+			</if>
+
+		</where>
+		order by nx_RB_time DESC
+	</select>
+
+	<select id="queryTotalRestrauntBillByParams" resultType="java.lang.Integer">
+		select count(*) from nx_restraunt_bill
+		<where>
+			<if test="resFatherId != null ">
+				and nx_RB_restraunt_id = #{resFatherId}
+			</if>
+			<if test="comId != null ">
+				and nx_RB_com_id = #{comId}
+			</if>
+			<if test="month != null ">
+				and nx_RB_month = #{month}
+			</if>
+			<if test="statusEqual != null ">
+				and nx_RB_status = #{statusEqual}
+			</if>
+
+		</where>
+	</select>
+	<insert id="save" parameterType="com.nongxinle.entity.NxRestrauntBillEntity">
+		insert into nx_restraunt_bill
+		(
+			`nx_restraunt_bill_id`, 
+			`nx_RB_com_id`, 
+			`nx_RB_restraunt_id`, 
+			`nx_RB_driver_user_id`, 
+			`nx_RB_total`, 
+			`nx_RB_status`, 
+			`nx_RB_time`, 
+			`nx_RB_issue_user_id`, 
+			`nx_RB_date`, 
+			`nx_RB_month`, 
+			`nx_RB_week`, 
+			`nx_RB_trade_no`
+		)
+		values
+		(
+			#{nxRestrauntBillId}, 
+			#{nxRbComId}, 
+			#{nxRbRestrauntId}, 
+			#{nxRbDriverUserId}, 
+			#{nxRbTotal}, 
+			#{nxRbStatus}, 
+			#{nxRbTime}, 
+			#{nxRbIssueUserId}, 
+			#{nxRbDate}, 
+			#{nxRbMonth}, 
+			#{nxRbWeek}, 
+			#{nxRbTradeNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.nongxinle.entity.NxRestrauntBillEntity">
+		update nx_restraunt_bill 
+		<set>
+			<if test="nxRbComId != null">`nx_RB_com_id` = #{nxRbComId}, </if>
+			<if test="nxRbRestrauntId != null">`nx_RB_restraunt_id` = #{nxRbRestrauntId}, </if>
+			<if test="nxRbDriverUserId != null">`nx_RB_driver_user_id` = #{nxRbDriverUserId}, </if>
+			<if test="nxRbTotal != null">`nx_RB_total` = #{nxRbTotal}, </if>
+			<if test="nxRbStatus != null">`nx_RB_status` = #{nxRbStatus}, </if>
+			<if test="nxRbTime != null">`nx_RB_time` = #{nxRbTime}, </if>
+			<if test="nxRbIssueUserId != null">`nx_RB_issue_user_id` = #{nxRbIssueUserId}, </if>
+			<if test="nxRbDate != null">`nx_RB_date` = #{nxRbDate}, </if>
+			<if test="nxRbMonth != null">`nx_RB_month` = #{nxRbMonth}, </if>
+			<if test="nxRbWeek != null">`nx_RB_week` = #{nxRbWeek}, </if>
+			<if test="nxRbTradeNo != null">`nx_RB_trade_no` = #{nxRbTradeNo}</if>
+		</set>
+		where nx_restraunt_bill_id = #{nxRestrauntBillId}
+	</update>
+	
+	<delete id="delete">
+		delete from nx_restraunt_bill where nx_restraunt_bill_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nx_restraunt_bill where nx_restraunt_bill_id in 
+		<foreach item="nxRestrauntBillId" collection="array" open="(" separator="," close=")">
+			#{nxRestrauntBillId}
+		</foreach>
+	</delete>
+
+</mapper>

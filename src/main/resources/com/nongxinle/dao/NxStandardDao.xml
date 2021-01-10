@@ -31,7 +31,8 @@
 		 	`nx_standard_file_path`,
 		 	`nx_standard_scale`,
 		 	`nx_standard_error`,
-		 	`nx_standard_sort`
+		 	`nx_standard_sort`,
+		 	`nx_standard_weight`
 		)
 		values
 		(
@@ -41,7 +42,8 @@
 		 	#{nxStandardFilePath},
 		 	#{nxStandardScale},
 		 	#{nxStandardError},
-		 	#{nxStandardSort}
+		 	#{nxStandardSort},
+		 	#{nxStandardWeight}
 		)
 	</insert>
 	 
@@ -53,6 +55,7 @@
 			<if test="nxStandardScale != null">`nx_standard_scale` = #{nxStandardScale}, </if>
 			<if test="nxStandardError != null">`nx_standard_error` = #{nxStandardError}, </if>
 			<if test="nxStandardSort != null">`nx_standard_sort` = #{nxStandardSort}, </if>
+			<if test="nxStandardWeight != null">`nx_standard_weight` = #{nxStandardWeight}, </if>
 			<if test="nxSGoodsId != null">`nx_s_goods_id` = #{nxSGoodsId}</if>
 		</set>
 		where nx_standard_id = #{nxStandardId}

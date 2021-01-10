@@ -54,28 +54,14 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 
 	@Override
-	public Integer saveNewRestraunt(NxDepartmentEntity dep) {
+	public Integer saveNewDepartment(NxDepartmentEntity dep) {
 
 		//1.保存餐馆
 		nxDepartmentDao.save(dep);
 
-		//wxApp
-		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
-		String purchaseAppID = myAPPIDConfig.getPurchaseAppID();
-		String purchaseScreat = myAPPIDConfig.getPurchaseScreat();
-
-		//2，保存用户
+//		//2，保存用户
 		Integer nxDepartmentId = dep.getNxDepartmentId();
 		NxDepartmentUserEntity nxDepartmentUserEntity = dep.getNxDepartmentUserEntity();
-		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + purchaseAppID + "&secret=" + purchaseScreat + "&js_code=" + nxDepartmentUserEntity.getNxDuCode()+ "&grant_type=authorization_code";
-		// 发送请求，返回Json字符串
-		String str = WeChatUtil.httpRequest(url, "GET", null);
-		// 转成Json对象 获取openid
-		JSONObject jsonObject = JSONObject.parseObject(str);
-
-		// 我们需要的openid，在一个小程序中，openid是唯一的
-		String openid = jsonObject.get("openid").toString();
-		nxDepartmentUserEntity.setNxDuWxOpenId(openid);
 		nxDepartmentUserEntity.setNxDuDepartmentId(nxDepartmentId);
 		nxDepartmentUserEntity.setNxDuDepartmentFatherId(nxDepartmentId);
 		nxDepartmentUserEntity.setNxDuJoinDate(formatWhatDay(0));

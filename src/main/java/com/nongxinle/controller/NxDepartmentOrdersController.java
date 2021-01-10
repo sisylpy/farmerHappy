@@ -24,7 +24,8 @@ public class NxDepartmentOrdersController {
     @Autowired
     private NxDepartmentService nxDepartmentService;
     @Autowired
-    private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
+    private NxDepartmentBillService nxDepartmentBillService;
+
 
 
     
@@ -39,23 +40,46 @@ public class NxDepartmentOrdersController {
     }
     /**
      * 批发商给客户添加申请
-     * @param disId 批发商id
      * @param depFatherId 客户id
-     * @param depId 订货部门ID
      * @return 订单
      */
-    @RequestMapping(value = "/disGetDepTodayOrders")
+    @RequestMapping(value = "/disGetDepTodayOrders/{depFatherId}")
     @ResponseBody
-    public R disGetDepTodayOrders (Integer disId, Integer depFatherId, Integer depId) {
+    public R disGetDepTodayOrders (@PathVariable Integer depFatherId) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("disId", disId);
+//        map.put("depFatherId", depFatherId);
+//        map.put("status", 3);
+//       List<NxDepartmentOrdersEntity> ordersEntities =  nxDepartmentOrdersService.queryDisOrdersByParams(map);
+
+//
+        List<Map<String, Object>> resultData = new ArrayList<>();
+        //明天的数据
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("arriveDate", formatWhatDay(1));
+        map3.put("depFatherId", depFatherId);
+        map3.put("status", 3);
+        map3.put("orderBy", "time");
+        List<NxDepartmentOrdersEntity> ordersEntities3 = nxDepartmentOrdersService.queryDisOrdersByParams(map3);
+        if ((ordersEntities3.size() > 0)){
+            Map<String, Object> map1 =  depGetWhichApplys(depFatherId, 1);
+            map1.put("arr", ordersEntities3);
+            resultData.add(map1);
+        }
+        //今天的数据
         Map<String, Object> map = new HashMap<>();
-        map.put("disId", disId);
-        map.put("depFatherId", depId);
-        map.put("depId", depFatherId);
-        map.put("status", 4);
+        map.put("arriveDate", formatWhatDay(0));
+        map.put("depFatherId", depFatherId);
+        map.put("status", 3);
+        map.put("orderBy", "time");
+        List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
+        if ((ordersEntities.size() > 0)){
+            Map<String, Object> map1 =  depGetWhichApplys(depFatherId, 0);
+            map1.put("arr", ordersEntities);
+            resultData.add(map1);
+        }
 
-       List<NxDepartmentOrdersEntity> ordersEntities =  nxDepartmentOrdersService.queryDisOrdersByParams(map);
-
-        return R.ok().put("data", ordersEntities);
+        return R.ok().put("data", resultData);
     }
 
 
@@ -98,16 +122,8 @@ public class NxDepartmentOrdersController {
     public R saveToFillPrice (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
 
         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
-            String nxDoPrice = ordersEntity.getNxDoPrice();
-            Integer nxDoDepDisGoodsId = ordersEntity.getNxDoDepDisGoodsId();
-            NxDepartmentDisGoodsEntity nxDepartmentDisGoodsEntity = nxDepartmentDisGoodsService.queryObject(nxDoDepDisGoodsId);
-            nxDepartmentDisGoodsEntity.setNxDdgDepGoodsPrice(nxDoPrice);
-            nxDepartmentDisGoodsEntity.setNxDdgDepGoodsPriceDate(formatWhatDate(0));
-            nxDepartmentDisGoodsService.update(nxDepartmentDisGoodsEntity);
-
-            //
-            ordersEntity.setNxDoStatus(2);
-            nxDepartmentOrdersService.update(ordersEntity);
+                ordersEntity.setNxDoStatus(1);
+                nxDepartmentOrdersService.update(ordersEntity);
         }
         return R.ok();
     }
@@ -194,11 +210,21 @@ public class NxDepartmentOrdersController {
         map.put("depFatherId", depId);
         map.put("disId", disId);
         map.put("orderBy", "time");
+        map.put("status", 3);
         map.put("arriveDate", formatWhatDay(arriveDate));
 
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
         //按每天显示订单
         Map<String, Object> stringObjectMap = countSwiperHeight((ordersEntities));
+
+        //是否有送货单
+//        Map<String, Object> map1 = new HashMap<>();
+//        map1.put("disId", disId);
+//        map1.put("depId", depId);
+//        map1.put("statusEqual", 0);
+//        List<NxDepartmentBillEntity> billEntityList = nxDepartmentBillService.queryBillsByParams(map1);
+//        stringObjectMap.put("bills", billEntityList.size());
+
         return R.ok().put("data", stringObjectMap);
     }
 
@@ -219,6 +245,7 @@ public class NxDepartmentOrdersController {
 
     /**
      * PURCHASE,
+     * //todo
      * @param depId 订货群id
      * @return 自采购商品
      */
@@ -230,31 +257,111 @@ public class NxDepartmentOrdersController {
         map.put("depFatherId", depId);
         map.put("goodsType", 1);
         map.put("arriveDate", formatWhatDay(arriveDate));
-        System.out.println(map + "sisyddd");
-
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
-        Map<String, Object> stringObjectMap = showOrderByEveryDay(ordersEntities);
-        return R.ok().put("data", stringObjectMap);
+//        Map<String, Object> stringObjectMap = showOrderByEveryDay(ordersEntities);
+        return R.ok().put("data", ordersEntities);
     }
 
-    /**
-     * ORDER,
-     * 订货用户查询申请
-     * @param weeks 订货用户
-     * @return 订单列表
-     */
-    @RequestMapping(value = "/depGetWeeksApply", method = RequestMethod.POST)
+
+
+    @RequestMapping(value = "/depGetApply/{depId}")
     @ResponseBody
-    public R depGetWeeksApply(Integer weeks, Integer depId) {
-        String date = formatWhatDate(-weeks);
+    public R depGetApply(@PathVariable Integer depId) {
+        List<Map<String, Object>> resultData = new ArrayList<>();
+        //明天的数据
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("arriveDate", formatWhatDay(1));
+        map3.put("depId", depId);
+        map3.put("orderBy", "time");
+        List<NxDepartmentOrdersEntity> ordersEntities3 = nxDepartmentOrdersService.queryDisOrdersByParams(map3);
+        if ((ordersEntities3.size() > 0)){
+            Map<String, Object> map1 =  depGetWhichApplys(depId, 1);
+            map1.put("arr", ordersEntities3);
+            resultData.add(map1);
+        }
+        //今天的数据
         Map<String, Object> map = new HashMap<>();
-        map.put("onlyDate", date);
+        map.put("arriveDate", formatWhatDay(0));
         map.put("depId", depId);
         map.put("orderBy", "time");
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
-        //按每天显示订单
-        Map<String, Object> stringObjectMap = showOrderByEveryDay((ordersEntities));
-        return R.ok().put("data", stringObjectMap);
+        if ((ordersEntities.size() > 0)){
+            Map<String, Object> map1 =  depGetWhichApplys(depId, 0);
+            map1.put("arr", ordersEntities);
+            resultData.add(map1);
+        }
+
+        return R.ok().put("data", resultData);
+    }
+
+    private Map<String, Object> depGetWhichApplys (Integer depId, Integer which) {
+
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("whatDay", getWeek(which));
+        dataMap.put("date", getJustHao(which));
+
+        Map<String, Object> deliveryTotalMap = new HashMap<>();
+
+       //统计配送待备货
+        Map<String, Object> deliverymap = new HashMap<>();
+        deliverymap.put("arriveDate", formatWhatDay(which));
+        deliverymap.put("depId", depId);
+        deliverymap.put("goodsType", 0);
+        int deliverytotal =  nxDepartmentOrdersService.queryTotalByParams(deliverymap);
+
+        Map<String, Object> waitmap = new HashMap<>();
+        waitmap.put("arriveDate", formatWhatDay(which));
+        waitmap.put("depId", depId);
+        waitmap.put("goodsType", 0);
+        waitmap.put("statusEqual", 0);
+        int waittotal =  nxDepartmentOrdersService.queryTotalByParams(waitmap);
+
+        Map<String, Object> finishmap = new HashMap<>();
+        finishmap.put("arriveDate", formatWhatDay(which));
+        finishmap.put("depId", depId);
+        finishmap.put("goodsType", 0);
+        finishmap.put("statusEqual", 3);
+        int finishtotal =  nxDepartmentOrdersService.queryTotalByParams(finishmap);
+
+
+        deliveryTotalMap.put("waitTotal", waittotal);
+        deliveryTotalMap.put("deliveryingTotal", deliverytotal - waittotal - finishtotal);
+        deliveryTotalMap.put("finishTotal", finishtotal);
+        dataMap.put("delivery", deliveryTotalMap);
+
+
+        Map<String, Object> purchaseTotalMap = new HashMap<>();
+
+
+        //统计自采购
+        Map<String, Object> purchasemap = new HashMap<>();
+        purchasemap.put("arriveDate", formatWhatDay(which));
+        purchasemap.put("depId", depId);
+        purchasemap.put("goodsType", 1);
+        int purchasetotal =  nxDepartmentOrdersService.queryTotalByParams(purchasemap);
+
+        Map<String, Object> purmap = new HashMap<>();
+        purmap.put("arriveDate", formatWhatDay(which));
+        purmap.put("depId", depId);
+        purmap.put("goodsType", 1);
+        purmap.put("statusEqual", 0);
+        int waitpurtotal =  nxDepartmentOrdersService.queryTotalByParams(purmap);
+
+        Map<String, Object> finishPurmap = new HashMap<>();
+        finishPurmap.put("arriveDate", formatWhatDay(which));
+        finishPurmap.put("depId", depId);
+        finishPurmap.put("goodsType", 1);
+        finishPurmap.put("statusEqual", 3);
+        int finishPurtotal =  nxDepartmentOrdersService.queryTotalByParams(finishPurmap);
+
+
+        purchaseTotalMap.put("waitPurchaseTotal", waitpurtotal);
+        purchaseTotalMap.put("purchasingTotal", purchasetotal - waitpurtotal - finishPurtotal);
+        purchaseTotalMap.put("finishPurchaseTotal", finishPurtotal);
+        dataMap.put("purchase", purchaseTotalMap);
+
+
+        return dataMap;
     }
 
 
@@ -278,6 +385,15 @@ public class NxDepartmentOrdersController {
         List<NxDepartmentEntity> departmentEntities2 =  nxDepartmentOrdersService.queryDistributerTodayDepartments(map2);
         if(departmentEntities2.size() > 0){
             Map<String, Object> tomorrowData = packageDisOrderByDep(departmentEntities2, 1);
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("disId", disId);
+            map1.put("arriveDate", formatWhatDay(1));
+            map1.put("equalBuyStatus", 0);
+            List<NxDepartmentOrdersEntity> tomUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map1);
+            tomorrowData.put("buyOrders", tomUnPurchaseApplys.size());
+
+
+
             returnData.add(tomorrowData);
         }
 
@@ -290,6 +406,12 @@ public class NxDepartmentOrdersController {
         List<NxDepartmentEntity> departmentEntities =  nxDepartmentOrdersService.queryDistributerTodayDepartments(map1);
         if(departmentEntities.size() > 0){
             Map<String, Object> todayData = packageDisOrderByDep(departmentEntities, 0);
+            Map<String, Object> map3 = new HashMap<>();
+            map3.put("disId", disId);
+            map3.put("arriveDate", formatWhatDay(0));
+            map3.put("equalBuyStatus", 0);
+            List<NxDepartmentOrdersEntity> tomUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map3);
+            todayData.put("buyOrders", tomUnPurchaseApplys.size());
             returnData.add(todayData);
         }
         return R.ok().put("data", returnData);
@@ -300,6 +422,7 @@ public class NxDepartmentOrdersController {
         Map<String, Object> map = new HashMap<>();
         map.put("week", getWeek(which) );
         map.put("hao", getJustHao(which) );
+        map.put("arriveDate", formatWhatDay(which) );
         if(which.equals(0)){
             map.put("which", 0);
         }if(which.equals(1)){
@@ -317,11 +440,37 @@ public class NxDepartmentOrdersController {
         for (NxDepartmentEntity dep : departmentEntities) {
             Integer fatherId = dep.getNxDepartmentFatherId();
             if(fatherId.equals(0)){
+                //weightTotal
+                Map<String, Object> map1 = new HashMap<>();
+                map1.put("depFatherId", dep.getNxDepartmentId());
+                map1.put("arriveDate", formatWhatDay(which) );
+                map1.put("weightOrder", 1);
+                int  weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map1);
+                //pricTotal
+                Map<String, Object> map2 = new HashMap<>();
+                map2.put("depFatherId", dep.getNxDepartmentId());
+                map2.put("arriveDate", formatWhatDay(which) );
+                map2.put("priceOrder", 1);
+                int priceTotal =  nxDepartmentOrdersService.queryTotalByParams(map2);
+
+                //未打印Total
+                Map<String, Object> map3 = new HashMap<>();
+                map3.put("depFatherId", dep.getNxDepartmentId());
+                map3.put("arriveDate", formatWhatDay(which) );
+                map3.put("statusEqual", 0);
+                int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
+
                 Map<String, Object> depMap  = new HashMap<>();
                 depMap.put("depHasSubs", 0);
                 depMap.put("depId", dep.getNxDepartmentId());
                 depMap.put("depName", dep.getNxDepartmentName());
+                depMap.put("arrName", dep.getNxDepartmentAttrName());
                 depMap.put("depOrders", dep.getNxDepartmentOrdersEntities());
+                depMap.put("orderTotal", dep.getNxDepartmentOrdersEntities().size());
+                depMap.put("priceTotal", priceTotal);
+                depMap.put("weightTotal", weightTotal);
+                depMap.put("unWeighingTotal", unWeighingTotal);
+                depMap.put("settleType", dep.getNxDepartmentSettleType());
                 dataMap.add(depMap);
             }else{
                 Integer nxDepartmentFatherId = dep.getNxDepartmentFatherId();
@@ -331,12 +480,46 @@ public class NxDepartmentOrdersController {
             }
         }
 
+
         for (NxDepartmentEntity father : fatherDep) {
             Map<String, Object> fatherMap = new HashMap<>();
             fatherMap.put("depHasSubs",1);
             fatherMap.put("depId",father.getNxDepartmentId());
             fatherMap.put("depName", father.getNxDepartmentName());
+            fatherMap.put("arrName", father.getNxDepartmentAttrName());
+            fatherMap.put("settleType", father.getNxDepartmentSettleType());
+
             List<NxDepartmentEntity> subDeps = new ArrayList<>();
+
+            //priceTotal
+            Map<String, Object> mapPrice = new HashMap<>();
+            mapPrice.put("depFatherId", father.getNxDepartmentId());
+            mapPrice.put("arriveDate", formatWhatDay(which) );
+            mapPrice.put("priceOrder", 1);
+            int priceTotalFather =  nxDepartmentOrdersService.queryTotalByParams(mapPrice);
+            fatherMap.put("priceTotal", priceTotalFather);
+            //weightTotal
+            Map<String, Object> map3 = new HashMap<>();
+            map3.put("depFatherId", father.getNxDepartmentId());
+            map3.put("arriveDate", formatWhatDay(which) );
+            map3.put("weightOrder", 1);
+            int weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
+            fatherMap.put("weightTotal", weightTotal);
+            //未打印Total
+            Map<String, Object> map4 = new HashMap<>();
+            map4.put("depFatherId", father.getNxDepartmentId());
+            map4.put("arriveDate", formatWhatDay(which) );
+            map4.put("statusEqual", 0);
+            int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map4);
+            fatherMap.put("unWeighingTotal", unWeighingTotal);
+            //quanbuTotal
+            Map<String, Object> map5 = new HashMap<>();
+            map5.put("depFatherId", father.getNxDepartmentId());
+            map5.put("arriveDate", formatWhatDay(which) );
+            map5.put("status", 3);
+            int ordersTotal =  nxDepartmentOrdersService.queryTotalByParams(map5);
+            fatherMap.put("orderTotal", ordersTotal);
+
 
             for (NxDepartmentEntity sub : subDepList) {
                 if(father.getNxDepartmentId().equals(sub.getNxDepartmentFatherId())){
@@ -401,6 +584,15 @@ public class NxDepartmentOrdersController {
         return R.ok();
     }
 
+    @ResponseBody
+    @RequestMapping("/saveIndependent")
+    public R saveIndependent(@RequestBody NxDepartmentOrdersEntity nxDepartmentOrders) {
+        System.out.println(nxDepartmentOrders);
+        nxDepartmentOrdersService.saveIndependent(nxDepartmentOrders);
+        return R.ok();
+    }
+
+
     /**
      * ORDER
      * 修改申请
@@ -443,19 +635,24 @@ public class NxDepartmentOrdersController {
 
             String nxDoArriveWhatDay = dateOrders.getNxDoArriveWhatDay();
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("date", nxDoArriveOnlyDate);
+            map1.put("date", nxDoArriveOnlyDate.substring(3,5));
             map1.put("whatDay",nxDoArriveWhatDay);
             Integer complate = 0;
+            Integer preparing = 0;
             List<NxDepartmentOrdersEntity> arr = new ArrayList<>();
 
             for (NxDepartmentOrdersEntity ordersEntity: ordersArr) {
                 if(ordersEntity.getNxDoArriveOnlyDate().equals(nxDoArriveOnlyDate)){
                     arr.add(ordersEntity);
-                    if(ordersEntity.getNxDoStatus() > 1 ){
+                    if(ordersEntity.getNxDoStatus() > 0 ){
+                        preparing = preparing + 1;
+                    }
+                    if(ordersEntity.getNxDoStatus() > 2 ){
                         complate = complate + 1;
                     }
                 }
             }
+            map1.put("preparing", preparing);
             map1.put("complate", complate);
             map1.put("total", arr.size());
             map1.put("arr", arr);

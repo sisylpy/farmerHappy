@@ -24,7 +24,8 @@
 		select * from nx_community_adsense where nx_CA_community_id = #{communityId}
 	</select>
 
-	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityAdsenseEntity">
+	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityAdsenseEntity" useGeneratedKeys="true"
+	keyProperty="nxCommunityAdsenseId">
 		insert into nx_community_adsense
 		(
 			`nx_community_adsense_id`, 

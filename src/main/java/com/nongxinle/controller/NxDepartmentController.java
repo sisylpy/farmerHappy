@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.nongxinle.entity.NxCommunityEntity;
 import com.nongxinle.entity.NxDepartmentUserEntity;
 //import com.nongxinle.service.NxDepartmentOrdersService;
+import com.nongxinle.service.NxDepartmentUserService;
 import com.nongxinle.utils.MyAPPIDConfig;
 import com.nongxinle.utils.WeChatUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -33,6 +34,10 @@ import com.nongxinle.utils.R;
 public class NxDepartmentController {
 	@Autowired
 	private NxDepartmentService nxDepartmentService;
+
+	@Autowired
+	private NxDepartmentUserService nxDepartmentUserService;
+
 
 
 	/**
@@ -54,7 +59,6 @@ public class NxDepartmentController {
 	 */
 	@RequestMapping(value = "/evR5kgsE0d.txt")
 	@ResponseBody
-
 	public String depRegist( ) {
 		return "b59516a6fda0db869e06518f51400610";
 	}
@@ -71,16 +75,35 @@ public class NxDepartmentController {
 	@ResponseBody
 	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
 
+//wxApp
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		String purchaseAppID = myAPPIDConfig.getPurchaseAppID();
+		String purchaseScreat = myAPPIDConfig.getPurchaseScreat();
 
-//		Integer openId = nxDepartmentService.saveNewRestraunt(dep);
-		Integer depUserId = nxDepartmentService.saveNewRestraunt(dep);
+		NxDepartmentUserEntity nxDepartmentUserEntity = dep.getNxDepartmentUserEntity();
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + purchaseAppID + "&secret=" + purchaseScreat + "&js_code=" + nxDepartmentUserEntity.getNxDuCode()+ "&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
 
-		if (depUserId != null){
-			Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(depUserId);
-
-			return R.ok().put("data", stringObjectMap);
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		NxDepartmentUserEntity nxDepartmentUserEntity1 = nxDepartmentUserService.queryDepUserByOpenId(openid);
+		if(nxDepartmentUserEntity1 == null){
+			dep.getNxDepartmentUserEntity().setNxDuWxOpenId(openid);
+			Integer depUserId = nxDepartmentService.saveNewDepartment(dep);
+			if (depUserId != null){
+				Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(depUserId);
+				return R.ok().put("data", stringObjectMap);
+			}
+			return R.error(-1,"注册失败");
+		}else {
+			return R.error(-1,"此微信号已注册过采购员");
 		}
-		return R.error(-1,"注册失败");
+
+
+
 	}
 
 	/**

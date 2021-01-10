@@ -65,13 +65,18 @@ public class NxDepartmentDisGoodsEntity implements Serializable, Comparable {
 	private String nxDdgDepGoodsDetail;
 	private String nxDdgDepGoodsBrand;
 	private String nxDdgDepGoodsPlace;
-	private String nxDdgDepGoodsPrice;
-	private String nxDdgDepGoodsPriceDate;
+	private String nxDdgOrderPrice;
+	private String nxDdgOrderDate;
+	private String nxDdgOrderRemark;
+	private String nxDdgOrderQuantity;
+	private String nxDdgOrderStandard;
+	private String nxDdgGoodsPlace;
 	/**
 	 *  
 	 */
 
 	private Integer isDownload;
+	private Boolean isSelected = false;
 
 
 	private List<NxDepartmentStandardEntity> nxDepStandardEntities;
@@ -83,8 +88,7 @@ public class NxDepartmentDisGoodsEntity implements Serializable, Comparable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		NxDepartmentDisGoodsEntity that = (NxDepartmentDisGoodsEntity) o;
-		return Objects.equals(nxDepartmentDisGoodsId, that.nxDepartmentDisGoodsId)
-				;
+		return Objects.equals(nxDepartmentDisGoodsId, that.nxDepartmentDisGoodsId);
 	}
 
 	@Override

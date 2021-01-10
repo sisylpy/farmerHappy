@@ -16,6 +16,7 @@ public class DateUtils {
 	/** 时间格式(yyyy-MM-dd HH:mm:ss) */
 	public final static String YEAR_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
     public final static String DATE_TIME_PATTERN = "MM-dd HH:mm";
+    public final static String MONTH_TIME_PATTERN = "MM";
 
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
@@ -39,9 +40,16 @@ public class DateUtils {
     }
 
 
+
     public static  String formatWhatDayTime(int what) {
         Date whatDay = calendarDay(what).getTime();
         SimpleDateFormat dateFormat2 = new SimpleDateFormat(DATE_TIME_PATTERN);
+        String format1 = dateFormat2.format(whatDay);
+        return format1;
+    }
+    public static  String formatWhatMonth(int what) {
+        Date whatDay = calendarDay(what).getTime();
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat(MONTH_TIME_PATTERN);
         String format1 = dateFormat2.format(whatDay);
         return format1;
     }
@@ -54,10 +62,19 @@ public class DateUtils {
     }
 
     public static String getWeek(int what){
+
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, what);
-        String weekday = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
-        return  weekday;
+
+        Date date = new Date();
+        String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+//        cal.setTime(date);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        return weekDays[w];
+//        String weekday = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
+//        return  weekday;
     }
     public static String getJustHao(int what){
         Date whatDay = calendarDay(what).getTime();

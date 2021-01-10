@@ -28,7 +28,7 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 	/**
 	 *  批发商id
 	 */
-	private Integer nxCgDistributeId;
+	private Integer nxCgCommerceId;
 
 	/**
 	 * 社区id
@@ -49,16 +49,19 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 	/**
 	 * 价格
 	 */
-	private Float nxCgGoodsPrice;
+	private String nxCgGoodsPrice;
+	private String nxCgGoodsPriceInteger;
+	private String nxCgGoodsTwoPrice;
+	private String nxCgGoodsThreePrice;
 	/**
 	 * 价格小数点
 	 */
-	private Integer nxCgGoodsPriceDecimal;
+	private String nxCgGoodsPriceDecimal;
 
 	private String nxCgNxGoodsFilePath;
 	private Integer nxCgGoodsSellType;
 
-	private Integer nxCgCfGoodsFatherId;
+	private Integer nxCgCfgGoodsFatherId;
 
 
 	/**
@@ -68,12 +71,18 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 	/**
 	 * 父类id
 	 */
-	private Integer nxCgNxGoodsFatherId;
-	private String nxCgNxGoodsFatherName;
+	private Integer nxCgNxFatherId;
+	private String nxCgNxFatherName;
 	/**
 	 * image
 	 */
-	private String nxCgNxGoodsFatherImg;
+	private String nxCgNxFatherImg;
+	private Integer nxCgNxGrandId;
+	private String nxCgNxGrandName;
+
+	private Integer nxCgNxGreatGrandId;
+	private String nxCgNxGreatGrandName;
+
 	private Integer nxCgGoodsTotalHits;
 	/**
 	 *  采购数量
@@ -96,19 +105,19 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 	private String nxCgGoodsDetail;
 
 	private String nxCgGoodsStandardname;
+	private String nxCgGoodsBrand;
+	private String nxCgGoodsPlace;
 
 	private String nxCgGoodsStock;
 
 	private String nxCgGoodsPinyin;
 
 	private String nxCgGoodsPy;
+	private Integer nxCgSellType;
+	private Integer nxCgCustomerPrice;
 
 
 	////////
-
-
-
-
 
 
 	/**
@@ -116,38 +125,32 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 	 */
 	List<NxStandardEntity> dgStandardList;
 
-
-
-
 	private NxGoodsEntity nxGoodsEntity;
 
-
-	private Boolean isSelected;
-
+	private Boolean isSelected = false;
 
 
-	private Integer nxCgGrandFatherId;
+   private String nxCgGoodsStandardWeight;
+   private String nxCgNxGoodsFatherColor;
+   private Integer nxCgPullOff;
 
-	private String nxCgGrandFatherName;
-
-	private Integer nxCgGreatGrandFatherId;
-
-	private String nxCgGreatGrandFatherName;
-
-
-
-
-
+   private String nxCgExpectGrossProfit;
+   private String nxCgRealityGrossProfit;
 
 
 	private NxCommunityEntity nxCommunityEntity;
+	private NxRestrauntComGoodsEntity nxRestrauntComGoodsEntity;
 
 	private NxSupplierEntity nxSupplierEntity;
 
 	private List<NxCommunityStandardEntity> nxCommunityStandardEntities;
-
+	private List<NxAliasEntity> nxAliasEntities;
+	private List<NxCommunityAliasEntity> nxCommunityAliasEntities;
 
 	private List<NxCommunityOrdersSubEntity> nxOrdersSubEntities;
+
+	private List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -155,7 +158,7 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 		if (o == null || getClass() != o.getClass()) return false;
 		NxCommunityGoodsEntity that = (NxCommunityGoodsEntity) o;
 		return Objects.equals(nxCommunityGoodsId, that.nxCommunityGoodsId) &&
-				Objects.equals(nxCgDistributeId, that.nxCgDistributeId) &&
+				Objects.equals(nxCgCommerceId, that.nxCgCommerceId) &&
 				Objects.equals(nxCgCommunityId, that.nxCgCommunityId) &&
 				Objects.equals(nxCgGoodsStatus, that.nxCgGoodsStatus) &&
 				Objects.equals(nxCgGoodsIsWeight, that.nxCgGoodsIsWeight) &&
@@ -163,11 +166,10 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 				Objects.equals(nxCgGoodsPriceDecimal, that.nxCgGoodsPriceDecimal) &&
 				Objects.equals(nxCgNxGoodsFilePath, that.nxCgNxGoodsFilePath) &&
 				Objects.equals(nxCgGoodsSellType, that.nxCgGoodsSellType) &&
-				Objects.equals(nxCgCfGoodsFatherId, that.nxCgCfGoodsFatherId) &&
+				Objects.equals(nxCgCfgGoodsFatherId, that.nxCgCfgGoodsFatherId) &&
 				Objects.equals(nxCgNxGoodsId, that.nxCgNxGoodsId) &&
-				Objects.equals(nxCgNxGoodsFatherId, that.nxCgNxGoodsFatherId) &&
-				Objects.equals(nxCgNxGoodsFatherName, that.nxCgNxGoodsFatherName) &&
-				Objects.equals(nxCgNxGoodsFatherImg, that.nxCgNxGoodsFatherImg) &&
+				Objects.equals(nxCgNxFatherId, that.nxCgNxFatherId) &&
+				Objects.equals(nxCgNxFatherImg, that.nxCgNxFatherImg) &&
 				Objects.equals(nxCgGoodsTotalHits, that.nxCgGoodsTotalHits) &&
 				Objects.equals(nxCgPurchaseQuantity, that.nxCgPurchaseQuantity) &&
 				Objects.equals(nxCgGoodsBuyType, that.nxCgGoodsBuyType) &&
@@ -186,10 +188,10 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 				Objects.equals(dgStandardList, that.dgStandardList) &&
 				Objects.equals(nxGoodsEntity, that.nxGoodsEntity) &&
 				Objects.equals(isSelected, that.isSelected) &&
-				Objects.equals(nxCgGrandFatherId, that.nxCgGrandFatherId) &&
-				Objects.equals(nxCgGrandFatherName, that.nxCgGrandFatherName) &&
-				Objects.equals(nxCgGreatGrandFatherId, that.nxCgGreatGrandFatherId) &&
-				Objects.equals(nxCgGreatGrandFatherName, that.nxCgGreatGrandFatherName) &&
+				Objects.equals(nxCgNxGrandId, that.nxCgNxGrandId) &&
+				Objects.equals(nxCgNxGrandName, that.nxCgNxGrandName) &&
+				Objects.equals(nxCgNxGreatGrandId, that.nxCgNxGreatGrandId) &&
+				Objects.equals(nxCgNxGreatGrandName, that.nxCgNxGreatGrandName) &&
 				Objects.equals(nxCommunityEntity, that.nxCommunityEntity) &&
 				Objects.equals(nxSupplierEntity, that.nxSupplierEntity) &&
 				Objects.equals(nxCommunityStandardEntities, that.nxCommunityStandardEntities) &&
@@ -198,7 +200,7 @@ public class NxCommunityGoodsEntity implements Serializable, Comparable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nxCommunityGoodsId, nxCgDistributeId, nxCgCommunityId, nxCgGoodsStatus, nxCgGoodsIsWeight, nxCgGoodsPrice, nxCgGoodsPriceDecimal, nxCgNxGoodsFilePath, nxCgGoodsSellType, nxCgCfGoodsFatherId, nxCgNxGoodsId, nxCgNxGoodsFatherId, nxCgNxGoodsFatherName, nxCgNxGoodsFatherImg, nxCgGoodsTotalHits, nxCgPurchaseQuantity, nxCgGoodsBuyType, nxCgBuyPurchaseUserId, nxCgBuyAppId, nxCgBuyStatus, nxCgSupplierId, nxCgBuyingPrice, nxCgGoodsType, nxCgGoodsName, nxCgGoodsDetail, nxCgGoodsStandardname, nxCgGoodsStock, nxCgGoodsPinyin, nxCgGoodsPy, dgStandardList, nxGoodsEntity, isSelected, nxCgGrandFatherId, nxCgGrandFatherName, nxCgGreatGrandFatherId, nxCgGreatGrandFatherName, nxCommunityEntity, nxSupplierEntity, nxCommunityStandardEntities, nxOrdersSubEntities);
+		return Objects.hash(nxCommunityGoodsId, nxCgCommerceId, nxCgCommunityId, nxCgGoodsStatus, nxCgGoodsIsWeight, nxCgGoodsPrice, nxCgGoodsPriceDecimal, nxCgNxGoodsFilePath, nxCgGoodsSellType, nxCgCfgGoodsFatherId, nxCgNxGoodsId, nxCgNxFatherId, nxCgNxFatherImg, nxCgGoodsTotalHits, nxCgPurchaseQuantity, nxCgGoodsBuyType, nxCgBuyPurchaseUserId, nxCgBuyAppId, nxCgBuyStatus, nxCgSupplierId, nxCgBuyingPrice, nxCgGoodsType, nxCgGoodsName, nxCgGoodsDetail, nxCgGoodsStandardname, nxCgGoodsStock, nxCgGoodsPinyin, nxCgGoodsPy, dgStandardList, nxGoodsEntity, isSelected, nxCgNxGrandId, nxCgNxGrandName, nxCgNxGreatGrandId, nxCgNxGreatGrandName, nxCommunityEntity, nxSupplierEntity, nxCommunityStandardEntities, nxOrdersSubEntities);
 	}
 
 	@Override

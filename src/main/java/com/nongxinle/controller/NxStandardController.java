@@ -11,15 +11,15 @@ import   java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nongxinle.entity.NxGoodsEntity;
-import com.nongxinle.entity.NxOrderTemplateEntity;
+import com.nongxinle.entity.*;
+import com.nongxinle.service.NxDistributerGoodsService;
+import com.nongxinle.service.NxDistributerStandardService;
 import com.nongxinle.service.NxGoodsService;
 import com.nongxinle.utils.UploadFile;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.nongxinle.entity.NxStandardEntity;
 import com.nongxinle.service.NxStandardService;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
@@ -36,6 +36,10 @@ public class NxStandardController {
 
 	@Autowired
 	private NxGoodsService nxGoodsService;
+	@Autowired
+	private NxDistributerGoodsService nxDistributerGoodsService;
+	@Autowired
+	private NxDistributerStandardService nxDistributerStandardService;
 
 
 
@@ -54,7 +58,27 @@ public class NxStandardController {
 	@ResponseBody
 	public R saveNxStandard (@RequestBody NxStandardEntity standard) {
 	    nxStandardService.save(standard);
-	    return R.ok().put("data", standard);
+	    //加给批发商
+
+		Integer nxSGoodsId = standard.getNxSGoodsId();
+		List<NxDistributerGoodsEntity> distributerGoodsEntities = nxDistributerGoodsService.querydisGoodsByNxGoodsId(nxSGoodsId);
+
+		for (NxDistributerGoodsEntity disGoods : distributerGoodsEntities) {
+			Integer distributerGoodsId = disGoods.getNxDistributerGoodsId();
+			String nxStandardName = standard.getNxStandardName();
+			Map<String, Object> map = new HashMap<>();
+			map.put("standardName", nxStandardName);
+			map.put("disGoodsId", distributerGoodsId );
+			List<NxDistributerStandardEntity> distributerStandardEntities = nxDistributerStandardService.queryDisStandardByParams(map);
+			if(distributerStandardEntities.size() == 0){
+				NxDistributerStandardEntity disStandard = new NxDistributerStandardEntity();
+				disStandard.setNxDsDisGoodsId(distributerGoodsId);
+				disStandard.setNxDsStandardName(nxStandardName);
+				nxDistributerStandardService.save(disStandard);
+			}
+		}
+
+		return R.ok().put("data", standard);
 	}
 
 	/**

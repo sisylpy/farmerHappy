@@ -78,6 +78,7 @@ public class NxGoodsEntity implements Serializable, Comparable {
 	private List<NxDepartmentStandardEntity> nxDepStandardEntities;
 	private NxDistributerFatherGoodsEntity nxDistributerFatherGoodsEntity;
 
+
 	/**
 	 * 子名称
 	 */
@@ -105,13 +106,19 @@ public class NxGoodsEntity implements Serializable, Comparable {
 
 	private Integer nxGoodsStandardAmount;
 
+	private String nxGoodsStandardWeight;
+
 	private Integer subAmount;
 
 	private NxDistributerGoodsEntity nxDistributerGoodsEntity;
 
+
 	private NxDepartmentDisGoodsEntity nxDepartmentDisGoodsEntity;
 
 	private Boolean isShow = false;
+
+	private NxCommunityGoodsEntity nxCommunityGoodsEntity;
+	private NxCommunityFatherGoodsEntity nxCommunityFatherGoodsEntity;
 
 
 	@Override

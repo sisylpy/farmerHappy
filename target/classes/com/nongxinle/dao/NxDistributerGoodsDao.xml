@@ -10,6 +10,7 @@
         <result property="nxDgNxFatherId" column="nx_dg_nx_father_id"/>
         <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
         <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
         <result property="nxDgGoodsPinyin" column="nx_dg_goods_pinyin"/>
         <result property="nxDgGoodsPy" column="nx_dg_goods_py"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
@@ -25,9 +26,9 @@
         select * from
         (select * from  nx_distributer_goods
         <where>
-            <if test="fatherId != null">
-                and  nx_dg_dfg_goods_father_id = #{fatherId}
-            </if>
+<!--            <if test="fatherId != null">-->
+<!--                and  nx_dg_dfg_goods_father_id = #{fatherId}-->
+<!--            </if>-->
             <if test="disId != null">
                 and  nx_dg_distributer_id = #{disId}
             </if>
@@ -45,7 +46,7 @@
             )as dg
         left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
         left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
-        order by dg.nx_dg_goods_py, dg.nx_dg_goods_pinyin
+        order by dg.nx_dg_goods_py, dg.nx_dg_goods_pinyin, dg.nx_dg_nx_goods_id
     </select>
 
 
@@ -86,6 +87,7 @@
     <resultMap id="nxStandards" type="NxStandardEntity">
         <id property="nxStandardId" column="nx_standard_id"/>
         <result property="nxStandardName" column="nx_standard_name"/>
+        <result property="nxStandardScale" column="nx_standard_scale"/>
     </resultMap>
 
     <resultMap id="goods" type="com.nongxinle.entity.NxGoodsEntity">
@@ -139,6 +141,7 @@
         <id property="nxGoodsId" column="g_nx_goods_id"/>
         <result property="nxGoodsName" column="g_nx_goods_name"/>
         <result property="nxGoodsStandardname" column="g_nx_goods_standardname"/>
+        <result property="nxGoodsStandardWeight" column="g_nx_goods_standard_weight"/>
         <result property="nxGoodsBrand" column="g_nx_goods_brand"/>
         <result property="nxGoodsPlace" column="g_nx_goods_place"/>
         <result property="nxGoodsDetail" column="g_nx_goods_detail"/>
@@ -189,6 +192,7 @@
                g.nx_goods_id           'g_nx_goods_id',
                g.nx_goods_name         'g_nx_goods_name',
                g.nx_goods_standardname 'g_nx_goods_standardname',
+               g.nx_goods_standard_weight 'g_nx_goods_standard_weight',
                g.nx_goods_detail       'g_nx_goods_detail',
                g.nx_goods_brand        'g_nx_goods_brand',
                g.nx_goods_place        'g_nx_goods_place',
@@ -212,6 +216,7 @@
         <result property="nxDgPullOff" column="nx_dg_pull_off"/>
         <result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
         <result property="nxDgDistributerId" column="nx_dg_distributer_id"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
         <collection property="distributerStandardEntities" resultMap="disStandards"/>
         <collection property="nxAliasEntities" resultMap="disAlias"/>
     </resultMap>
@@ -225,25 +230,26 @@
         where nx_distributer_goods_id = #{disGoodsId}
     </select>
 
-    <select id="queryDisGoodsCata" resultMap="disGoods">
-        select
-            gg.nx_goods_id          'gg_nx_goods_id',
-            gg.nx_goods_name        'gg_nx_goods_name',
-            fg.nx_goods_id          'gg_nx_goods_id',
-            fg.nx_goods_name        'gg_nx_goods_name',
-            g.nx_goods_id           'g_nx_goods_id',
-            g.nx_goods_name         'g_nx_goods_name',
-            g.nx_goods_standardname 'g_nx_goods_standardname',
-            g.nx_goods_detail       'g_nx_goods_detail',
-            g.nx_goods_brand        'g_nx_goods_brand',
-            g.nx_goods_place        'g_nx_goods_place',
-            g.nx_goods_file 'g_nx_goods_file'
-        from nx_distributer_goods as dg
-                 left join nx_goods as g on dg.nx_dg_nx_father_id = g.nx_goods_id
-                 left join nx_goods as fg on dg.nx_dg_nx_grand_id = fg.nx_goods_id
-                 left join nx_goods as gg on gg.nx_goods_id = fg.nx_goods_father_id
-        where nx_dg_distributer_id = #{disId}
-    </select>
+<!--    <select id="queryDisGoodsCata" resultMap="disGoods">-->
+<!--        select-->
+<!--            gg.nx_goods_id          'gg_nx_goods_id',-->
+<!--            gg.nx_goods_name        'gg_nx_goods_name',-->
+<!--            fg.nx_goods_id          'gg_nx_goods_id',-->
+<!--            fg.nx_goods_name        'gg_nx_goods_name',-->
+<!--            g.nx_goods_id           'g_nx_goods_id',-->
+<!--            g.nx_goods_name         'g_nx_goods_name',-->
+<!--            g.nx_goods_standardname 'g_nx_goods_standardname',-->
+<!--            g.nx_goods_standard_weight 'g_nx_goods_standard_weight',-->
+<!--            g.nx_goods_detail       'g_nx_goods_detail',-->
+<!--            g.nx_goods_brand        'g_nx_goods_brand',-->
+<!--            g.nx_goods_place        'g_nx_goods_place',-->
+<!--            g.nx_goods_file 'g_nx_goods_file'-->
+<!--        from nx_distributer_goods as dg-->
+<!--                 left join nx_goods as g on dg.nx_dg_nx_father_id = g.nx_goods_id-->
+<!--                 left join nx_goods as fg on dg.nx_dg_nx_grand_id = fg.nx_goods_id-->
+<!--                 left join nx_goods as gg on gg.nx_goods_id = fg.nx_goods_father_id-->
+<!--        where nx_dg_distributer_id = #{disId}-->
+<!--    </select>-->
     <select id="querySubAmount" resultType="java.lang.Integer">
         select count(*)
         from nx_distributer_goods
@@ -253,6 +259,7 @@
         select  g.nx_goods_id           'g_nx_goods_id',
                 g.nx_goods_name         'g_nx_goods_name',
                 g.nx_goods_standardname 'g_nx_goods_standardname',
+                g.nx_goods_standard_weight 'g_nx_goods_standard_weight',
                 g.nx_goods_detail       'g_nx_goods_detail',
                 g.nx_goods_brand        'g_nx_goods_brand',
                 g.nx_goods_place        'g_nx_goods_place',
@@ -307,6 +314,10 @@
     <select id="queryIfFatherHasOtherDisGoods" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
         select * from nx_distributer_goods where nx_dg_dfg_goods_father_id = #{nxDgDfgGoodsFatherId}
     </select>
+    <select id="queryDisGoodsByNxGoodsId" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
+        select *
+        from nx_distributer_goods where nx_dg_nx_goods_id = #{nxSGoodsId};
+    </select>
 
 
     <insert id="save" parameterType="com.nongxinle.entity.NxDistributerGoodsEntity" useGeneratedKeys="true"
@@ -330,7 +341,8 @@
          `nx_dg_nx_grand_id`,
          `nx_dg_nx_great_grand_id`,
          `nx_dg_pull_off`,
-         `nx_dg_nx_goods_father_color`
+         `nx_dg_nx_goods_father_color`,
+         `nx_dg_goods_standard_weight`
                   )
         values (#{nxDistributerGoodsId},
                 #{nxDgDistributerId},
@@ -350,7 +362,8 @@
                 #{nxDgNxGrandId},
                 #{nxDgNxGreatGrandId},
                 #{nxDgPullOff},
-                #{nxDgNxGoodsFatherColor}
+                #{nxDgNxGoodsFatherColor},
+                #{nxDgGoodsStandardWeight}
                 )
     </insert>
 
@@ -374,6 +387,7 @@
             <if test="nxDgNxGreatGrandId != null">`nx_dg_nx_great_grand_id` = #{nxDgNxGreatGrandId},</if>
             <if test="nxDgPullOff != null">`nx_dg_pull_off` = #{nxDgPullOff},</if>
             <if test="nxDgNxGoodsFatherColor != null">`nx_dg_nx_goods_father_color` = #{nxDgNxGoodsFatherColor},</if>
+            <if test="nxDgGoodsStandardWeight != null">`nx_dg_nx_goods_standard_weight` = #{nxDgGoodsStandardWeight},</if>
             <if test="nxDgGoodsPy != null">`nx_dg_goods_py` = #{nxDgGoodsPy}</if>
         </set>
         where nx_distributer_goods_id = #{nxDistributerGoodsId}

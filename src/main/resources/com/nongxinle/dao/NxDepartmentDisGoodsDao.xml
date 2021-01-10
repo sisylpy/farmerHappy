@@ -14,10 +14,12 @@
         <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
         <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
         <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
         <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
+        <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
-        <result property="nxDgPullOff" column="nx_DG_pull_off"/>
-        <collection property="nxDepartmentStandardEntities" resultMap="depStandard"/>
+        <result property="nxDgPullOff" column="nx_dg_pull_off"/>
+        <collection property="distributerStandardEntities" resultMap="disStandards"/>
         <collection property="nxAliasEntities" resultMap="disAlias"/>
     </resultMap>
 
@@ -42,20 +44,32 @@
                  left join nx_distributer_father_goods as f on f.nx_distributer_father_goods_id = dg.nx_dg_dfg_goods_father_id
                  left join nx_distributer_father_goods as g on g.nx_distributer_father_goods_id = f.nx_dfg_fathers_father_id
                  left join nx_distributer_father_goods as gg on gg.nx_distributer_father_goods_id = g.nx_dfg_fathers_father_id
-        where ddg.nx_DDG_department_father_id = #{depId}
+        where ddg.nx_DDG_department_id = #{depId}
     </select>
+
 
     <select id="queryDepGoodsByFatherId" resultMap="depDisGoods">
         select *
         from nx_department_dis_goods as ddg
         left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
         left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
-        where ddg.nx_DDG_department_father_id = #{depId}
-          and ddg.nx_DDG_dis_goods_father_id = #{fatherId}
-        order by dg.nx_dg_goods_py
+        <where>
+            <if test="depId != null ">
+                and  ddg.nx_DDG_department_id = #{depId}
+             </if>
+            <if test="depFatherId != null">
+                and ddg.nx_DDG_department_father_id = #{depFatherId}
+            </if>
+            <if test="fatherId != null">
+                and ddg.nx_DDG_dis_goods_father_id = #{fatherId}
+            </if>
+        </where>
+         order by dg.nx_dg_goods_py
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
+
     </select>
 
 
@@ -130,31 +144,45 @@
     </resultMap>
 
 
-
-
     <select id="queryDepDisSearchStr" resultMap="depDisGoods">
         select ddg.nx_department_dis_goods_id,
                ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
                ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
-               ddg.nx_department_dis_goods_id, ddg.nx_DDG_dis_goods_id,
+               ddg.nx_DDG_order_quantity,
+               ddg.nx_DDG_order_date,
+               ddg.nx_DDG_order_price,
+               ddg.nx_DDG_order_remark,
+               ddg.nx_DDG_dis_goods_id,
                ddg.nx_DDG_department_father_id,
                dg.nx_distributer_goods_id,
+               dg.nx_dg_goods_brand,
+               dg.nx_dg_goods_place,
+               dg.nx_dg_goods_detail,
+               dg.nx_dg_goods_standard_weight,
+               dg.nx_dg_goods_standardname,
                da.nx_DA_alias_name,da.nx_DA_dis_goods_id
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
                 left join nx_distributer_alias as da on da.nx_DA_dis_goods_id = dg.nx_distributer_goods_id
-        where (ddg.nx_DDG_department_father_id = #{depId} and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%'))
-          or (ddg.nx_DDG_department_father_id = #{depId} and da.nx_DA_alias_name like concat('%', #{searchStr}, '%'))
+        where (ddg.nx_DDG_department_id = #{depId} and ddg.nx_DDG_dep_goods_name like concat('%', #{searchStr}, '%'))
+          or (ddg.nx_DDG_department_id = #{depId} and da.nx_DA_alias_name like concat('%', #{searchStr}, '%'))
             order by dg.nx_DG_goods_py
-
-
     </select>
+
     <select id="queryDepDisSearchPinyin" resultMap="depDisGoods">
         select ddg.nx_department_dis_goods_id,
                ddg.nx_DDG_dep_goods_name, ddg.nx_DDG_dep_goods_standardname,
                ddg.nx_DDG_dep_goods_pinyin, ddg.nx_DDG_dep_goods_py,
-            ddg.nx_DDG_dis_goods_id,
+               ddg.nx_DDG_dis_goods_id,
+               ddg.nx_DDG_order_quantity,
+               ddg.nx_DDG_order_date,
+               ddg.nx_DDG_order_remark,
                dg.nx_distributer_goods_id,
+               dg.nx_dg_goods_brand,
+               dg.nx_dg_goods_place,
+               dg.nx_dg_goods_detail,
+               dg.nx_dg_goods_standard_weight,
+               dg.nx_dg_goods_standardname,
                da.nx_DA_alias_name,da.nx_DA_dis_goods_id
         from nx_department_dis_goods as ddg
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
@@ -179,16 +207,26 @@
                 <if test="disGoodsFatherId != null">
                   and  nx_DDG_dis_goods_father_id = #{disGoodsFatherId}
                 </if>
-
             </where>
     </select>
+    <select id="disGetDepGoodsCata" resultMap="depDisGoodsCata">
+        select gg.nx_distributer_father_goods_id 'gg_nx_distributer_father_goods_id',
+               gg.nx_dfg_fathers_father_id   'gg_nx_dfg_fathers_father_id',
+               gg.nx_dfg_father_goods_name 'gg_nx_dfg_father_goods_name',
+               g.nx_distributer_father_goods_id 'g_nx_distributer_father_goods_id',
+               g.nx_dfg_fathers_father_id   'g_nx_dfg_fathers_father_id',
+               g.nx_dfg_father_goods_name 'g_nx_dfg_father_goods_name',
+               f.nx_distributer_father_goods_id 'f_nx_distributer_father_goods_id',
+               f.nx_dfg_fathers_father_id   'f_nx_dfg_fathers_father_id',
+               f.nx_dfg_father_goods_name 'f_nx_dfg_father_goods_name'
+        from nx_department_dis_goods as ddg
+                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = ddg.nx_DDG_dis_goods_id
+                 left join nx_distributer_father_goods as f on f.nx_distributer_father_goods_id = dg.nx_dg_dfg_goods_father_id
+                 left join nx_distributer_father_goods as g on g.nx_distributer_father_goods_id = f.nx_dfg_fathers_father_id
+                 left join nx_distributer_father_goods as gg on gg.nx_distributer_father_goods_id = g.nx_dfg_fathers_father_id
+        where ddg.nx_DDG_department_father_id = #{depFatherId}
+    </select>
 
-
-    <resultMap id="depStandard" type="NxDepartmentStandardEntity">
-        <id property="nxDepartmentStandardId" column="nx_department_standard_id"/>
-        <result property="nxDdsStandardName" column="nx_DDS_standard_name"/>
-        <result property="nxDdsDdsGoodsId" column="nx_DDS_dds_goods_id"/>
-    </resultMap>
 
     <resultMap id="disAlias" type="NxDistributerAliasEntity">
         <id property="nxDistributerAliasId" column="nx_distributer_alias_id"/>
@@ -202,10 +240,12 @@
         <result property="nxDdgDisGoodsFatherId" column="nx_DDG_dis_goods_father_id"/>
         <result property="nxDdgDepGoodsName" column="nx_DDG_dep_goods_name"/>
         <result property="nxDdgDepGoodsStandardname" column="nx_DDG_dep_goods_standardname"/>
-        <result property="nxDdgDepGoodsDetail" column="nx_DDG_dep_goods_detail"/>
-        <result property="nxDdgDepGoodsBrand" column="nx_DDG_dep_goods_brand"/>
+        <result property="nxDdgOrderPrice" column="nx_DDG_order_price"/>
+        <result property="nxDdgOrderDate" column="nx_DDG_order_date"/>
+        <result property="nxDdgOrderQuantity" column="nx_DDG_order_quantity"/>
+        <result property="nxDdgOrderStandard" column="nx_DDG_order_standard"/>
+        <result property="nxDdgOrderRemark" column="nx_DDG_order_remark"/>
         <association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
-        <collection property="nxDepStandardEntities" resultMap="depStandard"/>
     </resultMap>
 
 
@@ -213,6 +253,7 @@
         <id property="nxDepartmentId" column="nx_department_id"/>
         <result property="nxDepartmentName" column="nx_department_name"/>
         <result property="nxDepartmentType" column="nx_department_type"/>
+        <result property="nxDepartmentSettleType" column="nx_department_settle_type"/>
         <result property="nxDepartmentIsGroupDep" column="nx_department_is_group_dep"/>
     </resultMap>
 
@@ -234,8 +275,11 @@
          `nx_DDG_dep_goods_detail`,
          `nx_DDG_dep_goods_brand`,
          `nx_DDG_dep_goods_place`,
-        `nx_DDG_dep_goods_price`,
-         `nx_DDG_dep_goods_price_date`
+         `nx_DDG_order_price`,
+         `nx_DDG_order_date`,
+         `nx_DDG_order_remark`,
+         `nx_DDG_order_quantity`,
+         `nx_DDG_order_standard`
          )
         values (#{nxDepartmentDisGoodsId},
                 #{nxDdgDepartmentFatherId},
@@ -248,9 +292,12 @@
                 #{nxDdgDepGoodsStandardname},
                 #{nxDdgDepGoodsDetail},
                 #{nxDdgDepGoodsBrand},
-                #{nxDdgDepGoodsPlace},
-                #{nxDdgDepGoodsPrice},
-                #{nxDdgDepGoodsPriceDate}
+                #{nxDdgGoodsPlace},
+                #{nxDdgOrderPrice},
+                #{nxDdgOrderDate},
+                #{nxDdgOrderRemark},
+                #{nxDdgOrderQuantity},
+                #{nxDdgOrderStandard}
                 )
     </insert>
 
@@ -268,8 +315,11 @@
             </if>
             <if test="nxDdgDepGoodsDetail != null">`nx_DDG_dep_goods_detail` = #{nxDdgDepGoodsDetail},</if>
             <if test="nxDdgDepGoodsBrand != null">`nx_DDG_dep_goods_brand` = #{nxDdgDepGoodsBrand},</if>
-            <if test="nxDdgDepGoodsPrice != null">`nx_DDG_dep_goods_price` = #{nxDdgDepGoodsPrice},</if>
-            <if test="nxDdgDepGoodsPriceDate != null">`nx_DDG_dep_goods_price_date` = #{nxDdgDepGoodsPriceDate},</if>
+            <if test="nxDdgOrderPrice != null">`nx_DDG_order_price` = #{nxDdgOrderPrice},</if>
+            <if test="nxDdgOrderDate != null">`nx_DDG_order_date` = #{nxDdgOrderDate},</if>
+            <if test="nxDdgOrderRemark != null">`nx_DDG_order_remark` = #{nxDdgOrderRemark},</if>
+            <if test="nxDdgOrderQuantity != null">`nx_DDG_order_quantity` = #{nxDdgOrderQuantity},</if>
+            <if test="nxDdgOrderStandard != null">`nx_DDG_order_standard` = #{nxDdgOrderStandard},</if>
             <if test="nxDdgDepGoodsPlace != null">`nx_DDG_dep_goods_place` = #{nxDdgDepGoodsPlace}</if>
         </set>
         where nx_department_dis_goods_id = #{nxDepartmentDisGoodsId}

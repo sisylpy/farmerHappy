@@ -16,4 +16,8 @@ import java.util.Map;
 public interface NxDepartmentBillDao extends BaseDao<NxDepartmentBillEntity> {
 
     List<NxDepartmentBillEntity> queryBillsByParams(Map<String, Object> map);
+
+    NxDepartmentBillEntity querySalesBillApplys(Integer billId);
+
+    int queryTotalByParams(Map<String, Object> map1);
 }

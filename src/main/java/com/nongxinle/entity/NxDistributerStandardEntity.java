@@ -47,5 +47,6 @@ public class NxDistributerStandardEntity implements Serializable {
 	 *  
 	 */
 	private Integer nxDsStandardSort;
+	private String nxDsStandardWeight;
 
 }

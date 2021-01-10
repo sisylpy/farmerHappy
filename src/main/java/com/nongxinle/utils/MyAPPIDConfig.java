@@ -59,7 +59,39 @@ public class MyAPPIDConfig  {
     }
 
 
+    public String getFangfangAppID() {
+        return "wxbc686226ccc443f1";
+    }
 
+    public String getFangfangScreat(){
+        return "cefb0c474497e74879687862b0d8733e";
+    }
+
+
+    public String getLiziDriverAppID() {
+        return "wx2dccb807db0ea0d7";
+    }
+
+    public String getLiziDriverScreat(){
+        return "1433f8015b34fc6534c7948e216f2512";
+    }
+
+
+    public String getRestrauntAppID() {
+        return "wx975628eb436db001";
+    }
+
+    public String getRestrauntScreat(){
+        return "4a7364ca197d7b4315f4f9f41361ed0b";
+    }
+
+    public String getCommunityAppID() {
+        return "wx703088926758c568";
+    }
+
+    public String getCommunityScreat(){
+        return "7f23a36c0672e7f72a9ecffb3e8fb38d";
+    }
 
 
 

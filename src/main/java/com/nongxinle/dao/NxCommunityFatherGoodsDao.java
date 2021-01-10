@@ -10,6 +10,7 @@ package com.nongxinle.dao;
 import com.nongxinle.entity.NxCommunityFatherGoodsEntity;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface NxCommunityFatherGoodsDao extends BaseDao<NxCommunityFatherGoodsEntity> {
@@ -17,4 +18,8 @@ public interface NxCommunityFatherGoodsDao extends BaseDao<NxCommunityFatherGood
     List<NxCommunityFatherGoodsEntity> queryFatherGoods(Integer dgGoodsFatherId);
 
     List<NxCommunityFatherGoodsEntity> queryCataListByCommunityId(Integer communityId);
+
+    List<NxCommunityFatherGoodsEntity> queryHasComFathersFather(Map<String, Object> map2);
+
+    List<NxCommunityFatherGoodsEntity> queryComGoodsCata(Map<String, Object> map2);
 }

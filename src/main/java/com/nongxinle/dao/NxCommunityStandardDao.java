@@ -9,7 +9,10 @@ package com.nongxinle.dao;
 
 import com.nongxinle.entity.NxCommunityStandardEntity;
 
+import java.util.List;
+
 
 public interface NxCommunityStandardDao extends BaseDao<NxCommunityStandardEntity> {
-	
+
+    List<NxCommunityStandardEntity> queryComGoodsStandards(Integer comGoodsId);
 }

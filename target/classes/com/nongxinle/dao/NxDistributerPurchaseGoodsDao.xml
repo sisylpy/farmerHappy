@@ -10,6 +10,7 @@
 		left join nx_department_orders as ndo on ndo.nx_DO_purchase_goods_id = dp.nx_distributer_purchase_goods_id
 		left join nx_department as fatherOrdep on fatherOrdep.nx_department_id = ndo.nx_DO_department_father_id
 		left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dp.nx_DPG_dis_goods_id
+		left join nx_department_dis_goods as ddg on ddg.nx_DDG_dis_goods_id = dg.nx_distributer_goods_id
 		left join nx_distributer_father_goods as dfg on dfg.nx_distributer_father_goods_id = dp.nx_DPG_dis_goods_father_id
 		where dp.nx_DPG_distributer_id = #{disId} and  dp.nx_DPG_purchase_date = #{purchaseDate}
 		order by dp.nx_DPG_dis_goods_father_id, dp.nx_DPG_dis_goods_id
@@ -63,6 +64,7 @@
 		<result property="nxDgNxFatherId" column="nx_dg_nx_father_id"/>
 		<result property="nxDgGoodsName" column="nx_dg_goods_name"/>
 		<result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+		<result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
 		<result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
 		<result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
 		<result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
@@ -85,7 +87,22 @@
 		<result property="nxDoDepartmentId" column="nx_DO_department_id"/>
 		<result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
 		<result property="nxDoDepDisGoodsId" column="nx_DO_dep_dis_goods_id"/>
+		<association property="nxDepartmentDisGoodsEntity" resultMap="depDisGoods"/>
 		<association property="nxDepartmentEntity" resultMap="orderFatherDepartment"/>
+	</resultMap>
+
+	<resultMap id="depDisGoods" type="NxDepartmentDisGoodsEntity">
+		<id property="nxDepartmentDisGoodsId" column="nx_department_dis_goods_id"/>
+		<result property="nxDdgDepGoodsName" column="nx_DDG_dep_goods_name"/>
+		<result property="nxDdgDepGoodsStandardname" column="nx_DDG_dep_goods_standardname"/>
+		<result property="nxDdgDepGoodsBrand" column="nx_DDG_dep_goods_brand"/>
+		<result property="nxDdgDepGoodsDetail" column="nx_DDG_dep_goods_detail"/>
+		<result property="nxDdgDepGoodsPlace" column="nx_DDG_dep_goods_place"/>
+		<result property="nxDdgDisGoodsId" column="nx_DDG_dis_goods_id"/>
+		<result property="nxDdgOrderPrice" column="nx_DDG_order_price"/>
+		<result property="nxDdgOrderDate" column="nx_DDG_order_date"/>
+		<result property="nxDdgOrderQuantity" column="nx_DDG_order_quantity"/>
+		<result property="nxDdgOrderStandard" column="nx_DDG_order_standard"/>
 	</resultMap>
 
 	<resultMap id="orderFatherDepartment" type="NxDepartmentEntity">
@@ -118,7 +135,7 @@
 		       dp.nx_DPG_status,
 			   dg.nx_distributer_goods_id, dg.nx_dg_goods_name, dg.nx_dg_goods_standardname, dg.nx_dg_goods_detail,
 			   dg.nx_dg_goods_brand, dg.nx_dg_goods_place, dg.nx_dg_goods_py, dg.nx_dg_goods_pinyin,
-			   dg.nx_dg_nx_father_id,
+			   dg.nx_dg_nx_father_id, dg.nx_dg_goods_standard_weight,
 			   ndo.nx_department_orders_id, ndo.nx_DO_nx_goods_id, ndo.nx_DO_nx_goods_father_id,
 			   ndo.nx_DO_quantity, ndo.nx_DO_standard, ndo.nx_DO_remark, ndo.nx_DO_weight,
 			   ndo.nx_DO_price, ndo.nx_DO_subtotal, ndo.nx_DO_department_id, ndo.nx_DO_distributer_id,
@@ -128,6 +145,7 @@
 			   d.nx_department_father_id 'nx_department_father_id',
 			   d.nx_department_type 'nx_department_type', d.nx_department_sub_amount 'nx_department_sub_amount',
 			   dd.nx_department_id 'dd_nx_department_id', dd.nx_department_name 'dd_nx_department_name',
+			   dd.nx_department_settle_type 'dd_nx_department_settle_type',
 			   dd.nx_department_father_id 'dd_nx_department_father_id',
 			   dd.nx_department_type 'dd_nx_department_type', dd.nx_department_sub_amount 'dd_nx_department_sub_amount'
 

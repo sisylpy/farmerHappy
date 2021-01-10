@@ -18,7 +18,8 @@
 		select count(*) from nx_supplier 
 	</select>
 	 
-	<insert id="save" parameterType="com.nongxinle.entity.NxSupplierEntity">
+	<insert id="save" parameterType="com.nongxinle.entity.NxSupplierEntity" useGeneratedKeys="true"
+	keyProperty="nxSupplierId">
 		insert into nx_supplier
 		(
 			`nx_supplier_id`, 

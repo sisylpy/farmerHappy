@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
 
+import static com.nongxinle.utils.DateUtils.formatWhatDate;
+import static com.nongxinle.utils.DateUtils.formatWhatDay;
 import static com.nongxinle.utils.PinYin4jUtils.getHeadStringByString;
 import static com.nongxinle.utils.PinYin4jUtils.hanziToPinyin;
 
@@ -36,6 +38,36 @@ public class NxDepartmentDisGoodsController {
     @Autowired
     private NxDepartmentOrdersService nxDepartmentOrdersService;
 
+    @RequestMapping(value = "/deleteDepGoodsArr/{str}" )
+    @ResponseBody
+    public R deleteDepGoodsArr (@PathVariable String str) {
+        String[] arr = str.split(",");
+        for (String s : arr) {
+            Integer depGoodsId = Integer.valueOf(s);
+            Map<String, Object> map = new HashMap<>();
+            map.put("depDisGoodsId", depGoodsId);
+            map.put("status", 3);
+            map.put("arriveDateDayu", formatWhatDay(-1));
+            List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
+            if(ordersEntities.size() > 0) {
+                return R.error(-1,"有未完成订单，暂不能删除");
+            }else {
+                nxDepartmentDisGoodsService.delete(depGoodsId);
+            }
+        }
+        return R.ok();
+
+    }
+
+    @RequestMapping(value = "/deleteDepGoodsArr1", method = RequestMethod.POST)
+    @ResponseBody
+    public R deleteDepGoodsArr1 (@RequestBody List<NxDepartmentDisGoodsEntity> depGoodsArr  ) {
+        for (NxDepartmentDisGoodsEntity goods : depGoodsArr) {
+            nxDepartmentDisGoodsService.delete(goods.getNxDepartmentDisGoodsId());
+        }
+        return R.ok();
+    }
+
     @RequestMapping(value = "/queryDepDisGoodsByQuickSearch", method = RequestMethod.POST)
     @ResponseBody
     public R queryDepDisGoodsByQuickSearch (String searchStr, Integer depId  ) {
@@ -44,8 +76,6 @@ public class NxDepartmentDisGoodsController {
         map.put("depId", depId);
         map.put("searchStr", searchStr);
         TreeSet<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
-//        List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisSearchStr(map);
-
         Map<String, Object> map2 = new HashMap<>();
         map2.put("depId", depId);
         String pinyin = hanziToPinyin(searchStr);
@@ -80,7 +110,9 @@ public class NxDepartmentDisGoodsController {
         //查询已经添加disGoods的客户
         List<NxDepartmentEntity> addGoodsCustomer = nxDepartmentDisGoodsService.queryDepartmentsByDisGoodsId(disGoodsId);
         //查询批发商的全部客户
-        List<NxDepartmentEntity> allCustomer = nxDisDepartmentService.queryAllDisDepartments(disId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("disId", disId);
+        List<NxDepartmentEntity> allCustomer = nxDisDepartmentService.queryDisDepartmentsBySettleType(map);
         //去除已经添加disGoods的客户
         allCustomer.removeAll(addGoodsCustomer);
         //返回没有添加disGoods的客户
@@ -92,7 +124,21 @@ public class NxDepartmentDisGoodsController {
     /**
      * PURCHASE,ORDER,DISTRIBUTER
      * 订货群获取自己群商品类别
-     * @param depId 订货群id
+     * @param depFatherId 订货群id
+     * @return 订货群商品类别列表
+     */
+    @RequestMapping(value = "/disGetDepGoodsCata/{depFatherId}")
+    @ResponseBody
+    public R disGetDepGoodsCata(@PathVariable Integer depFatherId) {
+        System.out.println(depFatherId+ "newkekkeke");
+        List<NxDistributerFatherGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.disGetDepDisGoodsCata(depFatherId);
+        return R.ok().put("data", disGoodsEntities);
+    }
+
+    /**
+     * PURCHASE,ORDER,DISTRIBUTER
+     * 订货群获取自己群商品类别
+     * @param depId 订货部门id
      * @return 订货群商品类别列表
      */
     @RequestMapping(value = "/depGetDepDisGoodsCata/{depId}")
@@ -248,6 +294,7 @@ public class NxDepartmentDisGoodsController {
         return R.ok();
     }
 
+    //
     /**
      * ORDER
      * 订货员获取配送商品
@@ -275,6 +322,39 @@ public class NxDepartmentDisGoodsController {
 
         Map<String, Object> map3 = new HashMap<>();
         map3.put("depFatherId", depId);
+        map3.put("fatherId", fatherId );
+        int total = nxDepartmentDisGoodsService.queryDepGoodsTotal(map3);
+        PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);
+        return R.ok().put("page", pageUtil);
+    }
+
+    /**
+     * ORDER
+     * 订货员获取配送商品
+     * @param limit 每页显示商品数
+     * @param page 第几页
+     * @param depFatherId 群id
+     * @param fatherId 批发商商品父级id
+     * @return 群商品列表
+     */
+    @RequestMapping(value = "/disGetDepGoods", method = RequestMethod.POST)
+    @ResponseBody
+    public R disGetDepGoods(Integer limit, Integer page,Integer depFatherId, Integer fatherId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("offset", (page - 1) * limit);
+        map.put("limit", limit);
+        map.put("depFatherId", depFatherId);
+        map.put("fatherId", fatherId);
+        List<NxDepartmentDisGoodsEntity> goodsEntities = nxDepartmentDisGoodsService.queryDepGoodsByFatherId(map);
+
+        for (NxDepartmentDisGoodsEntity disGoods : goodsEntities) {
+            Integer nxDepartmentDisGoodsId = disGoods.getNxDepartmentDisGoodsId();
+            List<NxDepartmentStandardEntity> standardEntities = nxDepartmentStandardService.queryDepGoodsStandards(nxDepartmentDisGoodsId);
+            disGoods.setNxDepStandardEntities(standardEntities);
+        }
+
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("depFatherId", depFatherId);
         map3.put("fatherId", fatherId );
         int total = nxDepartmentDisGoodsService.queryDepGoodsTotal(map3);
         PageUtils pageUtil = new PageUtils(goodsEntities, total, limit, page);

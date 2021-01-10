@@ -106,7 +106,7 @@ public class NxCommunityCommunityOrdersServiceImpl implements NxCommunityOrdersS
 
 			//商品点击数加1
 			NxCommunityGoodsEntity disGoods = nxCommunityGoodsDao.queryObject(nxOsCommunityGoodsId);
-			disGoods.setNxCgGoodsTotalHits(disGoods.getNxCgGoodsTotalHits() + 1);
+//			disGoods.setNxCgGoodsTotalHits(disGoods.getNxCgGoodsTotalHits() + 1);
 
 		}
 

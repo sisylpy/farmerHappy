@@ -11,7 +11,6 @@ import com.github.wxpay.sdk.WXPay;
 import com.nongxinle.entity.*;
 import com.nongxinle.service.NxCommunityOrdersService;
 import com.nongxinle.service.NxDistributerUserService;
-import com.nongxinle.service.NxRouteService;
 import com.nongxinle.service.NxWxOrdersService;
 import com.nongxinle.utils.*;
 import net.sf.json.JSONArray;
@@ -31,8 +30,7 @@ public class NxCommunityOrdersController {
     @Autowired
     private NxCommunityOrdersService nxCommunityOrdersService;
 
-    @Autowired
-    private NxRouteService nxRouteService;
+
 
     @Autowired
     private NxDistributerUserService nxDistributerUserService;

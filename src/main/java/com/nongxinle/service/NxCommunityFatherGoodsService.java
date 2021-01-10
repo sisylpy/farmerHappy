@@ -31,4 +31,8 @@ public interface NxCommunityFatherGoodsService {
     List<NxCommunityFatherGoodsEntity> queryFatherGoodsByFatherId(Integer dgGoodsFatherId);
 
 	List<NxCommunityFatherGoodsEntity> queryCataListByCommunityId(Integer communityId);
+
+    List<NxCommunityFatherGoodsEntity> queryHasComFathersFather(Map<String, Object> map2);
+
+    List<NxCommunityFatherGoodsEntity> queryComGoodsCata(Map<String, Object> map2);
 }

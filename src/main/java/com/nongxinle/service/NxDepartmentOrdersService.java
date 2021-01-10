@@ -40,8 +40,7 @@ public interface NxDepartmentOrdersService {
 	void delete(Integer nxDepartmentOrdersId);
 
 
+	int queryTotalByParams(Map<String, Object> deliverymap);
 
-
-
-
+	void saveIndependent(NxDepartmentOrdersEntity nxDepartmentOrders);
 }

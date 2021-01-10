@@ -48,6 +48,12 @@ public class NxDepartmentBillEntity implements Serializable {
 	 *  
 	 */
 	private Integer nxDbIssueUserId;
+	private String nxDbDate;
+
+	private String nxDbMonth;
+	private String nxDbWeek;
+	private String nxDbTradeNo;
+	private NxDistributerEntity distributerEntity;
 
 	private List<NxDepartmentOrdersEntity>  nxDepartmentOrdersEntities;
 

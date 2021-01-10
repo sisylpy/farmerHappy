@@ -40,10 +40,14 @@ public class NxCommunityEntity implements Serializable {
 	 */
 	private Integer nxCommunityRouteId;
 
-	private Integer nxCommunityDisId;
+	private Integer nxCommunityCommerceId;
 
 	private String nxCommunityPolygon;
 
 	private String nxCommunityRegion;
+	private String nxCommunityDeliveryAddress;
+
+	private NxCommunityUserEntity nxCommunityUserEntity;
+
 
 }

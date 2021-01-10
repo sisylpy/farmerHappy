@@ -32,6 +32,20 @@ public class NxDistributerDepartmentController {
 	@Autowired
 	private NxDepartmentService nxDepartmentService;
 
+
+	@RequestMapping(value = "/disGetCustomerToReplaceOrder/{disId}")
+	@ResponseBody
+	public R disGetCustomerToReplaceOrder(@PathVariable Integer disId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("disId", disId);
+		map.put("isGroup", 1);
+		map.put("subAmount", 0);
+		List<NxDepartmentEntity> entities =  nxDistributerDepartmentService.queryDisDepartmentsBySettleType(map);
+
+
+		return R.ok().put("data", entities);
+	}
+
 	/**
 	 * 获取批发商客户列表
 	 * @param disId 批发商id
@@ -40,8 +54,20 @@ public class NxDistributerDepartmentController {
 	@RequestMapping(value = "/disGetAllCustomer/{disId}")
 	@ResponseBody
 	public R disGetAllDisDepartments(@PathVariable Integer disId) {
-		List<NxDepartmentEntity> entities =  nxDistributerDepartmentService.queryAllDisDepartments(disId);
-		return R.ok().put("data", entities);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("disId", disId);
+		map.put("type", 1);
+		List<NxDepartmentEntity> entities =  nxDistributerDepartmentService.queryDisDepartmentsBySettleType(map);
+		Map<String, Object> map1 = new HashMap<>();
+		map1.put("disId", disId);
+		map1.put("type", 2);
+		List<NxDepartmentEntity> entities2 =  nxDistributerDepartmentService.queryDisDepartmentsBySettleType(map1);
+
+		Map<String, Object> mapData = new HashMap<>();
+		mapData.put("settleTypeOne", entities);
+		mapData.put("settleTypeTwo", entities2);
+		return R.ok().put("data", mapData);
 	}
 
 	/**

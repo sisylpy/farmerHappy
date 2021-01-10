@@ -33,8 +33,5 @@ public interface NxDepartmentDisGoodsDao extends BaseDao<NxDepartmentDisGoodsEnt
     List<NxDepartmentDisGoodsEntity> queryDepDisGoodsByParams(Map<String, Object> map);
 
 
-
-
-
-
+    List<NxDistributerFatherGoodsEntity> disGetDepGoodsCata(Integer depFatherId);
 }

@@ -61,6 +61,8 @@ public class NxDepartmentUserServiceImpl implements NxDepartmentUserService {
     }
 
 
+
+
 //	@Override
 //	public List<NxDepartmentUserEntity> queryList(Map<String, Object> map){
 //		return nxDepartmentUserDao.queryList(map);

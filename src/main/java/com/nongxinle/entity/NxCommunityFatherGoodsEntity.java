@@ -25,24 +25,38 @@ public class NxCommunityFatherGoodsEntity implements Serializable, Comparable  {
 	 */
 	private Integer nxCommunityFatherGoodsId;
 
-	private String nxFatherGoodsName;
+	private String nxCfgFatherGoodsName;
 
-	private String nxFatherGoodsImg;
+	private String nxCfgFatherGoodsImg;
 
-	private Integer nxFatherGoodsSort;
+	private Integer nxCfgFatherGoodsSort;
 
-	private String nxFatherGoodsColor;
+	private String nxCfgFatherGoodsColor;
 
-	private Integer nxFathersFatherId;
+	private Integer nxCfgFathersFatherId;
 
-	private Integer nxFatherGoodsLevel;
+	private Integer nxCfgFatherGoodsLevel;
 
 	private Integer nxCfgCommunityId;
 
 	private Integer nxCfgGoodsAmount;
 
+	private Integer nxCfgNxGoodsId;
+	private Integer nxCfgPriceAmount;
+	private Integer nxCfgPriceTwoAmount;
+	private Integer nxCfgPriceThreeAmount;
+
+
 
 	private List<NxCommunityPromoteEntity> nxPromoteEntities;
+
+	List<NxCommunityFatherGoodsEntity> fatherGoodsEntities;
+
+	List<NxCommunityGoodsEntity> nxCommunityGoodsEntities;
+
+	List<NxCommunityPurchaseGoodsEntity> nxCommunityPurchaseGoodsEntities;
+	private List<NxRestrauntComGoodsEntity> nxRestrauntComGoodsEntities;
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -50,12 +64,12 @@ public class NxCommunityFatherGoodsEntity implements Serializable, Comparable  {
 		if (o == null || getClass() != o.getClass()) return false;
 		NxCommunityFatherGoodsEntity that = (NxCommunityFatherGoodsEntity) o;
 		return Objects.equals(nxCommunityFatherGoodsId, that.nxCommunityFatherGoodsId) &&
-				Objects.equals(nxFatherGoodsName, that.nxFatherGoodsName) &&
-				Objects.equals(nxFatherGoodsImg, that.nxFatherGoodsImg) &&
-				Objects.equals(nxFatherGoodsSort, that.nxFatherGoodsSort) &&
-				Objects.equals(nxFatherGoodsColor, that.nxFatherGoodsColor) &&
-				Objects.equals(nxFathersFatherId, that.nxFathersFatherId) &&
-				Objects.equals(nxFatherGoodsLevel, that.nxFatherGoodsLevel) &&
+				Objects.equals(nxCfgFatherGoodsName, that.nxCfgFatherGoodsName) &&
+				Objects.equals(nxCfgFatherGoodsImg, that.nxCfgFatherGoodsImg) &&
+				Objects.equals(nxCfgFatherGoodsSort, that.nxCfgFatherGoodsSort) &&
+				Objects.equals(nxCfgFatherGoodsColor, that.nxCfgFatherGoodsColor) &&
+				Objects.equals(nxCfgFathersFatherId, that.nxCfgFathersFatherId) &&
+				Objects.equals(nxCfgFatherGoodsLevel, that.nxCfgFatherGoodsLevel) &&
 				Objects.equals(nxCfgCommunityId, that.nxCfgCommunityId) &&
 				Objects.equals(nxCfgGoodsAmount, that.nxCfgGoodsAmount) &&
 				Objects.equals(nxPromoteEntities, that.nxPromoteEntities);
@@ -63,7 +77,7 @@ public class NxCommunityFatherGoodsEntity implements Serializable, Comparable  {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nxCommunityFatherGoodsId, nxFatherGoodsName, nxFatherGoodsImg, nxFatherGoodsSort, nxFatherGoodsColor, nxFathersFatherId, nxFatherGoodsLevel, nxCfgCommunityId, nxCfgGoodsAmount, nxPromoteEntities);
+		return Objects.hash(nxCommunityFatherGoodsId, nxCfgFatherGoodsName, nxCfgFatherGoodsImg, nxCfgFatherGoodsSort, nxCfgFatherGoodsColor, nxCfgFathersFatherId, nxCfgFatherGoodsLevel, nxCfgCommunityId, nxCfgGoodsAmount, nxPromoteEntities);
 	}
 
 	@Override

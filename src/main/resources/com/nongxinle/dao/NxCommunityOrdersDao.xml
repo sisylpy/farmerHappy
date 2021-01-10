@@ -20,6 +20,7 @@
 		<result property="nxCgGoodsTotalHits" column="nx_cg_goods_total_hits"/>
 		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
 		<result property="nxCgGoodsName" column="nx_cg_goods_name"/>
+		<result property="nxCgPullOff" column="nx_cg_pull_off"/>
 		<result property="nxCgGoodsStandardname" column="nx_cg_goods_standardname"/>
 
 	</resultMap>

@@ -22,82 +22,36 @@ import com.nongxinle.utils.R;
 
 
 @RestController
-@RequestMapping("nxcommunitystandard")
+@RequestMapping("api/nxcommunitystandard")
 public class NxCommunityStandardController {
 	@Autowired
 	private NxCommunityStandardService nxCommunityStandardService;
+
+	@RequestMapping(value = "/comDeleteStandard/{id}")
+	@ResponseBody
+	public R comDeleteStandard(@PathVariable Integer id) {
+	    nxCommunityStandardService.delete(id);
+	    return R.ok();
+	}
+
+
+	@RequestMapping(value = "/comUpdateStandard", method = RequestMethod.POST)
+	@ResponseBody
+	public R comUpdateStandard (@RequestBody NxCommunityStandardEntity standardEntity) {
+	    nxCommunityStandardService.update(standardEntity);
+	    return R.ok();
+	}
+
+
+	@RequestMapping(value = "/comSaveStandard", method = RequestMethod.POST)
+	@ResponseBody
+	public R comSaveStandard (@RequestBody NxCommunityStandardEntity standard  ) {
+		nxCommunityStandardService.save(standard);
+	    return R.ok().put("data", standard);
+	}
 	
 
 
 
-
-	/**
-	 * 列表
-	 */
-	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxcommunitystandard:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxCommunityStandardEntity> nxCommunityStandardList = nxCommunityStandardService.queryList(map);
-		int total = nxCommunityStandardService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxCommunityStandardList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
-	}
-	
-	
-	/**
-	 * 信息
-	 */
-	@ResponseBody
-	@RequestMapping("/info/{nxCommunityStandardId}")
-	@RequiresPermissions("nxcommunitystandard:info")
-	public R info(@PathVariable("nxCommunityStandardId") Integer nxCommunityStandardId){
-		NxCommunityStandardEntity nxCommunityStandard = nxCommunityStandardService.queryObject(nxCommunityStandardId);
-		
-		return R.ok().put("nxCommunityStandard", nxCommunityStandard);
-	}
-	
-	/**
-	 * 保存
-	 */
-	@ResponseBody
-	@RequestMapping("/save")
-	@RequiresPermissions("nxcommunitystandard:save")
-	public R save(@RequestBody NxCommunityStandardEntity nxCommunityStandard){
-		nxCommunityStandardService.save(nxCommunityStandard);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxcommunitystandard:update")
-	public R update(@RequestBody NxCommunityStandardEntity nxCommunityStandard){
-		nxCommunityStandardService.update(nxCommunityStandard);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxcommunitystandard:delete")
-	public R delete(@RequestBody Integer[] nxCommunityStandardIds){
-		nxCommunityStandardService.deleteBatch(nxCommunityStandardIds);
-		
-		return R.ok();
-	}
 	
 }

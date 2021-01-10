@@ -43,20 +43,24 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	public List<NxDepartmentEntity> queryDistributerTodayDepartments(Map<String, Object> map) {
 		return nxDepartmentOrdersDao.queryDistributerTodayDepartments(map);
 	}
+
 	
 	@Override
 	public void save(NxDepartmentOrdersEntity nxDepartmentOrders){
 
 		//判断是否是部门商品
-		Integer depDisGoodsId = nxDepartmentOrders.getNxDoDepDisGoodsId() ;
+		Integer doDisGoodsId = nxDepartmentOrders.getNxDoDisGoodsId();
+		Integer nxDoDepartmentId1 = nxDepartmentOrders.getNxDoDepartmentId();
+		//查询部门还是订货群是否添加过此商品
+		Map<String, Object> map = new HashMap<>();
+		map.put("depId", nxDoDepartmentId1);
+		map.put("disGoodsId", doDisGoodsId);
+		List<NxDepartmentDisGoodsEntity> disGoodsEntities = nxDepartmentDisGoodsService.queryDepDisGoodsByParams(map);
 		Integer nxDoGoodsType = nxDepartmentOrders.getNxDoGoodsType();
-		if(depDisGoodsId == null && nxDoGoodsType == 0){
+		if(disGoodsEntities.size() == 0  && nxDoGoodsType == 0){
 			//添加部门商品
-			System.out.println("shenmshigougjinaloii");
-			Integer doDisGoodsId = nxDepartmentOrders.getNxDoDisGoodsId();
 			NxDistributerGoodsEntity nxDistributerGoodsEntity = dgService.queryObject(doDisGoodsId);
 			String nxDgGoodsName = nxDistributerGoodsEntity.getNxDgGoodsName();
-
 			//
 			NxDepartmentDisGoodsEntity disGoodsEntity = new NxDepartmentDisGoodsEntity();
 			disGoodsEntity.setNxDdgDepGoodsName(nxDgGoodsName);
@@ -67,17 +71,30 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 			disGoodsEntity.setNxDdgDepGoodsStandardname(nxDistributerGoodsEntity.getNxDgGoodsStandardname());
 			disGoodsEntity.setNxDdgDepartmentId(nxDepartmentOrders.getNxDoDepartmentId());
 			disGoodsEntity.setNxDdgDepartmentFatherId(nxDepartmentOrders.getNxDoDepartmentFatherId());
+			disGoodsEntity.setNxDdgOrderQuantity(nxDepartmentOrders.getNxDoQuantity());
+			disGoodsEntity.setNxDdgOrderStandard(nxDepartmentOrders.getNxDoStandard());
+			disGoodsEntity.setNxDdgOrderRemark(nxDepartmentOrders.getNxDoRemark());
+			disGoodsEntity.setNxDdgOrderDate(formatWhatDay(0));
 			nxDepartmentDisGoodsService.save(disGoodsEntity);
-
 			Integer nxDepartmentDisGoodsId = disGoodsEntity.getNxDepartmentDisGoodsId();
 			nxDepartmentOrders.setNxDoDepDisGoodsId(nxDepartmentDisGoodsId);
+		}else {
+			Integer nxDepartmentDisGoodsId = disGoodsEntities.get(0).getNxDepartmentDisGoodsId();
+			nxDepartmentOrders.setNxDoDepDisGoodsId(nxDepartmentDisGoodsId);
+			//
+			NxDepartmentDisGoodsEntity disGoodsEntity = nxDepartmentDisGoodsService.queryObject(nxDepartmentDisGoodsId);
+			disGoodsEntity.setNxDdgOrderQuantity(nxDepartmentOrders.getNxDoQuantity());
+			disGoodsEntity.setNxDdgOrderStandard(nxDepartmentOrders.getNxDoStandard());
+			disGoodsEntity.setNxDdgOrderRemark(nxDepartmentOrders.getNxDoRemark());
+			disGoodsEntity.setNxDdgOrderDate(formatWhatDay(0));
+			nxDepartmentDisGoodsService.update(disGoodsEntity);
 		}
 
 		nxDepartmentOrders.setNxDoStatus(0);
 		nxDepartmentOrders.setNxDoBuyStatus(0);
-		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
-		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
-		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
+//		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
+//		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
+//		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
 		nxDepartmentOrdersDao.save(nxDepartmentOrders);
 
 		//如果是加急订单，则给批发商发送微信通知
@@ -95,12 +112,10 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 			}
 
 			String token = getToken();
-
 			Integer disId = nxDepartmentOrders.getNxDoDistributerId();
 			List<NxDistributerUserEntity> disUsers = nxDistributerUserService.queryUser(disId);
 			for (NxDistributerUserEntity user : disUsers) {
 				String nxDiuWxOpenId = user.getNxDiuWxOpenId();
-
 				Map<String,Object> param = new HashMap<>();
 				param.put("touser", nxDiuWxOpenId);
 				param.put("template_id","-iBBaNT5xYhTafwt6WHjlYuKCcU9-PkpfPAvEv5g91Y");
@@ -145,6 +160,23 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 	@Override
 	public void delete(Integer nxDepartmentOrdersId){
 		nxDepartmentOrdersDao.delete(nxDepartmentOrdersId);
+	}
+
+	@Override
+	public int queryTotalByParams(Map<String, Object> map) {
+		return nxDepartmentOrdersDao.queryTotalByParams(map);
+	}
+
+	@Override
+	public void saveIndependent(NxDepartmentOrdersEntity nxDepartmentOrders) {
+
+		nxDepartmentOrders.setNxDoStatus(0);
+		nxDepartmentOrders.setNxDoBuyStatus(0);
+		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
+		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
+		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
+		nxDepartmentOrdersDao.save(nxDepartmentOrders);
+
 	}
 
 

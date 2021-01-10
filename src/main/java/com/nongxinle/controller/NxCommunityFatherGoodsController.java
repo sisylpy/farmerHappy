@@ -14,6 +14,7 @@ import java.util.Map;
 
 import com.nongxinle.entity.NxCommunityAdsenseEntity;
 import com.nongxinle.entity.NxCommunityPromoteEntity;
+import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
 import com.nongxinle.service.NxCommunityAdsenseService;
 import com.nongxinle.service.NxCommunityPromoteService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,13 +31,49 @@ import com.nongxinle.utils.R;
 @RequestMapping("api/nxcommunityfathergoods")
 public class NxCommunityFatherGoodsController {
 	@Autowired
-	private NxCommunityFatherGoodsService nxCommunityFatherGoodsService;
+	private NxCommunityFatherGoodsService cfgService;
 
 	@Autowired
 	private NxCommunityPromoteService nxCommunityPromoteService;
 
 	@Autowired
 	private NxCommunityAdsenseService nxCommunityAdsenseService;
+
+	//
+
+	/**
+	 * 获取批发商商品的父类列表
+	 * @param comId 批发商id
+	 * @return 批发商父类列表
+	 */
+	@RequestMapping(value = "/getComGoodsCata", method = RequestMethod.POST)
+	@ResponseBody
+	public R getComGoodsCata(Integer comId, Integer level) {
+		System.out.println(comId + level + "abc");
+		Map<String, Object> map = new HashMap<>();
+		map.put("comId", comId);
+		map.put("level", level);
+		List<NxCommunityFatherGoodsEntity> comGoodsCata = cfgService.queryComGoodsCata(map);
+		if(comGoodsCata.size() > 0){
+			return R.ok().put("data", comGoodsCata);
+		}
+		List<NxCommunityFatherGoodsEntity> zero = new ArrayList<>();
+		return R.ok().put("data", zero);
+	}
+
+	@RequestMapping(value = "/comGetComGoodsCata/{comId}")
+	@ResponseBody
+	public R comGetComGoodsCata(@PathVariable Integer comId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("comId", comId);
+		List<NxCommunityFatherGoodsEntity> comGoodsCata = cfgService.queryComGoodsCata(map);
+		if(comGoodsCata.size() > 0){
+			return R.ok().put("data", comGoodsCata);
+		}
+		List<NxCommunityFatherGoodsEntity> zero = new ArrayList<>();
+		return R.ok().put("data", zero);
+	}
+
 
 
 
@@ -48,7 +85,7 @@ public class NxCommunityFatherGoodsController {
 	@ResponseBody
 	public R customerIndexData(@PathVariable Integer communityId) {
 
-		List<NxCommunityFatherGoodsEntity> entities = nxCommunityFatherGoodsService.queryCataListByCommunityId(communityId);
+		List<NxCommunityFatherGoodsEntity> entities = cfgService.queryCataListByCommunityId(communityId);
 		List<NxCommunityFatherGoodsEntity> fatherGoodsEntities = new ArrayList<>();
 		for (NxCommunityFatherGoodsEntity father : entities) {
 			Integer nxCommunityFatherGoodsId = father.getNxCommunityFatherGoodsId();
@@ -70,41 +107,10 @@ public class NxCommunityFatherGoodsController {
 	@RequestMapping(value = "/getCgCateList/{communityId}")
 	@ResponseBody
 	public R getGoodsCateList(@PathVariable Integer communityId) {
-		List<NxCommunityFatherGoodsEntity> entities = nxCommunityFatherGoodsService.queryCataListByCommunityId(communityId);
+		List<NxCommunityFatherGoodsEntity> entities = cfgService.queryCataListByCommunityId(communityId);
 		return R.ok().put("data", entities);
 	}
-	/**
-	 * 列表
-	 */
-	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxdistributerfathergoods:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxCommunityFatherGoodsEntity> nxDistributerFatherGoodsList = nxCommunityFatherGoodsService.queryList(map);
-		int total = nxCommunityFatherGoodsService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxDistributerFatherGoodsList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
-	}
-	
-	
-	/**
-	 * 信息
-	 */
-	@ResponseBody
-	@RequestMapping("/info/{nxDfgId}")
-	@RequiresPermissions("nxdistributerfathergoods:info")
-	public R info(@PathVariable("nxDfgId") Integer nxDfgId){
-		NxCommunityFatherGoodsEntity nxDistributerFatherGoods = nxCommunityFatherGoodsService.queryObject(nxDfgId);
-		
-		return R.ok().put("nxDistributerFatherGoods", nxDistributerFatherGoods);
-	}
+
 	
 	/**
 	 * 保存
@@ -113,33 +119,10 @@ public class NxCommunityFatherGoodsController {
 	@RequestMapping("/save")
 	@RequiresPermissions("nxdistributerfathergoods:save")
 	public R save(@RequestBody NxCommunityFatherGoodsEntity nxDistributerFatherGoods){
-		nxCommunityFatherGoodsService.save(nxDistributerFatherGoods);
+		cfgService.save(nxDistributerFatherGoods);
 		
 		return R.ok();
 	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxdistributerfathergoods:update")
-	public R update(@RequestBody NxCommunityFatherGoodsEntity nxDistributerFatherGoods){
-		nxCommunityFatherGoodsService.update(nxDistributerFatherGoods);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxdistributerfathergoods:delete")
-	public R delete(@RequestBody Integer[] nxDfgIds){
-		nxCommunityFatherGoodsService.deleteBatch(nxDfgIds);
-		
-		return R.ok();
-	}
+
 	
 }

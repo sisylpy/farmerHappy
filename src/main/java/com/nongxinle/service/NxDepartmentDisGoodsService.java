@@ -41,6 +41,9 @@ public interface NxDepartmentDisGoodsService {
 
     List<NxDepartmentDisGoodsEntity> queryDepDisGoodsByParams(Map<String, Object> map);
 
+	List<NxDistributerFatherGoodsEntity> disGetDepDisGoodsCata(Integer depFatherId);
+
+
 //	/////
 
 
@@ -54,7 +57,7 @@ public interface NxDepartmentDisGoodsService {
 //
 //
 //
-//	void deleteBatch(Integer[] nxDepartmentDisGoodsIds);
+	void deleteBatch(Integer[] nxDepartmentDisGoodsIds);
 
 
 

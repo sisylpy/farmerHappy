@@ -44,6 +44,7 @@ public class NxDistributerPurchaseGoodsController {
     /**
      * DISTRIBUTER
      * 完成进货商品
+     *
      * @param purGoodsList 进货列表
      * @return ok
      */
@@ -62,6 +63,7 @@ public class NxDistributerPurchaseGoodsController {
 
     /**
      * 复制进货商品
+     *
      * @param purGoodsList 进货列表
      * @return ok
      */
@@ -81,6 +83,7 @@ public class NxDistributerPurchaseGoodsController {
 
     /**
      * 打印进货商品
+     *
      * @param purGoodsList 进货列表
      * @return ok
      */
@@ -116,7 +119,7 @@ public class NxDistributerPurchaseGoodsController {
         Map<String, Object> map = new HashMap<>();
 
         map.put("disId", disId);
-        map.put("applyDate", date);
+        map.put("purchaseDate", date);
         List<NxDistributerFatherGoodsEntity> purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map);
 
         return R.ok().put("data", purchase);
@@ -125,77 +128,65 @@ public class NxDistributerPurchaseGoodsController {
     /**
      * DISTRIBUTE
      * 批发商获取进货商品列表
+     *
      * @param disId 批发商id
      * @return 进货商品列表
      */
-    @RequestMapping(value = "/getPurchaseGoods", method = RequestMethod.POST)
+    @RequestMapping(value = "/getPurchaseGoods/{disId}")
     @ResponseBody
-    public R getPurchaseGoods(Integer disId, Integer times) {
+    public R getPurchaseGoods(@PathVariable Integer disId) {
 
         List<Map<String, Object>> dataList = new ArrayList<>();
 
-        //明天的数据
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("disId", disId);
-        map1.put("arriveDate", formatWhatDay(1));
-        map1.put("equalBuyStatus", 0);
-        List<NxDepartmentOrdersEntity> tomUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map1);
-        Map<String, Object> map2 = new HashMap<>();
-            //1,查询进货
-            Map<String, Object> map = new HashMap<>();
-            map.put("disId", disId);
-            map.put("purchaseDate", formatWhatDay(1));
-            List<NxDistributerFatherGoodsEntity> purchase = nxDisPurcGoodsService.queryDisPurchaseGoods(map);
 
-            //4，查询
-            Map<String, Object> map3 = new HashMap<>();
-            map3.put("disId", disId);
-            map3.put("purchaseDate",  formatWhatDay(1));
-            int purchaseTotal =  nxDisPurcGoodsService.queryPurchaseTotal(map3);
-            map2.put("goodsAmount", purchaseTotal);
-            map2.put("fatherAmount", purchase.size());
-            map2.put("week", getWeek(1));
-            map2.put("hao", getJustHao(1));
-            map2.put("arr", purchase);
-            map2.put("which", "明天");
-            map2.put("date", formatWhatDay(1));
-            map2.put("orders", tomUnPurchaseApplys.size());
-            dataList.add(map2);
+        //今天的数据
 
+        Map<String, Object> stringObjectMap = disGetPurchaseGoods(disId, 1);
+        Map<String, Object> stringObjectMap2 = disGetPurchaseGoods(disId, 0);
 
+        Integer fatherAmount = (Integer)stringObjectMap.get("fatherAmount");
+        Integer fatherAmount2 = (Integer)stringObjectMap2.get("fatherAmount");
 
-		//今天的数据
-		Map<String, Object> map6 = new HashMap<>();
-		map6.put("disId", disId);
-		map6.put("arriveDate", formatWhatDay(0));
-		map6.put("equalBuyStatus", 0);
-		List<NxDepartmentOrdersEntity> todayUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map6);
+        dataList.add(stringObjectMap);
+        dataList.add(stringObjectMap2);
 
-//		if(todayUnPurchaseApplys.size() > 0){
-            //1,查询采购商品
-            Map<String, Object> map4 = new HashMap<>();
-            map4.put("disId", disId);
-            map4.put("purchaseDate", formatWhatDay(0));
-            List<NxDistributerFatherGoodsEntity> purchaseToday = nxDisPurcGoodsService.queryDisPurchaseGoods(map4);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("haveData",  fatherAmount+ fatherAmount2 );
+        resultMap.put("arr",dataList );
 
-            Map<String, Object> map5 = new HashMap<>();
-            Map<String, Object> map8 = new HashMap<>();
-            map8.put("disId", disId);
-            map8.put("purchaseDate",  formatWhatDay(0));
-            int purchaseTotals =  nxDisPurcGoodsService.queryPurchaseTotal(map8);
-            map5.put("fatherAmount", purchaseToday.size());
-            map5.put("goodsAmount", purchaseTotals);
-            map5.put("arr", purchaseToday);
-            map5.put("week", getWeek(0));
-            map5.put("hao", getJustHao(0));
-            map5.put("which", "今天");
-            map5.put("date", formatWhatDay(0));
-            map5.put("orders", todayUnPurchaseApplys.size());
-            dataList.add(map5);
-//        }
-
-        return R.ok().put("data", dataList);
+        return R.ok().put("data",resultMap );
     }
+
+    private Map<String, Object> disGetPurchaseGoods(Integer disId,  Integer which) {
+        Map<String, Object> map6 = new HashMap<>();
+        map6.put("disId", disId);
+        map6.put("arriveDate", formatWhatDay(which));
+        map6.put("equalBuyStatus", 0);
+        List<NxDepartmentOrdersEntity> todayUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map6);
+
+        //1,查询采购商品
+        Map<String, Object> map4 = new HashMap<>();
+        map4.put("disId", disId);
+        map4.put("purchaseDate", formatWhatDay(which));
+        List<NxDistributerFatherGoodsEntity> purchaseToday = nxDisPurcGoodsService.queryDisPurchaseGoods(map4);
+
+        Map<String, Object> map5 = new HashMap<>();
+        Map<String, Object> map8 = new HashMap<>();
+        map8.put("disId", disId);
+        map8.put("purchaseDate", formatWhatDay(which));
+        int purchaseTotals = nxDisPurcGoodsService.queryPurchaseTotal(map8);
+        map5.put("fatherAmount", purchaseToday.size());
+        map5.put("goodsAmount", purchaseTotals);
+        map5.put("arr", purchaseToday);
+        map5.put("week", getWeek(which));
+        map5.put("hao", getJustHao(which));
+        map5.put("which", which);
+        map5.put("date", formatWhatDay(which));
+        map5.put("orders", todayUnPurchaseApplys.size());
+        return map5;
+    }
+
+
 
 
     @RequestMapping(value = "/deletePlanPurchase", method = RequestMethod.POST)
@@ -203,7 +194,6 @@ public class NxDistributerPurchaseGoodsController {
     public R deletePlanPurchase(@RequestBody NxDistributerPurchaseGoodsEntity purchaseGoodsEntity) {
         List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities = purchaseGoodsEntity.getNxDepartmentOrdersEntities();
         for (NxDepartmentOrdersEntity orders : nxDepartmentOrdersEntities) {
-            orders.setNxDoStatus(0);
             orders.setNxDoBuyStatus(0);
             orders.setNxDoPurchaseGoodsId(null);
             nxDepartmentOrdersService.update(orders);
@@ -214,6 +204,7 @@ public class NxDistributerPurchaseGoodsController {
 
     /**
      * 修改进货商品
+     *
      * @param purchaseGoodsEntity 进货商品
      * @return 进货商品
      */
@@ -226,6 +217,7 @@ public class NxDistributerPurchaseGoodsController {
 
     /**
      * 添加进货商品
+     *
      * @param purchaseGoodsEntity 批发商商品
      * @return ok
      */
@@ -233,7 +225,7 @@ public class NxDistributerPurchaseGoodsController {
     @ResponseBody
     public R savePlanPurchase(@RequestBody NxDistributerPurchaseGoodsEntity purchaseGoodsEntity) {
 
-        if(!purchaseGoodsEntity.getNxDpgQuantity().equals("0")){
+        if (!purchaseGoodsEntity.getNxDpgQuantity().equals("0")) {
             purchaseGoodsEntity.setNxDpgStatus(0);
             purchaseGoodsEntity.setNxDpgApplyDate(formatWhatDay(0));
             nxDisPurcGoodsService.save(purchaseGoodsEntity);
@@ -245,14 +237,10 @@ public class NxDistributerPurchaseGoodsController {
                 purchaseGoodsEntity.getNxDepartmentOrdersEntities();
         if (nxDepartmentOrdersEntities.size() > 0) {
 
-            System.out.println("nomammamamam");
-
             for (NxDepartmentOrdersEntity order : nxDepartmentOrdersEntities) {
                 order.setNxDoPurchaseGoodsId(nxDistributerPurchaseGoodsId);
-                order.setNxDoStatus(1);
                 order.setNxDoBuyStatus(1);
                 nxDepartmentOrdersService.update(order);
-                System.out.println("gunndnngnngng");
             }
         }
 

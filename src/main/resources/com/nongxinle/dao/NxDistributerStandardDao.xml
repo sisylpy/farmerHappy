@@ -28,9 +28,12 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from nx_distributer_standard 
 	</select>
+	<select id="queryDisStandardByParams" resultType="com.nongxinle.entity.NxDistributerStandardEntity">
+		select * from nx_distributer_standard where nx_DS_standard_name = #{standardName} and nx_DS_dis_goods_id  =#{disGoodsId}
+	</select>
 
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxDistributerStandardEntity"
+	<insert id="save" parameterType="com.nongxinle.entity.NxDistributerStandardEntity"
 		useGeneratedKeys="true" keyProperty="nxDistributerStandardId">
 		insert into nx_distributer_standard
 		(
@@ -40,7 +43,8 @@
 			`nx_DS_standard_file_path`, 
 			`nx_DS_standard_scale`, 
 			`nx_DS_standard_error`, 
-			`nx_DS_standard_sort`
+			`nx_DS_standard_sort`,
+		 	`nx_DS_standard_weight`
 		)
 		values
 		(
@@ -50,7 +54,8 @@
 			#{nxDsStandardFilePath}, 
 			#{nxDsStandardScale}, 
 			#{nxDsStandardError}, 
-			#{nxDsStandardSort}
+			#{nxDsStandardSort},
+		 	#{nxDsStandardWeight}
 		)
 	</insert>
 	 
@@ -62,6 +67,7 @@
 			<if test="nxDsStandardFilePath != null">`nx_DS_standard_file_path` = #{nxDsStandardFilePath}, </if>
 			<if test="nxDsStandardScale != null">`nx_DS_standard_scale` = #{nxDsStandardScale}, </if>
 			<if test="nxDsStandardError != null">`nx_DS_standard_error` = #{nxDsStandardError}, </if>
+			<if test="nxDsStandardWeight != null">`nx_DS_standard_weight` = #{nxDsStandardWeight}, </if>
 			<if test="nxDsStandardSort != null">`nx_DS_standard_sort` = #{nxDsStandardSort}</if>
 		</set>
 		where nx_distributer_standard_id = #{nxDistributerStandardId}

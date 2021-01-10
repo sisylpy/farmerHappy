@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface NxDepartmentService {
 
-	Integer saveNewRestraunt(NxDepartmentEntity dep);
+	Integer saveNewDepartment(NxDepartmentEntity dep);
 
 	List<NxDepartmentEntity>  queryMultiGroupInfo(String openId);
 

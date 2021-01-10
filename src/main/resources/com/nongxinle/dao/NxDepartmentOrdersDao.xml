@@ -4,12 +4,52 @@
 <mapper namespace="com.nongxinle.dao.NxDepartmentOrdersDao">
 
     <select id="disGetUnPlanPurchaseApplys" resultMap="unPlanPurchaseOrdersDisFatherGoods">
-        select *
-        from nx_department_orders as o
-                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = o.nx_DO_dis_goods_id
+        select
+            dor.nx_department_orders_id,
+            dor.nx_DO_nx_goods_id,
+            dor.nx_DO_order_user_id,
+            dor.nx_DO_apply_date,
+            dor.nx_DO_apply_only_time,
+            dor.nx_DO_quantity,
+            dor.nx_DO_standard,
+            dor.nx_DO_remark,
+            dor.nx_DO_status,
+            dor.nx_DO_buy_status,
+            dor.nx_DO_weight,
+            dor.nx_DO_price,
+            dor.nx_DO_subtotal,
+            dor.nx_DO_apply_full_time,
+            dor.nx_DO_arrive_only_date,
+            dor.nx_DO_nx_goods_father_id,
+            dor.nx_DO_dis_goods_id,
+            dor.nx_DO_dep_dis_goods_price,
+            dor.nx_DO_department_id,
+            dor.nx_DO_distributer_id,
+            dor.nx_DO_is_agent,
+            dor.nx_DO_purchase_goods_id,
+            dor.nx_DO_dep_dis_goods_id,
+            dfg.nx_distributer_father_goods_id,
+            dfg.nx_dfg_father_goods_name,
+            dg.nx_distributer_goods_id,
+            dg.nx_dg_goods_name,
+            dg.nx_dg_goods_brand,
+            dg.nx_dg_goods_detail,
+            dg.nx_dg_goods_place,
+            dg.nx_dg_goods_standardname,
+            dg.nx_dg_goods_standard_weight,
+            ds.nx_department_id        'nx_department_id',
+            ds.nx_department_name      'nx_department_name',
+            ds.nx_department_type 'nx_department_type',
+            ds.nx_department_father_id 'nx_department_father_id',
+            ds.nx_department_is_group_dep 'nx_department_is_group_dep',
+            df.nx_department_id 'dd_nx_department_id',
+            df.nx_department_name 'dd_nx_department_name'
+        from nx_department_orders as dor
+                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
                  left join nx_distributer_father_goods as dfg on dfg.nx_distributer_father_goods_id = dg.nx_dg_dfg_goods_father_id
-        left join nx_department as d on d.nx_department_id = o.nx_DO_department_id
-        where o.nx_DO_distributer_id = #{disId} and nx_DO_buy_status = 0 and o.nx_DO_arrive_date  = #{arriveDate}
+        left join nx_department as ds on ds.nx_department_id = dor.nx_DO_department_id
+        left join nx_department as df on df.nx_department_id = ds.nx_department_father_id
+        where dor.nx_DO_distributer_id = #{disId} and nx_DO_buy_status = 0 and dor.nx_DO_arrive_date  = #{arriveDate}
         order by dfg.nx_distributer_father_goods_id, dg.nx_dg_goods_pinyin
     </select>
 
@@ -19,7 +59,7 @@
          left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
           left join nx_department_user as du on du.nx_department_user_id = dor.nx_DO_order_user_id
            left join nx_department_independent_goods as ndig on ndig.nx_department_independent_goods_id = dor.nx_DO_ind_goods_id
-        left join nx_department_standard as ds on ds.nx_DDS_dds_goods_id = ddg.nx_department_dis_goods_id
+        left join nx_distributer_standard as ds on ds.nx_DS_dis_goods_id = dg.nx_distributer_goods_id
         <where>
             <if test="disId != null">
                 and dor.nx_DO_distributer_id  = #{disId}
@@ -29,6 +69,9 @@
             </if>
             <if test="depId != null">
                 and dor.nx_DO_department_id  = #{depId}
+            </if>
+            <if test="equalStatus != null">
+                and  dor.nx_DO_status =  #{equalStatus}
             </if>
             <if test="status != null">
                 and  dor.nx_DO_status &lt; #{status}
@@ -42,6 +85,10 @@
             <if test="applyDate != null">
                 and  dor.nx_DO_apply_date &gt; #{applyDate}
             </if>
+            <if test="arriveDateDayu != null">
+                and  dor.nx_DO_apply_date &gt; #{arriveDateDayu}
+            </if>
+
             <if test="arriveDate != null">
                 and  dor.nx_DO_arrive_date = #{arriveDate}
             </if>
@@ -102,19 +149,22 @@
                 dg.nx_dg_goods_detail,
                 dg.nx_dg_goods_place,
                 dg.nx_dg_goods_standardname,
+                dg.nx_dg_goods_standard_weight,
                 ds.nx_department_id        'ds_nx_department_id',
                 ds.nx_department_name      'ds_nx_department_name',
                 ds.nx_department_type 'ds_nx_department_type',
                 ds.nx_department_father_id 'ds_nx_department_father_id',
-                ds.nx_department_is_group_dep 'ds_nx_department_is_group_dep'
+                ds.nx_department_is_group_dep 'ds_nx_department_is_group_dep',
+                ds.nx_department_settle_type 'ds_nx_department_settle_type',
+                ds.nx_department_attr_name 'ds_nx_department_attr_name'
 
         from nx_department_orders as dor
                  left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
                  left join nx_department_user as du on du.nx_department_user_id = dor.nx_DO_order_user_id
                  left join nx_department_independent_goods as ndig on ndig.nx_department_independent_goods_id = dor.nx_DO_ind_goods_id
                  left join nx_department as ds on ds.nx_department_id = dor.nx_DO_department_id
-        where nx_DO_distributer_id = #{disId}
-          and  nx_DO_arrive_Date = #{arriveDate} order by ds.nx_department_id, dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
+        where nx_DO_distributer_id = #{disId} and nx_DO_status &lt; #{status}
+          and  nx_DO_arrive_Date = #{arriveDate} order by ds.nx_department_id,  dor.nx_DO_status ASC, dg.nx_dg_dfg_goods_father_id, dg.nx_dg_goods_py
     </select>
 
 
@@ -162,16 +212,18 @@
     <resultMap id="fatherDepartment" type="NxDepartmentEntity">
         <id property="nxDepartmentId" column="dd_nx_department_id"/>
         <result property="nxDepartmentName" column="dd_nx_department_name"/>
-        <result property="nxDepartmentType" column="nx_department_type"/>
-        <result property="nxDepartmentFilePath" column="nx_department_file_path"/>
-        <result property="nxDepartmentFatherId" column="nx_department_father_id"/>
-        <result property="nxDepartmentIsGroupDep" column="nx_department_is_group_dep"/>
+        <result property="nxDepartmentType" column="dd_nx_department_type"/>
+        <result property="nxDepartmentSettleType" column="dd_nx_department_settle_type"/>
+        <result property="nxDepartmentFilePath" column="dd_nx_department_file_path"/>
+        <result property="nxDepartmentFatherId" column="dd_nx_department_father_id"/>
+        <result property="nxDepartmentIsGroupDep" column="dd_nx_department_is_group_dep"/>
     </resultMap>
 
     <resultMap id="orderDepartment" type="NxDepartmentEntity">
         <id property="nxDepartmentId" column="nx_department_id"/>
         <result property="nxDepartmentName" column="nx_department_name"/>
         <result property="nxDepartmentType" column="nx_department_type"/>
+        <result property="nxDepartmentSettleType" column="nx_department_settle_type"/>
         <result property="nxDepartmentFatherId" column="nx_department_father_id"/>
         <result property="nxDepartmentFilePath" column="nx_department_file_path"/>
         <result property="nxDepartmentIsGroupDep" column="nx_department_is_group_dep"/>
@@ -190,6 +242,10 @@
         <result property="nxDdgDepGoodsDetail" column="nx_DDG_dep_goods_detail"/>
         <result property="nxDdgDepGoodsPlace" column="nx_DDG_dep_goods_place"/>
         <result property="nxDdgDisGoodsId" column="nx_DDG_dis_goods_id"/>
+        <result property="nxDdgOrderPrice" column="nx_DDG_order_price"/>
+        <result property="nxDdgOrderDate" column="nx_DDG_order_date"/>
+        <result property="nxDdgOrderQuantity" column="nx_DDG_order_quantity"/>
+        <result property="nxDdgOrderStandard" column="nx_DDG_order_standard"/>
 <!--        <association property="nxDistributerGoodsEntity" resultMap="disGoods"/>-->
         <collection property="nxDepStandardEntities" resultMap="depStandard"/>
 
@@ -200,13 +256,21 @@
         <result property="nxDigGoodsStandardname" column="nx_DIG_goods_standardname"/>
     </resultMap>
 
+    <resultMap id="disStandards" type="NxDistributerStandardEntity">
+        <id property="nxDistributerStandardId" column="nx_distributer_standard_id"/>
+        <result property="nxDsStandardName" column="nx_DS_standard_name"/>
+    </resultMap>
+
     <resultMap id="disGoods" type="NxDistributerGoodsEntity">
         <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
         <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
         <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
         <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
         <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
+        <result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
+        <collection property="distributerStandardEntities" resultMap="disStandards"/>
      </resultMap>
 
     <resultMap id="applys" type="NxDepartmentOrdersEntity">
@@ -254,12 +318,13 @@
         <result property="nxDoStandard" column="nx_DO_standard"/>
         <result property="nxDoRemark" column="nx_DO_remark"/>
         <collection property="nxDepartmentEntity" resultMap="orderDepartment"/>
-
     </resultMap>
+
     <resultMap id="disGoodsWithOrders" type="NxDistributerGoodsEntity">
         <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
         <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
         <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
         <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
         <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
         <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
@@ -279,9 +344,11 @@
         <id property="nxDepartmentId" column="ds_nx_department_id"/>
         <result property="nxDepartmentName" column="ds_nx_department_name"/>
         <result property="nxDepartmentType" column="ds_nx_department_type"/>
+        <result property="nxDepartmentSettleType" column="ds_nx_department_settle_type"/>
         <result property="nxDepartmentFilePath" column="ds_nx_department_file_path"/>
         <result property="nxDepartmentFatherId" column="ds_nx_department_father_id"/>
         <result property="nxDepartmentIsGroupDep" column="ds_nx_department_is_group_dep"/>
+        <result property="nxDepartmentAttrName" column="ds_nx_department_attr_name"/>
         <collection property="nxDepartmentOrdersEntities" resultMap="applys"/>
     </resultMap>
 
@@ -312,6 +379,49 @@
         left join nx_department as dep on dep.nx_department_id = dor.nx_DO_department_father_id
         where dor.nx_DO_distributer_id = #{disId} and dor.nx_DO_dis_goods_id = #{disGoodsId}
         order by dor.nx_DO_arrive_weeks_year DESC, dor.nx_DO_arrive_date DESC
+    </select>
+
+    <select id="queryTotalByParams" resultType="java.lang.Integer">
+        select count(*) from  nx_department_orders
+        <where>
+            <if test="disId != null">
+                and nx_DO_distributer_id  = #{disId}
+            </if>
+            <if test="depFatherId != null">
+                and nx_DO_department_father_id  = #{depFatherId}
+            </if>
+            <if test="depId != null">
+                and nx_DO_department_id  = #{depId}
+            </if>
+            <if test="goodsType != null">
+                and  nx_DO_goods_type = #{goodsType}
+            </if>
+            <if test="status != null">
+                and  nx_DO_status &lt; #{status}
+            </if>
+            <if test="statusEqual != null">
+                and  nx_DO_status  = #{statusEqual}
+            </if>
+            <if test="onlyDate != null">
+                and  nx_DO_arrive_only_date &gt; #{onlyDate}
+            </if>
+            <if test="goodsType != null">
+                and  nx_DO_goods_type = #{goodsType}
+            </if>
+            <if test="applyDate != null">
+                and  nx_DO_apply_date &gt; #{applyDate}
+            </if>
+            <if test="arriveDate != null">
+                and  nx_DO_arrive_date = #{arriveDate}
+            </if>
+            <if test="priceOrder != null and priceOrder == 1">
+                and  nx_DO_price is not null and nx_DO_price  > 0
+            </if>
+            <if test="weightOrder != null and weightOrder == 1">
+                and  nx_DO_weight is not null and nx_DO_weight  > 0
+            </if>
+
+        </where>
     </select>
 
 

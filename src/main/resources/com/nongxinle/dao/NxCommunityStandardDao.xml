@@ -17,8 +17,12 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from nx_community_standard
 	</select>
-	 
-	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityStandardEntity">
+    <select id="queryComGoodsStandards" resultType="com.nongxinle.entity.NxCommunityStandardEntity">
+		select * from nx_community_standard where  nx_CS_comm_goods_id = #{comGoodsId}
+	</select>
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxCommunityStandardEntity" useGeneratedKeys="true"
+	keyProperty="nxCommunityStandardId">
 		insert into nx_community_standard
 		(
 			`nx_community_standard_id`,

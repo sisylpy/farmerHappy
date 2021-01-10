@@ -50,6 +50,8 @@ public class NxDistributerFatherGoodsEntity implements Serializable , Comparable
 	 *  
 	 */
 	private Integer nxDfgFatherGoodsLevel;
+
+	private Integer nxDfgNxGoodsId;
 	/**
 	 *  
 	 */

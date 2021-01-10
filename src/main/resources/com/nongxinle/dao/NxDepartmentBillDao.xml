@@ -3,83 +3,185 @@
 
 <mapper namespace="com.nongxinle.dao.NxDepartmentBillDao">
 
-	<select id="queryObject" resultType="com.nongxinle.entity.NxDepartmentBillEntity">
-		select * from nx_department_bill where nx_department_bill_id = #{value}
-	</select>
+    <select id="queryObject" resultType="com.nongxinle.entity.NxDepartmentBillEntity">
+        select *
+        from nx_department_bill
+        where nx_department_bill_id = #{value}
+    </select>
 
-	<select id="queryList" resultType="com.nongxinle.entity.NxDepartmentBillEntity">
-		select * from nx_department_bill 
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
-		</if>
-	</select>
-	
- 	<select id="queryTotal" resultType="int">
-		select count(*) from nx_department_bill 
-	</select>
+    <select id="queryList" resultType="com.nongxinle.entity.NxDepartmentBillEntity">
+        select * from nx_department_bill
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*)
+        from nx_department_bill
+    </select>
 
     <select id="queryBillsByParams" resultType="NxDepartmentBillEntity">
-		select * from nx_department_bill
-		<where>
-		<if test="depId != null">
-			nx_DB_dep_id = #{depId}
-		</if>
-		<if test="disId != null">
-			and nx_DB_dis_id = #{disId}
-		</if>
-		<if test="status != null">
-			and nx_DB_status &lt; #{status}
-		</if>
+        select * from nx_department_bill
+        <where>
+            <if test="depId != null">
+                nx_DB_dep_id = #{depId}
+            </if>
+            <if test="disId != null">
+                and nx_DB_dis_id = #{disId}
+            </if>
+            <if test="status != null">
+                and nx_DB_status &lt; #{status}
+            </if>
+            <if test="statusEqual != null ">
+                and nx_DB_status = #{statusEqual}
+            </if>
+            <if test="month != null ">
+                and nx_DB_month = #{month}
+            </if>
+
+        </where>
+        order by nx_DB_time DESC
+    </select>
 
 
-		</where>
-	</select>
+    <resultMap id="disGoods" type="NxDistributerGoodsEntity">
+        <id property="nxDistributerGoodsId" column="nx_distributer_goods_id"/>
+        <result property="nxDgGoodsName" column="nx_dg_goods_name"/>
+        <result property="nxDgGoodsStandardname" column="nx_dg_goods_standardname"/>
+        <result property="nxDgGoodsStandardWeight" column="nx_dg_goods_standard_weight"/>
+        <result property="nxDgGoodsBrand" column="nx_dg_goods_brand"/>
+        <result property="nxDgGoodsDetail" column="nx_dg_goods_detail"/>
+        <result property="nxDgGoodsPlace" column="nx_dg_goods_place"/>
+        <result property="nxDgDfgGoodsFatherId" column="nx_dg_dfg_goods_father_id"/>
+    </resultMap>
 
-    <insert id="save" parameterType="com.nongxinle.entity.NxDepartmentBillEntity">
-		insert into nx_department_bill
-		(
-			`nx_department_bill_id`, 
-			`nx_DB_dis_id`, 
-			`nx_DB_dep_id`, 
-			`nx_DB_total`, 
-			`nx_DB_status`, 
-			`nx_DB_time`, 
-			`nx_DB_issue_user_id`
-		)
-		values
-		(
-			#{nxDepartmentBillId}, 
-			#{nxDbDisId}, 
-			#{nxDbDepId}, 
-			#{nxDbTotal}, 
-			#{nxDbStatus}, 
-			#{nxDbTime}, 
-			#{nxDbIssueUserId}
-		)
-	</insert>
-	 
-	<update id="update" parameterType="com.nongxinle.entity.NxDepartmentBillEntity">
-		update nx_department_bill 
-		<set>
-			<if test="nxDbDisId != null">`nx_DB_dis_id` = #{nxDbDisId}, </if>
-			<if test="nxDbDepId != null">`nx_DB_dep_id` = #{nxDbDepId}, </if>
-			<if test="nxDbTotal != null">`nx_DB_total` = #{nxDbTotal}, </if>
-			<if test="nxDbStatus != null">`nx_DB_status` = #{nxDbStatus}, </if>
-			<if test="nxDbTime != null">`nx_DB_time` = #{nxDbTime}, </if>
-			<if test="nxDbIssueUserId != null">`nx_DB_issue_user_id` = #{nxDbIssueUserId}</if>
-		</set>
-		where nx_department_bill_id = #{nxDepartmentBillId}
-	</update>
-	
-	<delete id="delete">
-		delete from nx_department_bill where nx_department_bill_id = #{value}
-	</delete>
-	
-	<delete id="deleteBatch">
-		delete from nx_department_bill where nx_department_bill_id in 
-		<foreach item="nxDepartmentBillId" collection="array" open="(" separator="," close=")">
-			#{nxDepartmentBillId}
-		</foreach>
-	</delete>
+    <resultMap id="applys" type="NxDepartmentOrdersEntity">
+        <id property="nxDepartmentOrdersId" column="nx_department_orders_id"/>
+        <result property="nxDoNxGoodsId" column="nx_DO_nx_goods_id"/>
+        <result property="nxDoOrderUserId" column="nx_DO_order_user_id"/>
+        <result property="nxDoApplyDate" column="nx_DO_apply_date"/>
+        <result property="nxDoApplyOnlyTime" column="nx_DO_apply_only_time"/>
+        <result property="nxDoApplyFullTime" column="nx_DO_apply_full_time"/>
+        <result property="nxDoArriveOnlyDate" column="nx_DO_arrive_only_date"/>
+        <result property="nxDoArriveDate" column="nx_DO_arrive_date"/>
+        <result property="nxDoArriveWhatDay" column="nx_DO_arrive_what_day"/>
+        <result property="nxDoQuantity" column="nx_DO_quantity"/>
+        <result property="nxDoStandard" column="nx_DO_standard"/>
+        <result property="nxDoRemark" column="nx_DO_remark"/>
+        <result property="nxDoStatus" column="nx_DO_status"/>
+        <result property="nxDoWeight" column="nx_DO_weight"/>
+        <result property="nxDoPrice" column="nx_DO_price"/>
+        <result property="nxDoSubtotal" column="nx_DO_subtotal"/>
+        <result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+        <result property="nxDoNxGoodsFatherId" column="nx_DO_nx_goods_father_id"/>
+        <result property="nxDoDepartmentFatherId" column="nx_DO_department_father_id"/>
+        <result property="nxDoDisGoodsId" column="nx_DO_dis_goods_id"/>
+        <result property="nxDoDepDisGoodsId" column="nx_DO_dep_dis_goods_id"/>
+        <result property="nxDoDepDisGoodsPrice" column="nx_DO_dep_dis_goods_price"/>
+        <result property="nxDoDepartmentId" column="nx_DO_department_id"/>
+        <result property="nxDoDistributerId" column="nx_DO_distributer_id"/>
+        <result property="nxDoBuyStatus" column="nx_DO_buy_status"/>
+        <result property="nxDoGoodsType" column="nx_DO_goods_type"/>
+        <result property="nxDoOperationTime" column="nx_DO_operation_time"/>
+        <result property="nxDoIsAgent" column="nx_DO_is_agent"/>
+        <result property="nxDoPurchaseGoodsId" column="nx_DO_purchase_goods_id"/>
+        <result property="nxDoDepDisGoodsId" column="nx_DO_dep_dis_goods_id"/>
+        <association property="nxDistributerGoodsEntity" resultMap="disGoods"/>
+    </resultMap>
+
+
+    <resultMap id="billWithApplys" type="NxDepartmentBillEntity">
+        <result property="nxDepartmentBillId" column="nx_department_bill_id"/>
+        <result property="nxDbTotal" column="nx_db_total"/>
+        <result property="nxDbTime" column="nx_db_time"/>
+        <result property="nxDbDate" column="nx_db_time"/>
+        <result property="nxDbMonth" column="nx_db_month"/>
+        <result property="nxDbTradeNo" column="nx_db_trade_no"/>
+        <collection property="nxDepartmentOrdersEntities" resultMap="applys"/>
+    </resultMap>
+
+    <select id="querySalesBillApplys" resultMap="billWithApplys">
+        select *
+        from nx_department_bill as b
+                 left join nx_department_orders as dor on dor.nx_DO_bill_id = b.nx_department_bill_id
+                 left join nx_distributer_goods as dg on dg.nx_distributer_goods_id = dor.nx_DO_dis_goods_id
+        where nx_department_bill_id = #{billId}
+    </select>
+    <select id="queryTotalByParams" resultType="java.lang.Integer">
+        select count(*) from nx_department_bill
+        <where>
+            <if test="depId != null ">
+                and nx_DB_dep_id = #{depId}
+            </if>
+            <if test="disId != null ">
+                and nx_DB_dis_id = #{disId}
+            </if>
+            <if test="month != null ">
+                and nx_DB_month = #{month}
+            </if>
+            <if test="statusEqual != null ">
+                and nx_DB_status = #{statusEqual}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxDepartmentBillEntity" useGeneratedKeys="true"
+            keyProperty="nxDepartmentBillId">
+        insert into nx_department_bill
+        (`nx_department_bill_id`,
+         `nx_DB_dis_id`,
+         `nx_DB_dep_id`,
+         `nx_DB_total`,
+         `nx_DB_status`,
+         `nx_DB_time`,
+         `nx_DB_issue_user_id`,
+         `nx_DB_date`,
+         `nx_DB_month`,
+         `nx_DB_week`,
+         `nx_DB_trade_no`)
+        values (#{nxDepartmentBillId},
+                #{nxDbDisId},
+                #{nxDbDepId},
+                #{nxDbTotal},
+                #{nxDbStatus},
+                #{nxDbTime},
+                #{nxDbIssueUserId},
+                #{nxDbDate},
+                #{nxDbMonth},
+                #{nxDbWeek},
+                #{nxDbTradeNo})
+    </insert>
+
+    <update id="update" parameterType="com.nongxinle.entity.NxDepartmentBillEntity">
+        update nx_department_bill
+        <set>
+            <if test="nxDbDisId != null">`nx_DB_dis_id` = #{nxDbDisId},</if>
+            <if test="nxDbDepId != null">`nx_DB_dep_id` = #{nxDbDepId},</if>
+            <if test="nxDbTotal != null">`nx_DB_total` = #{nxDbTotal},</if>
+            <if test="nxDbStatus != null">`nx_DB_status` = #{nxDbStatus},</if>
+            <if test="nxDbTime != null">`nx_DB_time` = #{nxDbTime},</if>
+            <if test="nxDbDate != null">`nx_DB_date` = #{nxDbDate},</if>
+            <if test="nxDbMonth != null">`nx_DB_month` = #{nxDbMonth},</if>
+            <if test="nxDbWeek != null">`nx_DB_week` = #{nxDbWeek},</if>
+            <if test="nxDbTradeNo != null">`nx_DB_trade_no` = #{nxDbTradeNo},</if>
+            <if test="nxDbIssueUserId != null">`nx_DB_issue_user_id` = #{nxDbIssueUserId}</if>
+        </set>
+        where nx_department_bill_id = #{nxDepartmentBillId}
+    </update>
+
+    <delete id="delete">
+        delete
+        from nx_department_bill
+        where nx_department_bill_id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from nx_department_bill where nx_department_bill_id in
+        <foreach item="nxDepartmentBillId" collection="array" open="(" separator="," close=")">
+            #{nxDepartmentBillId}
+        </foreach>
+    </delete>
 
 </mapper>

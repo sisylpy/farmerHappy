@@ -25,4 +25,8 @@ public interface NxDepartmentBillService {
 	void delete(Integer nxDepartmentBillId);
 
     List<NxDepartmentBillEntity> queryBillsByParams(Map<String, Object> map);
+
+	NxDepartmentBillEntity querySalesBillApplys(Integer billId);
+
+    int queryTotalByParams(Map<String, Object> map1);
 }

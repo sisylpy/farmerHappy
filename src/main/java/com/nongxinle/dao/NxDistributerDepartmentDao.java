@@ -8,15 +8,16 @@ package com.nongxinle.dao;
  */
 
 import com.nongxinle.entity.NxDepartmentEntity;
-import com.nongxinle.entity.NxDistributerCommunityEntity;
 import com.nongxinle.entity.NxDistributerDepartmentEntity;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface NxDistributerDepartmentDao extends BaseDao<NxDistributerDepartmentEntity> {
 
-//    List<NxDistributerDepartmentEntity> queryAllCustomer(Integer disId);
+    List<NxDepartmentEntity> queryDisDepartmentsBySettleType(Map<String, Object> map);
 
-    List<NxDepartmentEntity> queryAllDisDepartments(Integer disId);
+
+
 }

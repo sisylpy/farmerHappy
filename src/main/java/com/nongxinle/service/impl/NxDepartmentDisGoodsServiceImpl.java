@@ -79,5 +79,16 @@ public class NxDepartmentDisGoodsServiceImpl implements NxDepartmentDisGoodsServ
 		return nxDepartmentDisGoodsDao.queryDepDisGoodsByParams(map);
 	}
 
+    @Override
+    public List<NxDistributerFatherGoodsEntity> disGetDepDisGoodsCata(Integer depFatherId) {
+
+		return nxDepartmentDisGoodsDao.disGetDepGoodsCata(depFatherId);
+    }
+
+	@Override
+	public void deleteBatch(Integer[] nxDepartmentIds){
+		nxDepartmentDisGoodsDao.deleteBatch(nxDepartmentIds);
+	}
+
 
 }

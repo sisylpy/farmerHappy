@@ -75,6 +75,8 @@ public class NxDistributerGoodsEntity implements Serializable, Comparable  {
 	 *  商品规格
 	 */
 	private String nxDgGoodsStandardname;
+
+	private String nxDgGoodsStandardWeight;
 	/**
 	 *  社区商品拼音
 	 */
@@ -89,7 +91,11 @@ public class NxDistributerGoodsEntity implements Serializable, Comparable  {
 
 	private String nxDgNxGoodsFatherColor;
 
-	private Integer nxDgGoodsStock;
+	//private Integer nxDgGoodsStock;
+
+//	private Integer nxFatherId;
+//	private Integer nxGrandId;
+//	private Integer nxGreatGrandId;
 
 	private NxGoodsEntity nxGoodsEntity;
 

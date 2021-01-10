@@ -57,6 +57,10 @@ public class NxDepartmentEntity implements Serializable, Comparable {
 
 	private Integer nxDepartmentShowWeeks;
 
+	private Integer nxDepartmentSettleType;
+
+	private String nxDepartmentAttrName;
+
 
 	private NxDepartmentEntity fatherDepartmentEntity;
 

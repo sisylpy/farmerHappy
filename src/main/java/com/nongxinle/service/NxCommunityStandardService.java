@@ -27,4 +27,6 @@ public interface NxCommunityStandardService {
 	void delete(Integer nxCommunityStandardId);
 	
 	void deleteBatch(Integer[] nxCommunityStandardIds);
+
+    List<NxCommunityStandardEntity> queryComGoodsStandards(Integer comGoodsId);
 }

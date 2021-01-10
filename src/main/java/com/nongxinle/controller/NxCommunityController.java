@@ -11,6 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.nongxinle.entity.NxCommunityUserEntity;
+import com.nongxinle.entity.NxDistributerUserEntity;
+import com.nongxinle.service.NxCommunityUserService;
+import com.nongxinle.utils.MyAPPIDConfig;
+import com.nongxinle.utils.WeChatUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +32,76 @@ import com.nongxinle.utils.R;
 public class NxCommunityController {
 	@Autowired
 	private NxCommunityService nxCommunityService;
+	@Autowired
+	private NxCommunityUserService nxCommunityUserService;
 
 
 	/**
+	 * 保存
+	 */
+	@RequestMapping(value = "/comAndUserSave", method = RequestMethod.POST)
+	@ResponseBody
+	public R comAndUserSave(@RequestBody NxCommunityEntity nxCommunity){
+		System.out.println("ennennene");
+		System.out.println(nxCommunity.getNxCommunityUserEntity());
+		System.out.println("---====");
+		System.out.println(nxCommunity.getNxCommunityUserEntity().getNxCouCode());
+
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+
+		// 1, 先检查微信号是否以前注册过
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getCommunityAppID() + "&secret=" +
+				myAPPIDConfig.getCommunityScreat() + "&js_code=" + nxCommunity.getNxCommunityUserEntity().getNxCouCode() +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		Map<String, Object> map = new HashMap<>();
+		map.put("openId", openid);
+		map.put("roleId", 0);
+		NxCommunityUserEntity communityUserEntity = nxCommunityUserService.queryComUserByOpenId(map);
+		//2，如果注册过，则返回提示。
+		if(communityUserEntity != null){
+			return R.error(-1,"微信号已注册!");
+		}else {
+
+			// 3，如果没有注册过
+			// 3.1保存批发商
+			nxCommunityService.save(nxCommunity);
+
+			// 3.2，保存批发商用户
+			Integer communityId = nxCommunity.getNxCommunityId();
+			System.out.println(communityId + "ididiidiididid");
+
+			NxCommunityUserEntity nxCommunityUserEntity = nxCommunity.getNxCommunityUserEntity();
+			nxCommunityUserEntity.setNxCouCommunityId(communityId);
+			nxCommunityUserEntity.setNxCouWxOpenId(openid);
+			nxCommunityUserService.save(nxCommunityUserEntity);
+
+			//3..3 返回用户id
+			Integer nxCommunityUserId = nxCommunityUserEntity.getNxCommunityUserId();
+			Map<String, Object> map1 = new HashMap<>();
+			map1.put("userId", nxCommunityUserId);
+			map1.put("roleId", 0 );
+			NxCommunityUserEntity nxCommunityUserEntity1 = nxCommunityUserService.queryComUserInfo(map1);
+
+			return R.ok().put("data", nxCommunityUserEntity1);
+		}
+	}
+
+
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+	/**
+	 * 暂时不用社区居民订货业务
 	 * 微信二维码扫描校验文件内容
 	 * @return 文件内容
 	 */
@@ -36,8 +109,8 @@ public class NxCommunityController {
 	@ResponseBody
 
 	public String customerRegist( ) {
-//
 		return "bb7a0c73e61112c45ebd6ad3743bb05e"; }
+
 
 	/**
 	 * 二维码扫描打开固定页面
@@ -52,6 +125,7 @@ public class NxCommunityController {
 		return R.ok().put("data", nxCommunity);
 	}
 
+
 	/**
 	 * 微信二维码扫描校验文件内容
 	 * @return 文件内容
@@ -61,7 +135,7 @@ public class NxCommunityController {
 	public String newCustomerRegist( ) { return "bb7a0c73e61112c45ebd6ad3743bb05e"; }
 
 	/**
-	 *
+	 * 社区用户注册时候查询地图坐标
 	 * @param communityId 社区id
 	 * @return 社区列表
 	 */
@@ -71,51 +145,8 @@ public class NxCommunityController {
 		return R.ok().put("data", nxCommunityService.queryObject(communityId));
 	}
 
-	/**
-	 * 列表
-	 */
-	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxcommunity:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxCommunityEntity> nxCommunityList = nxCommunityService.queryList(map);
-		int total = nxCommunityService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxCommunityList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
-	}
-	
-	
-	/**
-	 * 信息
-	 */
-	@ResponseBody
-	@RequestMapping("/info/{nxCommunityId}")
-//	@RequiresPermissions("nxcommunity:info")
-	public R info(@PathVariable("nxCommunityId") Integer nxCommunityId){
-		NxCommunityEntity nxCommunity = nxCommunityService.queryObject(nxCommunityId);
-		
-		return R.ok().put("data", nxCommunity);
-	}
-	
-	/**
-	 * 保存
-	 */
-	@ResponseBody
-	@RequestMapping("/save")
-//	@RequiresPermissions("nxcommunity:save")
-	public R save(@RequestBody NxCommunityEntity nxCommunity){
-		nxCommunityService.save(nxCommunity);
-		
-		return R.ok();
-	}
-	
+
+
 	/**
 	 * 修改
 	 */
@@ -128,16 +159,6 @@ public class NxCommunityController {
 		return R.ok();
 	}
 	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxcommunity:delete")
-	public R delete(@RequestBody Integer[] nxCommunityIds){
-		nxCommunityService.deleteBatch(nxCommunityIds);
-		
-		return R.ok();
-	}
+
 	
 }
