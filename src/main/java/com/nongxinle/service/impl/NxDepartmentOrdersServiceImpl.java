@@ -92,9 +92,9 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 
 		nxDepartmentOrders.setNxDoStatus(0);
 		nxDepartmentOrders.setNxDoBuyStatus(0);
-//		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
-//		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
-//		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
+		nxDepartmentOrders.setNxDoApplyDate(formatWhatDay(0));
+		nxDepartmentOrders.setNxDoApplyFullTime(formatWhatYearDayTime(0));
+		nxDepartmentOrders.setNxDoApplyOnlyTime(formatWhatTime(0));
 		nxDepartmentOrdersDao.save(nxDepartmentOrders);
 
 		//如果是加急订单，则给批发商发送微信通知
@@ -179,8 +179,15 @@ public class NxDepartmentOrdersServiceImpl implements NxDepartmentOrdersService 
 
 	}
 
+//    @Override
+//    public List<NxDepartmentOrdersEntity> queryDepChainOrdersByParams(Map<String, Object> map) {
+//
+//		return nxDepartmentOrdersDao.queryDepChainOrdersByParams(map);
+//    }
 
-	@Override
+
+
+    @Override
 	public NxDepartmentOrdersEntity queryObject(Integer nxDepartmentOrdersId){
 		return nxDepartmentOrdersDao.queryObject(nxDepartmentOrdersId);
 	}

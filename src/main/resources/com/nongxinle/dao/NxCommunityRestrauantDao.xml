@@ -38,6 +38,18 @@
 		left join nx_restraunt as r on r.nx_restraunt_id = cr.nx_CR_restaruant_id
 		where nx_CR_community_id = #{comId}
 	</select>
+    <select id="queryCommunityByResId" resultType="com.nongxinle.entity.NxCommunityEntity">
+		select * from nx_community_restrauant as cr
+		left join nx_community as c on c.nx_community_id = cr.nx_CR_community_id
+		where nx_community_restaruant_id = #{resId}
+	</select>
+
+    <select id="queryRestrauntsByParams" resultType="com.nongxinle.entity.NxRestrauntEntity">
+		select * from nx_community_restrauant as cr
+		left join nx_restraunt as r on r.nx_restraunt_id = cr.nx_CR_restaruant_id
+		where cr.nx_CR_community_id = #{comId}	 and r.nx_restraunt_settle_type = #{settleType}
+		and r.nx_restraunt_is_group_dep = 1
+		</select>
 
     <insert id="save" parameterType="com.nongxinle.entity.NxCommunityRestrauantEntity" useGeneratedKeys="true"
 	 keyProperty="nxCommunityRestaruantId">

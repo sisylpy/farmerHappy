@@ -49,16 +49,16 @@ public class NxDepartmentUserController {
 	 * @param openId
 	 * @return
 	 */
-//	@RequestMapping(value = "/purchaserGetGroupInfo/{openId}")
-//	@ResponseBody
-//	public R purchaserGetGroupInfo(@PathVariable String openId) {
-//		if (openId != null){
-//			List<NxDepartmentEntity>  entities= nxDepartmentService.queryMultiGroupInfo(openId);
-//			return R.ok().put("data", entities);
-//		}else {
-//			return R.error(-1,"cuowu");
-//		}
-//	}
+	@RequestMapping(value = "/purchaserGetGroupInfo/{openId}")
+	@ResponseBody
+	public R purchaserGetGroupInfo(@PathVariable String openId) {
+		if (openId != null){
+			List<NxDepartmentEntity>  entities= nxDepartmentService.queryMultiGroupInfo(openId);
+			return R.ok().put("data", entities);
+		}else {
+			return R.error(-1,"cuowu");
+		}
+	}
 
 	/**
 	 * 修改订货用户信息
@@ -131,6 +131,7 @@ public class NxDepartmentUserController {
 	@RequestMapping(value = "/purchaserUserLogin/{code}")
 	@ResponseBody
 	public R purchaserUserLogin(@PathVariable String code) {
+		System.out.println( " purchaserUserLogin----------"+ code);
 
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
 		String purchaseAppID = myAPPIDConfig.getPurchaseAppID();
@@ -142,11 +143,14 @@ public class NxDepartmentUserController {
 				"&grant_type=authorization_code";
 		// 发送请求，返回Json字符串
 		String str = WeChatUtil.httpRequest(url, "GET", null);
+		System.out.println("str=====>>>>" + str);
 		// 转成Json对象 获取openid
 		JSONObject jsonObject = JSONObject.parseObject(str);
+		System.out.println("jsonObject" + jsonObject);
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
+		System.out.println("openId------>>>>>>>" + openId);
 		if(openId != null){
 		NxDepartmentUserEntity depUserEntity = nxDepartmentUserService.queryDepUserByOpenId(openId);
 		if(depUserEntity != null){
@@ -306,20 +310,6 @@ public class NxDepartmentUserController {
 		return R.ok().put("data", nxDepartmentUserEntity);
 	}
 
-
-	/**
-	 * PURCHASE
-	 *
-	 * 修改群和用户
-	 * @param file 用户头像
-	 * @param userName 用户名
-	 * @param groupName 群名称
-	 * @param userId 用户id
-	 * @param depId 群id
-	 * @param session 图片路径
-	 * @return ok
-	 */
-	//todo
 	@RequestMapping(value = "/updateGroupPurchaseWithFile", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public R updateGroupPurchaseWithFile(@RequestParam("file") MultipartFile file,
@@ -348,6 +338,9 @@ public class NxDepartmentUserController {
 		return R.ok();
 
 	}
+
+
+
 
 	/**
 	 * PURCHASE,

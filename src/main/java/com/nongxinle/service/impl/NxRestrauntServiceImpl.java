@@ -94,8 +94,11 @@ public class NxRestrauntServiceImpl implements NxRestrauntService {
             List<NxRestrauntEntity> nxRestrauntEntities = res.getNxRestrauntEntities();
             for (NxRestrauntEntity subRes : nxRestrauntEntities) {
                 subRes.setNxRestrauntFatherId(nxRestrauntId);
+                subRes.setNxRestrauntServiceLevel(res.getNxRestrauntServiceLevel());
+                subRes.setNxRestrauntSettleType(res.getNxRestrauntSettleType());
                 subRes.setNxRestrauntComId(res.getNxRestrauntComId());
                 nxRestrauntDao.save(subRes);
+
             }
         }
 
@@ -136,6 +139,95 @@ public class NxRestrauntServiceImpl implements NxRestrauntService {
 
         return nxRestrauntDao.queryDriverRestraunts(userId);
     }
+
+    @Override
+    public NxRestrauntEntity queryResInfo(Integer valueOf) {
+
+        return nxRestrauntDao.queryResInfo(valueOf);
+    }
+
+    @Override
+    public Integer saveNewChainRestraunt(NxRestrauntEntity res) {
+        //1.保存餐馆
+        nxRestrauntDao.save(res);
+
+        String nxRestrauntIdStr = res.getNxRestrauntId().toString();
+        int strLen = nxRestrauntIdStr.length();
+        if (strLen < 4) {
+            while (strLen < 4) {
+                StringBuffer sb = new StringBuffer();
+                sb.append("0").append(nxRestrauntIdStr);// 左补0
+                nxRestrauntIdStr = sb.toString();
+                strLen = nxRestrauntIdStr.length();
+            }
+        }
+        res.setNxRestrauntNumber(nxRestrauntIdStr);
+        nxRestrauntDao.update(res);
+
+
+//		//2，保存用户
+        Integer nxRestrauntId = res.getNxRestrauntId();
+        NxRestrauntUserEntity nxRestrauntUserEntity = res.getNxRestrauntUserEntity();
+        nxRestrauntUserEntity.setNxRuRestaurantId(nxRestrauntId);
+        nxRestrauntUserEntity.setNxRuRestaurantFatherId(nxRestrauntId);
+        nxRestrauntUserEntity.setNxRuJoinDate(formatWhatDay(0));
+        nxRestrauntUserEntity.setNxRuComId(res.getNxRestrauntComId());
+        nxRestrauntUserDao.save(nxRestrauntUserEntity);
+
+        if (res.getNxRestrauntEntities().size() > 0) {
+            //3,保存部门
+            List<NxRestrauntEntity> nxRestrauntEntities = res.getNxRestrauntEntities();
+            for (NxRestrauntEntity subRes : nxRestrauntEntities) {
+                subRes.setNxRestrauntFatherId(nxRestrauntId);
+                subRes.setNxRestrauntComId(res.getNxRestrauntComId());
+                nxRestrauntDao.save(subRes);
+                //
+                String nxsubRestrauntIdStr = subRes.getNxRestrauntId().toString();
+                int strsubLen = nxsubRestrauntIdStr.length();
+                if (strsubLen < 4) {
+                    while (strsubLen < 4) {
+                        StringBuffer sbs = new StringBuffer();
+                        sbs.append("0").append(nxsubRestrauntIdStr);// 左补0
+                        nxsubRestrauntIdStr = sbs.toString();
+                        strsubLen = nxsubRestrauntIdStr.length();
+                    }
+                }
+                subRes.setNxRestrauntNumber(nxsubRestrauntIdStr);
+                subRes.setNxRestrauntServiceLevel(res.getNxRestrauntServiceLevel());
+                subRes.setNxRestrauntAttrName(subRes.getNxRestrauntName());
+                subRes.setNxRestrauntSettleType(res.getNxRestrauntSettleType());
+                subRes.setNxRestrauntWorkingStatus(0);
+                subRes.setNxRestrauntOweBoxNumber(0);
+                subRes.setNxRestrauntDeliveryBoxNumber(0);
+                subRes.setNxRestrauntDeliveryCost("15");
+                subRes.setNxRestrauntDeliveryLimit("200");
+                subRes.setNxRestrauntMixTime("8:00");
+                subRes.setNxRestrauntMaxTime("10:00");
+                nxRestrauntDao.update(subRes);
+
+                if(subRes.getNxRestrauntEntities().size() > 0){
+                    List<NxRestrauntEntity> nxRestrauntEntitiessub = subRes.getNxRestrauntEntities();
+                    for(NxRestrauntEntity sss: nxRestrauntEntitiessub){
+                        sss.setNxRestrauntFatherId(subRes.getNxRestrauntId());
+                        sss.setNxRestrauntComId(subRes.getNxRestrauntComId());
+                        nxRestrauntDao.save(sss);
+                    }
+
+                }
+            }
+        }
+
+        //3, 保存订货群的批发商
+        Integer nxRestrauntComId = res.getNxRestrauntComId();
+        NxCommunityRestrauantEntity entity = new NxCommunityRestrauantEntity();
+        entity.setNxCrCommunityId(nxRestrauntComId);
+        entity.setNxCrRestaruantId(nxRestrauntId);
+        nxCommunityRestrauantService.save(entity);
+
+        return nxRestrauntUserEntity.getNxRestrauntUserId();
+    }
+
+
 
 
 }

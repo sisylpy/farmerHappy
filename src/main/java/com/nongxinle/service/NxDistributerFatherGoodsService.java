@@ -25,7 +25,7 @@ public interface NxDistributerFatherGoodsService {
 
 	List<NxDistributerFatherGoodsEntity> queryHasDisFathersFather(Map<String, Object> map2);
 
-	List<NxDistributerFatherGoodsEntity> queryDisFatherGoodsByParams(Map<String, Object> map);
+	List<NxDistributerFatherGoodsEntity> queryDisFathersGoodsByParams(Map<String, Object> map);
 
 	void update(NxDistributerFatherGoodsEntity nxDistributerFatherGoods);
 

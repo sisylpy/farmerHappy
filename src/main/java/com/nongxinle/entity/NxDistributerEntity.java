@@ -50,5 +50,6 @@ public class NxDistributerEntity implements Serializable {
 	private NxDistributerUserEntity nxDistributerUserEntity;
 
 	private List<NxDistributerUserEntity> nxDistributerUserEntities;
+	private List<NxCommunityGoodsEntity> nxCommunityGoodsEntities;
 
 }

@@ -39,6 +39,8 @@ public class NxCustomerUserController {
 
 
 
+
+
     @RequestMapping(value = "/customerUserGetMy/{customerUserId}")
     @ResponseBody
     public R customerUserGetMy(@PathVariable Integer customerUserId) {
@@ -57,75 +59,6 @@ public class NxCustomerUserController {
 		return R.ok().put("data", resultData);
     }
 
-	
-	/**
-	 * 列表
-	 */
-	@ResponseBody
-	@RequestMapping("/list")
-	@RequiresPermissions("nxcustomeruser:list")
-	public R list(Integer page, Integer limit){
-		Map<String, Object> map = new HashMap<>();
-		map.put("offset", (page - 1) * limit);
-		map.put("limit", limit);
-		
-		//查询列表数据
-		List<NxCustomerUserEntity> nxCustomerUserList = nxCustomerUserService.queryList(map);
-		int total = nxCustomerUserService.queryTotal(map);
-		
-		PageUtils pageUtil = new PageUtils(nxCustomerUserList, total, limit, page);
-		
-		return R.ok().put("page", pageUtil);
-	}
-	
-	
-	/**
-	 * 信息
-	 */
-	@ResponseBody
-	@RequestMapping("/info/{custUserId}")
-	@RequiresPermissions("nxcustomeruser:info")
-	public R info(@PathVariable("custUserId") Integer custUserId){
-		NxCustomerUserEntity nxCustomerUser = nxCustomerUserService.queryObject(custUserId);
-		
-		return R.ok().put("nxCustomerUser", nxCustomerUser);
-	}
-	
-	/**
-	 * 保存
-	 */
-	@ResponseBody
-	@RequestMapping("/save")
-	@RequiresPermissions("nxcustomeruser:save")
-	public R save(@RequestBody NxCustomerUserEntity nxCustomerUser){
 
-		nxCustomerUserService.save(nxCustomerUser);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/update")
-	@RequiresPermissions("nxcustomeruser:update")
-	public R update(@RequestBody NxCustomerUserEntity nxCustomerUser){
-		nxCustomerUserService.update(nxCustomerUser);
-		
-		return R.ok();
-	}
-	
-	/**
-	 * 删除
-	 */
-	@ResponseBody
-	@RequestMapping("/delete")
-	@RequiresPermissions("nxcustomeruser:delete")
-	public R delete(@RequestBody Integer[] custUserIds){
-		nxCustomerUserService.deleteBatch(custUserIds);
-		
-		return R.ok();
-	}
 	
 }

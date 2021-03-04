@@ -51,5 +51,10 @@ public class NxCommunityAliasServiceImpl implements NxCommunityAliasService {
 	public void deleteBatch(Integer[] nxCommunityAliasIds){
 		nxCommunityAliasDao.deleteBatch(nxCommunityAliasIds);
 	}
-	
+
+	@Override
+	public List<NxCommunityAliasEntity> queryComAliasByComGoodsId(Integer comGoodsId) {
+		return nxCommunityAliasDao.queryComAliasByComGoodsId(comGoodsId);
+	}
+
 }

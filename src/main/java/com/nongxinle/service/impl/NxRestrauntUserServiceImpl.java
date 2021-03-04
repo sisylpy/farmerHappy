@@ -1,5 +1,6 @@
 package com.nongxinle.service.impl;
 
+import com.nongxinle.entity.NxRestrauntEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +60,15 @@ public class NxRestrauntUserServiceImpl implements NxRestrauntUserService {
     }
 
     @Override
-    public List<NxRestrauntUserEntity> queryAllResUsersByResId(Integer resId) {
+    public NxRestrauntEntity queryAllResUsersByResId(Integer resId) {
 
 		return nxRestrauntUserDao.queryAllResUsersByResId(resId);
+    }
+
+    @Override
+    public NxRestrauntEntity queryAllRestrauntAndDepUsersByResId(Integer resId) {
+
+		return nxRestrauntUserDao.queryAllRestrauntAndDepUsersByResId(resId);
     }
 
 }

@@ -34,7 +34,7 @@ public class NxDistributerFatherGoodsServiceImpl implements NxDistributerFatherG
 
 
 	@Override
-	public List<NxDistributerFatherGoodsEntity> queryDisFatherGoodsByParams(Map<String, Object> map) {
+	public List<NxDistributerFatherGoodsEntity> queryDisFathersGoodsByParams(Map<String, Object> map) {
 		return nxDistributerFatherGoodsDao.queryDisFathersGoodsByParams(map);
 	}
 

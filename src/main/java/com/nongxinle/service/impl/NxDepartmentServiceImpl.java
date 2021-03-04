@@ -72,6 +72,10 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 			List<NxDepartmentEntity> nxDepartmentEntities = dep.getNxDepartmentEntities();
 			for (NxDepartmentEntity subDep : nxDepartmentEntities) {
 				subDep.setNxDepartmentFatherId(nxDepartmentId);
+				subDep.setNxDepartmentSettleType(dep.getNxDepartmentSettleType());
+				subDep.setNxDepartmentDisId(dep.getNxDepartmentDisId());
+				subDep.setNxDepartmentType("部门");
+				subDep.setNxDepartmentAttrName(subDep.getNxDepartmentName());
 				subDep.setNxDepartmentDisId(dep.getNxDepartmentDisId());
 				nxDepartmentDao.save(subDep);
 			}
@@ -86,6 +90,7 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 
 		return nxDepartmentUserEntity.getNxDepartmentUserId();
 	}
+
 
 	@Override
 	public void saveJustDepartment(NxDepartmentEntity nxDepartmentEntity) {
@@ -117,6 +122,61 @@ public class NxDepartmentServiceImpl implements NxDepartmentService {
 	@Override
 	public void update(NxDepartmentEntity nxDepartment){
 		nxDepartmentDao.update(nxDepartment);
+	}
+
+	@Override
+	public Integer saveNewChainDepartment(NxDepartmentEntity dep) {
+//1.保存餐馆
+		nxDepartmentDao.save(dep);
+
+//		//2，保存用户
+		Integer nxDepartmentId = dep.getNxDepartmentId();
+		NxDepartmentUserEntity nxDepartmentUserEntity = dep.getNxDepartmentUserEntity();
+		nxDepartmentUserEntity.setNxDuDepartmentId(nxDepartmentId);
+		nxDepartmentUserEntity.setNxDuDepartmentFatherId(nxDepartmentId);
+		nxDepartmentUserEntity.setNxDuJoinDate(formatWhatDay(0));
+		nxDepartmentUserService.save(nxDepartmentUserEntity);
+
+		if(dep.getNxDepartmentEntities().size() > 0){
+			//3,保存部门
+			List<NxDepartmentEntity> nxDepartmentEntities = dep.getNxDepartmentEntities();
+			for (NxDepartmentEntity subDep : nxDepartmentEntities) {
+				subDep.setNxDepartmentFatherId(nxDepartmentId);
+				subDep.setNxDepartmentSettleType(dep.getNxDepartmentSettleType());
+				subDep.setNxDepartmentDisId(dep.getNxDepartmentDisId());
+				subDep.setNxDepartmentType("分店");
+				subDep.setNxDepartmentAttrName(subDep.getNxDepartmentName());
+				nxDepartmentDao.save(subDep);
+				if(subDep.getNxDepartmentEntities().size() > 0){
+					for (NxDepartmentEntity grandSubDep: subDep.getNxDepartmentEntities()) {
+						grandSubDep.setNxDepartmentFatherId(subDep.getNxDepartmentId());
+						grandSubDep.setNxDepartmentType("分店部门");
+						grandSubDep.setNxDepartmentSettleType(dep.getNxDepartmentSettleType());
+						grandSubDep.setNxDepartmentDisId(subDep.getNxDepartmentDisId());
+						nxDepartmentDao.save(grandSubDep);
+					}
+				}
+			}
+		}
+
+		//3, 保存订货群的批发商
+		Integer nxDepartmentDisId = dep.getNxDepartmentDisId();
+		NxDistributerDepartmentEntity entity = new NxDistributerDepartmentEntity();
+		entity.setNxDdDistributerId(nxDepartmentDisId);
+		entity.setNxDdDepartmentId(nxDepartmentId);
+		nxDistributerDepartmentService.save(entity);
+
+		return nxDepartmentUserEntity.getNxDepartmentUserId();	}
+
+    @Override
+    public NxDepartmentEntity queryDepInfo(Integer depId) {
+
+		return nxDepartmentDao.queryDepInfo(depId);
+    }
+
+	@Override
+	public NxDepartmentEntity queryGroupInfo(Integer depId) {
+		return nxDepartmentDao.queryGroupInfo(depId);
 	}
 
 

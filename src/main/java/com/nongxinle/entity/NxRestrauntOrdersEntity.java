@@ -7,6 +7,7 @@ package com.nongxinle.entity;
  */
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import lombok.ToString;
 
 @Setter@Getter@ToString
 
-public class NxRestrauntOrdersEntity implements Serializable {
+public class NxRestrauntOrdersEntity implements Serializable, Comparable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -154,17 +155,99 @@ public class NxRestrauntOrdersEntity implements Serializable {
 	private Integer nxRoSellType;
 	private String nxRoExpectPrice;
 	private String nxRoScale;
+	private  String nxRoProfit;
+	private String nxRoDifference;
 
 	private String nxRoCostPrice;
+	private String nxRoDeliveryDate;
+	private Integer nxRoOrderRank;
+	private Integer nxRoPrintTimes;
+	private Integer nxRoComDistributerId;
+	private Integer nxRoComDistributerGoodsId;
+	private String nxRoCostSubtotal;
+
+
+	private Integer nxRoComGoodsSellType;
+	private Integer nxRoComStandardId;
+	private String nxRoComStandardName;
+	private String nxRoComStandardScale;
+	private String nxRoComStandardQuantity;
 	private NxRestrauntUserEntity nxRestrauntUserEntity;
 	private NxCommunityGoodsEntity nxCommunityGoodsEntity;
 	private NxRestrauntComGoodsEntity nxRestrauntComGoodsEntity;
 	private NxRestrauntEntity nxRestrauntEntity;
+
+//	private NxRestrauntOrdersEntity nxRestrauntOrdersEntity;
 
 	private Boolean showDate = true;
 
 	private Boolean  isWeeks = true;
 	private Boolean hasChoice =  false;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NxRestrauntOrdersEntity that = (NxRestrauntOrdersEntity) o;
+		return Objects.equals(nxRestrauntOrdersId, that.nxRestrauntOrdersId) &&
+				Objects.equals(nxRoNxGoodsId, that.nxRoNxGoodsId) &&
+				Objects.equals(nxRoNxGoodsFatherId, that.nxRoNxGoodsFatherId) &&
+				Objects.equals(nxRoComGoodsId, that.nxRoComGoodsId) &&
+				Objects.equals(nxRoComGoodsFatherId, that.nxRoComGoodsFatherId) &&
+				Objects.equals(nxRoResComGoodsId, that.nxRoResComGoodsId) &&
+				Objects.equals(nxRoResComGoodsPrice, that.nxRoResComGoodsPrice) &&
+				Objects.equals(nxRoQuantity, that.nxRoQuantity) &&
+				Objects.equals(nxRoStandard, that.nxRoStandard) &&
+				Objects.equals(nxRoRemark, that.nxRoRemark) &&
+				Objects.equals(nxRoWeight, that.nxRoWeight) &&
+				Objects.equals(nxRoPrice, that.nxRoPrice) &&
+				Objects.equals(nxRoSubtotal, that.nxRoSubtotal) &&
+				Objects.equals(nxRoRestrauntId, that.nxRoRestrauntId) &&
+				Objects.equals(nxRoRestrauntFatherId, that.nxRoRestrauntFatherId) &&
+				Objects.equals(nxRoCommunityId, that.nxRoCommunityId) &&
+				Objects.equals(nxRoPurchaseUserId, that.nxRoPurchaseUserId) &&
+				Objects.equals(nxRoBillId, that.nxRoBillId) &&
+				Objects.equals(nxRoStatus, that.nxRoStatus) &&
+				Objects.equals(nxRoOrderUserId, that.nxRoOrderUserId) &&
+				Objects.equals(nxRoPickUserId, that.nxRoPickUserId) &&
+				Objects.equals(nxRoAccountUserId, that.nxRoAccountUserId) &&
+				Objects.equals(nxRoBuyStatus, that.nxRoBuyStatus) &&
+				Objects.equals(nxRoApplyDate, that.nxRoApplyDate) &&
+				Objects.equals(nxRoArriveDate, that.nxRoArriveDate) &&
+				Objects.equals(nxRoPurchaseGoodsId, that.nxRoPurchaseGoodsId) &&
+				Objects.equals(nxRoArriveOnlyDate, that.nxRoArriveOnlyDate) &&
+				Objects.equals(nxRoApplyFullTime, that.nxRoApplyFullTime) &&
+				Objects.equals(nxRoOperationTime, that.nxRoOperationTime) &&
+				Objects.equals(nxRoArriveWhatDay, that.nxRoArriveWhatDay) &&
+				Objects.equals(nxRoIsAgent, that.nxRoIsAgent) &&
+				Objects.equals(nxRoArriveWeeksYear, that.nxRoArriveWeeksYear) &&
+				Objects.equals(nxRoApplyOnlyTime, that.nxRoApplyOnlyTime) &&
+				Objects.equals(nxRoSellType, that.nxRoSellType) &&
+				Objects.equals(nxRoExpectPrice, that.nxRoExpectPrice) &&
+				Objects.equals(nxRoScale, that.nxRoScale) &&
+				Objects.equals(nxRoProfit, that.nxRoProfit) &&
+				Objects.equals(nxRoDifference, that.nxRoDifference) &&
+				Objects.equals(nxRoCostPrice, that.nxRoCostPrice) &&
+				Objects.equals(nxRestrauntUserEntity, that.nxRestrauntUserEntity) &&
+				Objects.equals(nxCommunityGoodsEntity, that.nxCommunityGoodsEntity) &&
+				Objects.equals(nxRestrauntComGoodsEntity, that.nxRestrauntComGoodsEntity) &&
+				Objects.equals(nxRestrauntEntity, that.nxRestrauntEntity) &&
+				Objects.equals(showDate, that.showDate) &&
+				Objects.equals(isWeeks, that.isWeeks) &&
+				Objects.equals(hasChoice, that.hasChoice);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(nxRestrauntOrdersId, nxRoNxGoodsId, nxRoNxGoodsFatherId, nxRoComGoodsId, nxRoComGoodsFatherId, nxRoResComGoodsId, nxRoResComGoodsPrice, nxRoQuantity, nxRoStandard, nxRoRemark, nxRoWeight, nxRoPrice, nxRoSubtotal, nxRoRestrauntId, nxRoRestrauntFatherId, nxRoCommunityId, nxRoPurchaseUserId, nxRoBillId, nxRoStatus, nxRoOrderUserId, nxRoPickUserId, nxRoAccountUserId, nxRoBuyStatus, nxRoApplyDate, nxRoArriveDate, nxRoPurchaseGoodsId, nxRoArriveOnlyDate, nxRoApplyFullTime, nxRoOperationTime, nxRoArriveWhatDay, nxRoIsAgent, nxRoArriveWeeksYear, nxRoApplyOnlyTime, nxRoSellType, nxRoExpectPrice, nxRoScale, nxRoProfit, nxRoDifference, nxRoCostPrice, nxRestrauntUserEntity, nxCommunityGoodsEntity, nxRestrauntComGoodsEntity, nxRestrauntEntity, showDate, isWeeks, hasChoice);
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof NxRestrauntOrdersEntity) {
+			NxRestrauntOrdersEntity e = (NxRestrauntOrdersEntity) o;
+			return this.nxRoDeliveryDate.compareTo(e.nxRoDeliveryDate);
+		}
+		return 0;
+	}
 }

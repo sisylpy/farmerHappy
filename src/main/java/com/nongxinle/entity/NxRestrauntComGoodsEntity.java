@@ -84,11 +84,14 @@ public class NxRestrauntComGoodsEntity implements Serializable {
 	 *  
 	 */
 	private String nxRcgOrderQuantity;
+	private Integer nxRcgOrderUserId;
+	private Boolean isSelected;
 	/**
 	 *  
 	 */
 	private String nxRcgOrderStandard;
 	private NxCommunityGoodsEntity nxCommunityGoodsEntity;
+	private NxRestrauntOrdersEntity nxRestrauntOrdersEntity;
 	private List<NxCommunityStandardEntity> nxCommunityStandardEntities;
 	private List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
 

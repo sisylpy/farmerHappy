@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nongxinle.entity.NxCommunityEntity;
-import com.nongxinle.entity.NxDepartmentUserEntity;
+import com.nongxinle.entity.*;
 //import com.nongxinle.service.NxDepartmentOrdersService;
 import com.nongxinle.service.NxDepartmentUserService;
 import com.nongxinle.utils.MyAPPIDConfig;
@@ -23,7 +22,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.nongxinle.entity.NxDepartmentEntity;
 import com.nongxinle.service.NxDepartmentService;
 import com.nongxinle.utils.PageUtils;
 import com.nongxinle.utils.R;
@@ -68,12 +66,12 @@ public class NxDepartmentController {
 	/**
 	 * PURCHASE
 	 * 采购员注册
-	 * @param dep 订货群
+	 * @param dep 订货群restrauntRegist
 	 * @return 群信息
 	 */
-	@RequestMapping(value = "/restrauntRegist", method = RequestMethod.POST)
+	@RequestMapping(value = "/departmentRegister", method = RequestMethod.POST)
 	@ResponseBody
-	public R restrauntRegist (@RequestBody NxDepartmentEntity dep) {
+	public R departmentRegister (@RequestBody NxDepartmentEntity dep) {
 
 //wxApp
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
@@ -106,6 +104,45 @@ public class NxDepartmentController {
 
 	}
 
+
+	/**
+	 * PURCHASE
+	 * 采购员注册
+	 * @param dep 订货群
+	 * @return 群信息
+	 */
+	@RequestMapping(value = "/chainDepartmentRegister", method = RequestMethod.POST)
+	@ResponseBody
+	public R chainDepartmentRegister(@RequestBody NxDepartmentEntity dep) {
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		String purchaseAppID = myAPPIDConfig.getPurchaseAppID();
+		String purchaseScreat = myAPPIDConfig.getPurchaseScreat();
+
+		NxDepartmentUserEntity nxDepartmentUserEntity = dep.getNxDepartmentUserEntity();
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + purchaseAppID + "&secret=" + purchaseScreat + "&js_code=" + nxDepartmentUserEntity.getNxDuCode()+ "&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		NxDepartmentUserEntity nxDepartmentUserEntity1 = nxDepartmentUserService.queryDepUserByOpenId(openid);
+		if(nxDepartmentUserEntity1 == null){
+			dep.getNxDepartmentUserEntity().setNxDuWxOpenId(openid);
+			Integer depUserId = nxDepartmentService.saveNewChainDepartment(dep);
+			if (depUserId != null){
+				Map<String, Object> stringObjectMap = nxDepartmentService.queryDepAndUserInfo(depUserId);
+				return R.ok().put("data", stringObjectMap);
+			}
+			return R.error(-1,"注册失败");
+		}else {
+			return R.error(-1,"此微信号已注册过采购员");
+		}
+
+	}
+
+
 	/**
 	 * ORDER
 	 * 获取群的子部门
@@ -130,9 +167,21 @@ public class NxDepartmentController {
 	@RequestMapping(value = "/getDepInfo/{depId}")
 	@ResponseBody
 	public R getDepInfo(@PathVariable Integer depId) {
-		NxDepartmentEntity nxDepartmentEntity = nxDepartmentService.queryObject(depId);
+		System.out.println(depId + "idiid");
+		NxDepartmentEntity nxDepartmentEntity = nxDepartmentService.queryDepInfo(depId);
 		return R.ok().put("data", nxDepartmentEntity);
 	}
+
+	@RequestMapping(value = "/getGroupInfo/{depId}")
+	@ResponseBody
+	public R getGroupInfo(@PathVariable Integer depId) {
+		System.out.println(depId + "idiid");
+		NxDepartmentEntity nxDepartmentEntity = nxDepartmentService.queryGroupInfo(depId);
+		return R.ok().put("data", nxDepartmentEntity);
+	}
+
+
+
 
 
 

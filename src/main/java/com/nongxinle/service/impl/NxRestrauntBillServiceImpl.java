@@ -61,29 +61,29 @@ public class NxRestrauntBillServiceImpl implements NxRestrauntBillService {
 	public void deleteBatch(Integer[] nxRestrauntBillIds){
 		nxRestrauntBillDao.deleteBatch(nxRestrauntBillIds);
 	}
-
-	@Override
-	public Integer restrauntCashPay(NxRestrauntBillEntity billEntity) {
-
-		//
-		nxRestrauntBillDao.save(billEntity);
-		//
-		Integer nxRbRestrauntId = billEntity.getNxRbRestrauntId();
-		NxRestrauntEntity nxRestrauntEntity = nxRestrauntDao.queryObject(nxRbRestrauntId);
-		nxRestrauntEntity.setNxRestrauntWorkingStatus(0);
-		nxRestrauntDao.update(nxRestrauntEntity);
-
-		Integer nxRestrauntBillId = billEntity.getNxRestrauntBillId();
-		List<NxRestrauntOrdersEntity> entities = billEntity.getNxRestrauntOrdersEntities();
-//		for (NxRestrauntOrdersEntity sub : entities) {
-//			//子订单
-//			sub.setNxRoBillId(nxRestrauntBillId);
-//			sub.setNxRoStatus(5);
-//			nxRestrauntOrdersDao.update(sub);
-//		}
-
-		return nxRestrauntBillId ;
-	}
+//
+//	@Override
+//	public Integer restrauntCashPay(NxRestrauntBillEntity billEntity) {
+//
+//		//
+////		nxRestrauntBillDao.save(billEntity);
+////		//
+//		Integer nxRbRestrauntId = billEntity.getNxRbRestrauntId();
+////		NxRestrauntEntity nxRestrauntEntity = nxRestrauntDao.queryObject(nxRbRestrauntId);
+////		nxRestrauntEntity.setNxRestrauntWorkingStatus(0);
+////		nxRestrauntDao.update(nxRestrauntEntity);
+////
+//		Integer nxRestrauntBillId = billEntity.getNxRestrauntBillId();
+////		List<NxRestrauntOrdersEntity> entities = billEntity.getNxRestrauntOrdersEntities();
+////		for (NxRestrauntOrdersEntity sub : entities) {
+////			//子订单
+////			sub.setNxRoBillId(nxRestrauntBillId);
+////			sub.setNxRoStatus(5);
+////			nxRestrauntOrdersDao.update(sub);
+////		}
+//
+//		return nxRestrauntBillId ;
+//	}
 
     @Override
     public List<NxRestrauntBillEntity> queryRestrauntBillsByParams(Map<String, Object> map) {
@@ -101,6 +101,17 @@ public class NxRestrauntBillServiceImpl implements NxRestrauntBillService {
     public NxRestrauntBillEntity queryRestrauntBillApplys(Integer billId) {
 
 		return nxRestrauntBillDao.queryRestrauntBillApplys(billId);
+    }
+
+	@Override
+	public NxRestrauntBillEntity queryRestrauntBillByTradeNo(String ordersSn) {
+		return nxRestrauntBillDao.queryRestrauntBillByTradeNo(ordersSn);
+	}
+
+    @Override
+    public NxRestrauntBillEntity queryUnPayRestrauntBill(Map<String, Object> map) {
+
+		return nxRestrauntBillDao.queryUnPayRestrauntBill(map);
     }
 
 }

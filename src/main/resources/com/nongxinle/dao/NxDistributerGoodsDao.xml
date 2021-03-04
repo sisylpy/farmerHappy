@@ -318,6 +318,9 @@
         select *
         from nx_distributer_goods where nx_dg_nx_goods_id = #{nxSGoodsId};
     </select>
+    <select id="queryDgSubNameByFatherId" resultType="com.nongxinle.entity.NxDistributerGoodsEntity">
+        select nx_dg_goods_name, nx_dg_nx_father_img from nx_distributer_goods where nx_dg_dfg_goods_father_id = #{nxDistributerFatherGoodsId}
+    </select>
 
 
     <insert id="save" parameterType="com.nongxinle.entity.NxDistributerGoodsEntity" useGeneratedKeys="true"

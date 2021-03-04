@@ -45,7 +45,7 @@ public class NxCommunityFatherGoodsEntity implements Serializable, Comparable  {
 	private Integer nxCfgPriceAmount;
 	private Integer nxCfgPriceTwoAmount;
 	private Integer nxCfgPriceThreeAmount;
-
+	private Integer nxCfgOrderRank;
 
 
 	private List<NxCommunityPromoteEntity> nxPromoteEntities;
@@ -56,6 +56,7 @@ public class NxCommunityFatherGoodsEntity implements Serializable, Comparable  {
 
 	List<NxCommunityPurchaseGoodsEntity> nxCommunityPurchaseGoodsEntities;
 	private List<NxRestrauntComGoodsEntity> nxRestrauntComGoodsEntities;
+	private String cgGoodsSubNames;
 
 
 	@Override

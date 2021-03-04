@@ -30,6 +30,11 @@ public interface NxDepartmentService {
 
 	void update(NxDepartmentEntity nxDepartment);
 
+	Integer saveNewChainDepartment(NxDepartmentEntity dep);
+
+    NxDepartmentEntity queryDepInfo(Integer depId);
+
+	NxDepartmentEntity queryGroupInfo(Integer depId);
 
 
 //

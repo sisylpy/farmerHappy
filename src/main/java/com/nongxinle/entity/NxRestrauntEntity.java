@@ -87,14 +87,20 @@ public class NxRestrauntEntity implements Serializable, Comparable  {
 	private String duration;
 	private String distance;
 	private NxRestrauntUserEntity nxRestrauntUserEntity;
+	private List<NxRestrauntUserEntity> nxRestrauntUserEntities;
 
 	private List<NxRestrauntEntity> nxRestrauntEntities;
+	private List<NxRestrauntEntity> nxSubRestraunts;
 
 	private NxRestrauntUserEntity fathernxRestraunt;
 	private NxCommunityEntity nxCommunityEntity;
 	private List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
 
 	private Boolean isSelected = false;
+	private String nxRestrauntUnPayTotal;
+
+	private NxCommunityUserEntity nxCommunityUserEntity;
+	private List<NxCommunityFatherGoodsEntity> nxCommunityFatherGoodsEntities;
 
 	@Override
 	public boolean equals(Object o) {

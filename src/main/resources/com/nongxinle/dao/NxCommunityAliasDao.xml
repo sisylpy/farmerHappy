@@ -17,8 +17,11 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from nx_community_alias 
 	</select>
-	 
-	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityAliasEntity">
+    <select id="queryComAliasByComGoodsId" resultType="com.nongxinle.entity.NxCommunityAliasEntity">
+		select * from nx_community_alias where nx_CA_com_goods_id = #{comGoodsId}
+	</select>
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxCommunityAliasEntity">
 		insert into nx_community_alias
 		(
 			`nx_community_alias_id`, 

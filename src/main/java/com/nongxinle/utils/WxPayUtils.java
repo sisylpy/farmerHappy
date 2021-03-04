@@ -21,9 +21,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -129,6 +127,26 @@ public class WxPayUtils {
         String s = CommonUtils.MD5(sb.toString()).toUpperCase();
 
         return s;
+    }
+
+    public static String InputStream2String(InputStream in) {
+        InputStreamReader reader = null;
+        try {
+            reader = new InputStreamReader(in, "UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(reader);
+        StringBuilder sb = new StringBuilder();
+        String line = "";
+        try {
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     /**

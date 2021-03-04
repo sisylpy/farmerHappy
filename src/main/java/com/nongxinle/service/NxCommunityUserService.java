@@ -8,6 +8,7 @@ package com.nongxinle.service;
  */
 
 import com.nongxinle.entity.NxCommunityUserEntity;
+import com.nongxinle.entity.NxCustomerUserEntity;
 import com.nongxinle.entity.NxRestrauntEntity;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface NxCommunityUserService {
     List<NxCommunityUserEntity> queryCommunityRoleUsers(Map<String, Object> map);
 
     List<NxRestrauntEntity> queryDeliveryRestrauntsByDriverId(Map<String, Object> map);
+
+    List<NxCommunityUserEntity> getAdmainUserByComId(Integer comId);
 }

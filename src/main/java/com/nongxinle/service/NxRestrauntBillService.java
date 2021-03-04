@@ -8,6 +8,7 @@ package com.nongxinle.service;
  */
 
 import com.nongxinle.entity.NxRestrauntBillEntity;
+import com.nongxinle.entity.NxRestrauntEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,15 @@ public interface NxRestrauntBillService {
 	
 	void deleteBatch(Integer[] nxRestrauntBillIds);
 
-	Integer restrauntCashPay(NxRestrauntBillEntity billEntity);
+//	Integer restrauntCashPay(NxRestrauntBillEntity billEntity);
 
     List<NxRestrauntBillEntity> queryRestrauntBillsByParams(Map<String, Object> map);
 
 	int queryTotalRestrauntBillByParams(Map<String, Object> map1);
 
     NxRestrauntBillEntity queryRestrauntBillApplys(Integer billId);
+
+	NxRestrauntBillEntity queryRestrauntBillByTradeNo(String ordersSn);
+
+	NxRestrauntBillEntity queryUnPayRestrauntBill(Map<String, Object> map);
 }

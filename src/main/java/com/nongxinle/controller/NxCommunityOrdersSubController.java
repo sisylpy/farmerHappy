@@ -137,13 +137,13 @@ public class NxCommunityOrdersSubController {
     @RequestMapping(value = "/getOutGoodsOfGoodsType", method = RequestMethod.POST)
     @ResponseBody
     public R getOutGoodsOfGoodsType (@RequestParam Integer page, @RequestParam Integer limit,
-                                     @RequestParam Integer goodsType, @RequestParam Integer nxSupplierId) {
+                                     @RequestParam Integer goodsType, @RequestParam Integer nxDistributerId) {
 
         System.out.println(goodsType);
         Map<String, Object> map = new HashMap<>();
 
         map.put("nxOsGoodsType", goodsType);
-        map.put("nxOsSubSupplierId", nxSupplierId);
+        map.put("nxOsSubDistributerId", nxDistributerId);
         map.put("nxOsStatus", 0);
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);

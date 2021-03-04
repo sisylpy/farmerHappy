@@ -54,4 +54,5 @@ public interface NxDistributerGoodsService {
     List<NxDistributerGoodsEntity> querydisGoodsByNxGoodsId(Integer nxSGoodsId);
 
 
+    List<NxDistributerGoodsEntity> queryDgSubNameByFatherId(Integer nxDistributerFatherGoodsId);
 }

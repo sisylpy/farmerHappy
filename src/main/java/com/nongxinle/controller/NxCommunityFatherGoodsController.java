@@ -41,6 +41,13 @@ public class NxCommunityFatherGoodsController {
 
 	//
 
+	@RequestMapping(value = "/getRankFatherGoods/{comId}")
+	@ResponseBody
+	public R getRankFatherGoods(@PathVariable Integer comId) {
+	    List<NxCommunityFatherGoodsEntity> fatherGoodsEntities = cfgService.queryRankFatherGoods(comId);
+	    return R.ok().put("data", fatherGoodsEntities);
+	}
+
 	/**
 	 * 获取批发商商品的父类列表
 	 * @param comId 批发商id
@@ -73,10 +80,6 @@ public class NxCommunityFatherGoodsController {
 		List<NxCommunityFatherGoodsEntity> zero = new ArrayList<>();
 		return R.ok().put("data", zero);
 	}
-
-
-
-
 
 
 	// #20afb8  #1ebaee  #3cc36e  #f5c832  #f09628  #f05a32 #20afb8 #969696

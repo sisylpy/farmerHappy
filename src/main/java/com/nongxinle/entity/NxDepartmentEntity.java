@@ -69,6 +69,7 @@ public class NxDepartmentEntity implements Serializable, Comparable {
 	private List<NxDepartmentUserEntity>  nxDepartmentUserEntities;
 
 	private List<NxDepartmentEntity> nxDepartmentEntities;
+	private List<NxDepartmentEntity> nxSubDepartments;
 
 	private List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities;
 

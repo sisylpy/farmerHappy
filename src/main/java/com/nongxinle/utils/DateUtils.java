@@ -73,6 +73,7 @@ public class DateUtils {
         if (w < 0)
             w = 0;
         return weekDays[w];
+
 //        String weekday = new DateFormatSymbols().getShortWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
 //        return  weekday;
     }
@@ -111,6 +112,8 @@ public class DateUtils {
         String format1 = dateFormat2.format(whatDay);
         return format1;
     }
+
+
 
 
 

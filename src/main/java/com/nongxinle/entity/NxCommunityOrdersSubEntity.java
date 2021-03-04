@@ -95,7 +95,7 @@ public class NxCommunityOrdersSubEntity implements Serializable, Comparable {
 
   	private Float nxCosSubWeight;
 
-  	private Integer nxCosSubSupplierId;
+  	private Integer nxCosSubDistributerId;
 
   	private Integer nxCosCommunityId;
 
@@ -141,13 +141,13 @@ public class NxCommunityOrdersSubEntity implements Serializable, Comparable {
 				Objects.equals(nxCosOrderUserId, subEntity.nxCosOrderUserId) &&
 				Objects.equals(hasItem, subEntity.hasItem) &&
 				Objects.equals(nxCosSubWeight, subEntity.nxCosSubWeight) &&
-				Objects.equals(nxCosSubSupplierId, subEntity.nxCosSubSupplierId) &&
+				Objects.equals(nxCosSubDistributerId, subEntity.nxCosSubDistributerId) &&
 				Objects.equals(nxCosCommunityId, subEntity.nxCosCommunityId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nxCommunityOrdersSubId, nxCosNxGoodsId, nxCosCommunityGoodsFatherId, nxCosQuantity, nxCosStandard, nxCosPrice, nxCosRemark, nxCosWeight, nxCosSubtotal, nxCosStatus, nxCosWeighUserId, nxCosAccountUserId, nxCosOrdersId, nxCommunityGoodsEntity, nxCosDistributerId, nxCosCommunityGoodsId, nxCosBuyStatus, nxCosPurchaseUserId, nxCosOrderUserId, hasItem, nxCosSubWeight, nxCosSubSupplierId, nxCosCommunityId);
+		return Objects.hash(nxCommunityOrdersSubId, nxCosNxGoodsId, nxCosCommunityGoodsFatherId, nxCosQuantity, nxCosStandard, nxCosPrice, nxCosRemark, nxCosWeight, nxCosSubtotal, nxCosStatus, nxCosWeighUserId, nxCosAccountUserId, nxCosOrdersId, nxCommunityGoodsEntity, nxCosDistributerId, nxCosCommunityGoodsId, nxCosBuyStatus, nxCosPurchaseUserId, nxCosOrderUserId, hasItem, nxCosSubWeight, nxCosSubDistributerId, nxCosCommunityId);
 	}
 
 	@Override

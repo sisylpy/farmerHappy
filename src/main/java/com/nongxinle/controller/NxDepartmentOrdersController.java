@@ -24,11 +24,15 @@ public class NxDepartmentOrdersController {
     @Autowired
     private NxDepartmentService nxDepartmentService;
     @Autowired
-    private NxDepartmentBillService nxDepartmentBillService;
+    private NxRestrauntOrdersService nxRestrauntOrdersService ;
 
 
 
-    
+
+
+
+
+
     @RequestMapping(value = "/finishOrders", method = RequestMethod.POST)
     @ResponseBody
     public R finishOrders (@RequestBody List<NxDepartmentOrdersEntity> ordersEntities  ) {
@@ -120,7 +124,6 @@ public class NxDepartmentOrdersController {
     @RequestMapping(value = "/saveToFillPrice", method = RequestMethod.POST)
     @ResponseBody
     public R saveToFillPrice (@RequestBody List<NxDepartmentOrdersEntity> depOrders) {
-
         for (NxDepartmentOrdersEntity ordersEntity : depOrders) {
                 ordersEntity.setNxDoStatus(1);
                 nxDepartmentOrdersService.update(ordersEntity);
@@ -256,6 +259,7 @@ public class NxDepartmentOrdersController {
         Map<String, Object> map = new HashMap<>();
         map.put("depFatherId", depId);
         map.put("goodsType", 1);
+        map.put("status", 4);
         map.put("arriveDate", formatWhatDay(arriveDate));
         List<NxDepartmentOrdersEntity> ordersEntities = nxDepartmentOrdersService.queryDisOrdersByParams(map);
 //        Map<String, Object> stringObjectMap = showOrderByEveryDay(ordersEntities);
@@ -365,6 +369,7 @@ public class NxDepartmentOrdersController {
     }
 
 
+
     /**
      * DISTRIBUTER
      * 批发商获取今日订货群和订单
@@ -383,7 +388,9 @@ public class NxDepartmentOrdersController {
         map2.put("arriveDate", formatWhatDay(1));
         map2.put("status", 3);
         List<NxDepartmentEntity> departmentEntities2 =  nxDepartmentOrdersService.queryDistributerTodayDepartments(map2);
+
         if(departmentEntities2.size() > 0){
+            System.out.println(departmentEntities2);
             Map<String, Object> tomorrowData = packageDisOrderByDep(departmentEntities2, 1);
             Map<String, Object> map1 = new HashMap<>();
             map1.put("disId", disId);
@@ -391,9 +398,6 @@ public class NxDepartmentOrdersController {
             map1.put("equalBuyStatus", 0);
             List<NxDepartmentOrdersEntity> tomUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map1);
             tomorrowData.put("buyOrders", tomUnPurchaseApplys.size());
-
-
-
             returnData.add(tomorrowData);
         }
 
@@ -404,8 +408,10 @@ public class NxDepartmentOrdersController {
         map1.put("arriveDate", formatWhatDay(0));
         map1.put("status", 3);
         List<NxDepartmentEntity> departmentEntities =  nxDepartmentOrdersService.queryDistributerTodayDepartments(map1);
+        Map<String, Object> todayData = packageDisOrderByDep(departmentEntities, 0);
+
         if(departmentEntities.size() > 0){
-            Map<String, Object> todayData = packageDisOrderByDep(departmentEntities, 0);
+            System.out.println("===++++----------------" + departmentEntities.size());
             Map<String, Object> map3 = new HashMap<>();
             map3.put("disId", disId);
             map3.put("arriveDate", formatWhatDay(0));
@@ -413,12 +419,14 @@ public class NxDepartmentOrdersController {
             List<NxDepartmentOrdersEntity> tomUnPurchaseApplys = nxDepartmentOrdersService.queryDisOrdersByParams(map3);
             todayData.put("buyOrders", tomUnPurchaseApplys.size());
             returnData.add(todayData);
+
         }
+
+
         return R.ok().put("data", returnData);
     }
 
     private   Map<String,Object>  packageDisOrderByDep( List<NxDepartmentEntity> departmentEntities, Integer which ) {
-
         Map<String, Object> map = new HashMap<>();
         map.put("week", getWeek(which) );
         map.put("hao", getJustHao(which) );
@@ -441,24 +449,24 @@ public class NxDepartmentOrdersController {
             Integer fatherId = dep.getNxDepartmentFatherId();
             if(fatherId.equals(0)){
                 //weightTotal
-                Map<String, Object> map1 = new HashMap<>();
-                map1.put("depFatherId", dep.getNxDepartmentId());
-                map1.put("arriveDate", formatWhatDay(which) );
-                map1.put("weightOrder", 1);
-                int  weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map1);
+//                Map<String, Object> map1 = new HashMap<>();
+//                map1.put("depFatherId", dep.getNxDepartmentId());
+//                map1.put("arriveDate", formatWhatDay(which) );
+//                map1.put("weightOrder", 1);
+//                int  weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map1);
                 //pricTotal
-                Map<String, Object> map2 = new HashMap<>();
-                map2.put("depFatherId", dep.getNxDepartmentId());
-                map2.put("arriveDate", formatWhatDay(which) );
-                map2.put("priceOrder", 1);
-                int priceTotal =  nxDepartmentOrdersService.queryTotalByParams(map2);
+//                Map<String, Object> map2 = new HashMap<>();
+//                map2.put("depFatherId", dep.getNxDepartmentId());
+//                map2.put("arriveDate", formatWhatDay(which) );
+//                map2.put("priceOrder", 1);
+//                int priceTotal =  nxDepartmentOrdersService.queryTotalByParams(map2);
 
                 //未打印Total
-                Map<String, Object> map3 = new HashMap<>();
-                map3.put("depFatherId", dep.getNxDepartmentId());
-                map3.put("arriveDate", formatWhatDay(which) );
-                map3.put("statusEqual", 0);
-                int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
+//                Map<String, Object> map3 = new HashMap<>();
+//                map3.put("depFatherId", dep.getNxDepartmentId());
+//                map3.put("arriveDate", formatWhatDay(which) );
+//                map3.put("statusEqual", 0);
+//                int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
 
                 Map<String, Object> depMap  = new HashMap<>();
                 depMap.put("depHasSubs", 0);
@@ -467,15 +475,16 @@ public class NxDepartmentOrdersController {
                 depMap.put("arrName", dep.getNxDepartmentAttrName());
                 depMap.put("depOrders", dep.getNxDepartmentOrdersEntities());
                 depMap.put("orderTotal", dep.getNxDepartmentOrdersEntities().size());
-                depMap.put("priceTotal", priceTotal);
-                depMap.put("weightTotal", weightTotal);
-                depMap.put("unWeighingTotal", unWeighingTotal);
+//                depMap.put("priceTotal", priceTotal);
+//                depMap.put("weightTotal", weightTotal);
+//                depMap.put("unWeighingTotal", unWeighingTotal);
                 depMap.put("settleType", dep.getNxDepartmentSettleType());
                 dataMap.add(depMap);
             }else{
                 Integer nxDepartmentFatherId = dep.getNxDepartmentFatherId();
-                NxDepartmentEntity departmentEntity = nxDepartmentService.queryObject(nxDepartmentFatherId);
-                fatherDep.add(departmentEntity);
+                NxDepartmentEntity departmentEntity1 = nxDepartmentService.queryObject(nxDepartmentFatherId);
+
+                fatherDep.add(departmentEntity1);
                 subDepList.add(dep);
             }
         }
@@ -492,33 +501,33 @@ public class NxDepartmentOrdersController {
             List<NxDepartmentEntity> subDeps = new ArrayList<>();
 
             //priceTotal
-            Map<String, Object> mapPrice = new HashMap<>();
-            mapPrice.put("depFatherId", father.getNxDepartmentId());
-            mapPrice.put("arriveDate", formatWhatDay(which) );
-            mapPrice.put("priceOrder", 1);
-            int priceTotalFather =  nxDepartmentOrdersService.queryTotalByParams(mapPrice);
-            fatherMap.put("priceTotal", priceTotalFather);
+//            Map<String, Object> mapPrice = new HashMap<>();
+//            mapPrice.put("depFatherId", father.getNxDepartmentId());
+//            mapPrice.put("arriveDate", formatWhatDay(which) );
+//            mapPrice.put("priceOrder", 1);
+//            int priceTotalFather =  nxDepartmentOrdersService.queryTotalByParams(mapPrice);
+//            fatherMap.put("priceTotal", priceTotalFather);
             //weightTotal
-            Map<String, Object> map3 = new HashMap<>();
-            map3.put("depFatherId", father.getNxDepartmentId());
-            map3.put("arriveDate", formatWhatDay(which) );
-            map3.put("weightOrder", 1);
-            int weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
-            fatherMap.put("weightTotal", weightTotal);
+//            Map<String, Object> map3 = new HashMap<>();
+//            map3.put("depFatherId", father.getNxDepartmentId());
+//            map3.put("arriveDate", formatWhatDay(which) );
+//            map3.put("weightOrder", 1);
+//            int weightTotal =  nxDepartmentOrdersService.queryTotalByParams(map3);
+//            fatherMap.put("weightTotal", weightTotal);
             //未打印Total
-            Map<String, Object> map4 = new HashMap<>();
-            map4.put("depFatherId", father.getNxDepartmentId());
-            map4.put("arriveDate", formatWhatDay(which) );
-            map4.put("statusEqual", 0);
-            int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map4);
-            fatherMap.put("unWeighingTotal", unWeighingTotal);
+//            Map<String, Object> map4 = new HashMap<>();
+//            map4.put("depFatherId", father.getNxDepartmentId());
+//            map4.put("arriveDate", formatWhatDay(which) );
+//            map4.put("statusEqual", 0);
+//            int unWeighingTotal =  nxDepartmentOrdersService.queryTotalByParams(map4);
+//            fatherMap.put("unWeighingTotal", unWeighingTotal);
             //quanbuTotal
-            Map<String, Object> map5 = new HashMap<>();
-            map5.put("depFatherId", father.getNxDepartmentId());
-            map5.put("arriveDate", formatWhatDay(which) );
-            map5.put("status", 3);
-            int ordersTotal =  nxDepartmentOrdersService.queryTotalByParams(map5);
-            fatherMap.put("orderTotal", ordersTotal);
+//            Map<String, Object> map5 = new HashMap<>();
+//            map5.put("depFatherId", father.getNxDepartmentId());
+//            map5.put("arriveDate", formatWhatDay(which) );
+//            map5.put("status", 3);
+//            int ordersTotal =  nxDepartmentOrdersService.queryTotalByParams(map5);
+//            fatherMap.put("orderTotal", ordersTotal);
 
 
             for (NxDepartmentEntity sub : subDepList) {

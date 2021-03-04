@@ -38,4 +38,17 @@ public interface NxRestrauntComGoodsService {
     int queryComGoodsTotal(Map<String, Object> map3);
 
     List<NxCommunityFatherGoodsEntity> queryHistoryGoods(Map<String, Object> map);
+
+    List<NxRestrauntComGoodsEntity> queryHistoryGoodsQuickSearchStr(Map<String, Object> map1);
+
+    List<NxCommunityFatherGoodsEntity> queryOrderUserGoods(Map<String, Object> map);
+
+	List<NxCommunityFatherGoodsEntity> queryOrderResGoods(Map<String, Object> map);
+
+    List<NxRestrauntComGoodsEntity> orderUserQueryResComGoodsQuickSearchStr(Map<String, Object> map);
+
+	List<NxRestrauntComGoodsEntity> ordreUserQueryHistoryGoodsQuickSearchStr(Map<String, Object> map1);
+
+    void deleteResComGoods(Map<String, Object> map1);
+
 }

@@ -126,6 +126,9 @@ public class NxGoodsController {
         goods.setNxGoodsPinyin(pinyin);
         goods.setNxGoodsPy(headPinyin);
         nxGoodsService.update(goods);
+
+        //修改comGoods
+
         return R.ok();
     }
 
@@ -234,6 +237,7 @@ public class NxGoodsController {
 
         return R.ok().put("data", nxGoodsEntities);
     }
+
 
     /**
      * ibook大类列表
@@ -377,10 +381,21 @@ public class NxGoodsController {
     }
 
 
+    @RequestMapping(value = "/getFatherGoods/{fatherId}")
+    @ResponseBody
+    public R getFatherGoods(@PathVariable Integer fatherId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("fatherId", fatherId);
+
+        //查询列表数据
+        List<NxGoodsEntity> nxGoodsEntities = nxGoodsService.queryListWithFatherId(map);
+        return R.ok().put("data",nxGoodsEntities) ;
+
+    }
     public List<NxGoodsEntity> queryList(Integer fatherId) {
         Map<String, Object> map = new HashMap<>();
-        map.put("offset", 0);
-        map.put("limit", 20);
+//        map.put("offset", 0);
+//        map.put("limit", 20);
         map.put("fatherId", fatherId);
 
         //查询列表数据
@@ -388,7 +403,6 @@ public class NxGoodsController {
         return nxGoodsEntities;
 
     }
-
 
     /**
      * todo testData
@@ -426,12 +440,16 @@ public class NxGoodsController {
     public void downloadExcel(HttpServletResponse response, HttpServletRequest request) {
 
         String fatherId = request.getParameter("fatherId");
+        System.out.println("fatherIdfatherId"+fatherId);
+
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("fatherId", fatherId);
             List<NxGoodsEntity> ckGoodsEntities = nxGoodsService.queryNxGoodsByParams(map);
             HSSFWorkbook wb = new HSSFWorkbook();
-            HSSFSheet sheet = wb.createSheet("产品");
+            NxGoodsEntity nxGoodsEntity = nxGoodsService.queryObject(Integer.valueOf(fatherId));
+            String nxGoodsName = nxGoodsEntity.getNxGoodsName();
+            HSSFSheet sheet = wb.createSheet(nxGoodsName);
 
             //设置表头
             HSSFRow row = sheet.createRow(0);
@@ -451,7 +469,7 @@ public class NxGoodsController {
                 goodsRow.createCell(1).setCellValue(ckGoodsEntity.getNxGoodsName());
                 goodsRow.createCell(2).setCellValue(ckGoodsEntity.getNxGoodsFatherId());
                 goodsRow.createCell(3).setCellValue(ckGoodsEntity.getNxGoodsStandardname());
-                goodsRow.createCell(4).setCellValue(ckGoodsEntity.getNxGoodsSort());
+//                goodsRow.createCell(4).setCellValue(ckGoodsEntity.getNxGoodsSort());
 
             }
 
@@ -532,10 +550,7 @@ public class NxGoodsController {
 
                 goodsRow = sheet.getRow(i);
                 NxGoodsEntity goods = new NxGoodsEntity();
-
-
                 String goodsName = (String) getCellValue(goodsRow.getCell(1));
-
                 String pinyin = hanziToPinyin(goodsName);
                 String headPinyin = getHeadStringByString(goodsName, false, null);
                 goods.setNxGoodsPinyin(pinyin);
@@ -567,10 +582,8 @@ public class NxGoodsController {
                     return cell.getDateCellValue();
                 } else {
                     double numericCellValue = cell.getNumericCellValue();
-
                     String s = String.valueOf(numericCellValue);
                     int i1 = Integer.parseInt(s.replace(".0", ""));
-                    System.out.println("aaaaahahahahhahhahahha");
                     return i1;
                 }
             case BOOLEAN:

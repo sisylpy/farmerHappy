@@ -32,6 +32,13 @@ public class NxCommunityPurchaseGoodsController {
 	private NxRestrauntOrdersService nxRestrauntOrdersService;
 
 
+
+
+
+
+
+
+
 	/**
 	 * 复制进货商品
 	 *
@@ -64,28 +71,28 @@ public class NxCommunityPurchaseGoodsController {
 		return R.ok().put("data", purchase);
 	}
 
-	@RequestMapping(value = "/saveComPlanPurchase", method = RequestMethod.POST)
-	@ResponseBody
-	public R saveComPlanPurchase(@RequestBody NxCommunityPurchaseGoodsEntity purchaseGoodsEntity) {
-		if (!purchaseGoodsEntity.getNxCpgQuantity().equals("0")) {
-			purchaseGoodsEntity.setNxCpgStatus(0);
-			purchaseGoodsEntity.setNxCpgApplyDate(formatWhatDay(0));
-			nxCommunityPurchaseGoodsService.save(purchaseGoodsEntity);
-		}
-
-		Integer nxDistributerPurchaseGoodsId = purchaseGoodsEntity.getNxCommunityPurchaseGoodsId();
-		List<NxRestrauntOrdersEntity> nxDepartmentOrdersEntities =
-				purchaseGoodsEntity.getNxRestrauntOrdersEntityList();
-		if (nxDepartmentOrdersEntities.size() > 0) {
-			for (NxRestrauntOrdersEntity order : nxDepartmentOrdersEntities) {
-				order.setNxRoPurchaseGoodsId(nxDistributerPurchaseGoodsId);
-				order.setNxRoBuyStatus(1);
-				nxRestrauntOrdersService.update(order);
-			}
-		}
-
-		return R.ok();
-	}
+//	@RequestMapping(value = "/saveComPlanPurchase", method = RequestMethod.POST)
+//	@ResponseBody
+//	public R saveComPlanPurchase(@RequestBody NxCommunityPurchaseGoodsEntity purchaseGoodsEntity) {
+//		if (!purchaseGoodsEntity.getNxCpgQuantity().equals("0")) {
+//			purchaseGoodsEntity.setNxCpgStatus(0);
+//			purchaseGoodsEntity.setNxCpgApplyDate(formatWhatDay(0));
+//			nxCommunityPurchaseGoodsService.save(purchaseGoodsEntity);
+//		}
+//
+//		Integer nxDistributerPurchaseGoodsId = purchaseGoodsEntity.getNxCommunityPurchaseGoodsId();
+//		List<NxRestrauntOrdersEntity> nxDepartmentOrdersEntities =
+//				purchaseGoodsEntity.getNxRestrauntOrdersEntityList();
+//		if (nxDepartmentOrdersEntities.size() > 0) {
+//			for (NxRestrauntOrdersEntity order : nxDepartmentOrdersEntities) {
+//				order.setNxRoPurchaseGoodsId(nxDistributerPurchaseGoodsId);
+//				order.setNxRoBuyStatus(1);
+//				nxRestrauntOrdersService.update(order);
+//			}
+//		}
+//
+//		return R.ok();
+//	}
 
 
 

@@ -8,6 +8,7 @@ package com.nongxinle.dao;
  */
 
 import com.nongxinle.entity.NxRestrauntBillEntity;
+import com.nongxinle.entity.NxRestrauntEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +21,8 @@ public interface NxRestrauntBillDao extends BaseDao<NxRestrauntBillEntity> {
     int queryTotalRestrauntBillByParams(Map<String, Object> map);
 
     NxRestrauntBillEntity queryRestrauntBillApplys(Integer billId);
+
+    NxRestrauntBillEntity queryRestrauntBillByTradeNo(String ordersSn);
+
+    NxRestrauntBillEntity queryUnPayRestrauntBill(Map<String, Object> map);
 }

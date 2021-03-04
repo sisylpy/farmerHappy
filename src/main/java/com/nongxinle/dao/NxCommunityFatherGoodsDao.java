@@ -22,4 +22,8 @@ public interface NxCommunityFatherGoodsDao extends BaseDao<NxCommunityFatherGood
     List<NxCommunityFatherGoodsEntity> queryHasComFathersFather(Map<String, Object> map2);
 
     List<NxCommunityFatherGoodsEntity> queryComGoodsCata(Map<String, Object> map2);
+
+    List<NxCommunityFatherGoodsEntity> queryRankFatherGoods(Integer comId);
+
+    List<NxCommunityFatherGoodsEntity> queryComFathersGoodsByParams(Map<String, Object> map);
 }

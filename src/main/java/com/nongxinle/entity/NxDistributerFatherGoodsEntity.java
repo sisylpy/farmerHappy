@@ -67,6 +67,8 @@ public class NxDistributerFatherGoodsEntity implements Serializable , Comparable
 
 	private List<NxDistributerPurchaseGoodsEntity> nxDistributerPurchaseGoodsEntities;
 
+	private String dgGoodsSubNames;
+
 
 	@Override
 	public boolean equals(Object o) {

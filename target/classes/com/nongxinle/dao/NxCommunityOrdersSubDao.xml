@@ -82,7 +82,7 @@
       select * from nx_community_orders_sub as os
         left join nx_community_goods as dg on dg.nx_community_goods_id = os.nx_COS_community_goods_id
         left join nx_community as c on c.nx_community_id = dg.nx_cg_community_id
-        where nx_COS_sub_supplier_id = #{nxCosSubSupplierId}  and nx_COS_goods_type = #{nxCosGoodsType}
+        where nx_COS_sub_Distributer_id = #{nxCosSubDistributerId}  and nx_COS_goods_type = #{nxCosGoodsType}
         and nx_COS_status = #{nxCosStatus}
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
@@ -140,7 +140,7 @@
          `nx_COS_purchase_user_id`,
          `nx_COS_order_user_id`,
          `nx_COS_sub_weight`,
-         `nx_COS_sub_supplier_id`,
+         `nx_COS_sub_Distributer_id`,
           `nx_COS_community_id`,
          `nx_COS_goods_type`
          )
@@ -163,7 +163,7 @@
                 #{nxCosPurchaseUserId},
                 #{nxCosOrderUserId},
                 #{nxCosSubWeight},
-                #{nxCosSubSupplierId},
+                #{nxCosSubDistributerId},
                 #{nxCosCommunityId},
                 #{nxCosGoodsType}
                 )
@@ -189,7 +189,7 @@
             <if test="nxCosPurchaseUserId != null">`nx_COS_purchase_user_id` = #{nxCosPurchaseUserId},</if>
             <if test="nxCosOrderUserId != null">`nx_COS_order_user_id` = #{nxCosOrderUserId},</if>
             <if test="nxCosSubWeight != null">`nx_COS_sub_weight` = #{nxCosSubWeight},</if>
-            <if test="nxCosSubSupplierId != null">`nx_COS_sub_supplier_id` = #{nxCosSubSupplierId},</if>
+            <if test="nxCosSubDistributerId != null">`nx_COS_sub_Distributer_id` = #{nxCosSubDistributerId},</if>
             <if test="nxCosCommunityId != null">`nx_COS_community_id` = #{nxCosCommunityId},</if>
             <if test="nxCosGoodsType != null">`nx_COS_goods_type` = #{nxCosGoodsType},</if>
             <if test="nxCosAccountUserId != null">`nx_COS_account_user_id` = #{nxCosAccountUserId}</if>

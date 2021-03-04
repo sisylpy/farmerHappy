@@ -7,10 +7,7 @@ package com.nongxinle.dao;
  * @date 06-21 21:51
  */
 
-import com.nongxinle.entity.NxCommunityOrdersEntity;
-import com.nongxinle.entity.NxDepartmentEntity;
-import com.nongxinle.entity.NxDepartmentOrdersEntity;
-import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
+import com.nongxinle.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +24,8 @@ public interface NxDepartmentOrdersDao extends BaseDao<NxDepartmentOrdersEntity>
     List<NxDepartmentOrdersEntity> queryOrdersForDisGoods(Map<String, Object> map1);
 
     int queryTotalByParams(Map<String, Object> map);
+
+//    List<NxDepartmentOrdersEntity> queryDepChainOrdersByParams(Map<String, Object> map);
+
+    List<NxCommunityEntity> queryDistributerTodayCommunity(Map<String, Object> map3);
 }

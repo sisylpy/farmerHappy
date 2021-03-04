@@ -15,9 +15,7 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nongxinle.entity.NxDepartmentUserEntity;
-import com.nongxinle.entity.NxDistributerUserEntity;
-import com.nongxinle.entity.NxRestrauntEntity;
+import com.nongxinle.entity.*;
 import com.nongxinle.utils.MyAPPIDConfig;
 import com.nongxinle.utils.ParseObject;
 import com.nongxinle.utils.WeChatUtil;
@@ -25,7 +23,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.nongxinle.entity.NxCommunityUserEntity;
 import com.nongxinle.service.NxCommunityUserService;
 import com.nongxinle.utils.R;
 
@@ -38,6 +35,59 @@ public class NxCommunityUserController {
 	@Autowired
 	private NxCommunityUserService nxCommunityUserService;
 	private static final String KEY = "C5HBZ-KEIW2-JXXUJ-COLGS-FQO47-WWFAK";
+
+
+	@RequestMapping(value = "/registerComAdminUser", method = RequestMethod.POST)
+	@ResponseBody
+	public R registerComAdminUser (@RequestBody NxCommunityUserEntity user ) {
+		System.out.println("comusr===" + user);
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+
+		// 1, 先检查微信号是否以前注册过
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getCommunityAppID() + "&secret=" +
+				myAPPIDConfig.getCommunityScreat() + "&js_code=" + user.getNxCouCode() +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+		Map<String, Object> map = new HashMap<>();
+		map.put("openId", openid);
+		map.put("roleId", 0);
+		NxCommunityUserEntity communityUserEntity = nxCommunityUserService.queryComUserByOpenId(map);
+		//2，如果注册过，则返回提示。
+		if(communityUserEntity != null){
+			return R.error(-1,"微信号已注册!");
+		}else {
+
+			user.setNxCouWxOpenId(openid);
+			nxCommunityUserService.save(user);
+
+			//3..3 返回用户id
+			Integer nxCommunityUserId = user.getNxCommunityUserId();
+			Map<String, Object> map1 = new HashMap<>();
+			map1.put("userId", nxCommunityUserId);
+			map1.put("roleId", 0);
+			NxCommunityUserEntity nxCommunityUserEntity1 = nxCommunityUserService.queryComUserInfo(map1);
+
+			return R.ok().put("data", nxCommunityUserEntity1);
+
+		}
+
+	}
+
+	@RequestMapping(value = "/getComUsers/{comId}")
+	@ResponseBody
+	public R getComUsers(@PathVariable Integer comId) {
+
+		List<NxCommunityUserEntity> userEntities = nxCommunityUserService.getAdmainUserByComId(comId);
+		System.out.println( "user-----ssss" + userEntities );
+		return R.ok().put("data", userEntities);
+	}
 
 
 	/**
@@ -54,7 +104,7 @@ public class NxCommunityUserController {
 
 	@RequestMapping(value = "/comUserDriverSave", method = RequestMethod.POST)
 	@ResponseBody
-	public R comUserSave (@RequestBody NxCommunityUserEntity user) {
+	public R comUserDriverSave (@RequestBody NxCommunityUserEntity user) {
 
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getLiziDriverAppID() + "&secret=" +
@@ -224,15 +274,13 @@ public class NxCommunityUserController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("roleId", 5);
 		map.put("comId", comId);
-		map.put("status", 1);
+//		map.put("equalStatus", 1);
 		List<NxCommunityUserEntity> userEntities = nxCommunityUserService.queryCommunityRoleUsers(map);
 
 		Map<String, Object> mapDriver = new HashMap<>();
 		mapDriver.put("roleId", 5 );
 		mapDriver.put("arr",  userEntities);
-
 		returnData.add(mapDriver);
-
 		return R.ok().put("data", returnData);
 	}
 

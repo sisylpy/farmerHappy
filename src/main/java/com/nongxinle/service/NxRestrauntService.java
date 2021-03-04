@@ -35,4 +35,9 @@ public interface NxRestrauntService {
     List<NxRestrauntEntity> queryPrepareDeliveryRestraunts(Integer comId);
 
     List<NxRestrauntEntity> queryDriverRestraunts(Integer userId);
+
+	NxRestrauntEntity queryResInfo(Integer valueOf);
+
+	Integer saveNewChainRestraunt(NxRestrauntEntity res);
+
 }

@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.nongxinle.entity.NxDepartmentEntity;
 import com.nongxinle.entity.NxDepartmentUserEntity;
+import com.nongxinle.entity.NxRestrauntEntity;
 import com.nongxinle.service.NxRestrauntService;
 import com.nongxinle.utils.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,6 +40,109 @@ public class NxRestrauntUserController {
 	private NxRestrauntService nxRestrauntService;
 
 
+	@RequestMapping(value = "/orderUserLogin/{code}")
+	@ResponseBody
+	public R orderUserLogin(@PathVariable String code) {
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		System.out.println(code);
+
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getLiziDriverAppID()
+				+ "&secret=" + myAPPIDConfig.getLiziDriverScreat() + "&js_code=" + code +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		System.out.println(url);
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		System.out.println(str);
+		System.out.println("9999999999999");
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openId = jsonObject.get("openid").toString();
+		System.out.println("restuanlerlogin:::" + openId);
+		if(openId != null){
+			NxRestrauntUserEntity restaurantUserEntity = nxRestrauntUserService.queryResUserByOpenId(openId);
+			System.out.println(restaurantUserEntity);
+			System.out.println("====---------");
+			if(restaurantUserEntity != null){
+				Integer restaurantUserId = restaurantUserEntity.getNxRestrauntUserId();
+				Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restaurantUserId);
+				return R.ok().put("data", stringObjectMap);
+			}else{
+				return R.error(-1,"请进行注册");
+			}
+
+		}else {
+			return R.error(-1,"请进行注册");
+		}
+	}
+
+	@RequestMapping(value = "/resManRegister", method = RequestMethod.POST)
+	@ResponseBody
+	public R resManRegister(@RequestBody NxRestrauntUserEntity userEntity) {
+//wxApp
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+
+//		NxRestrauntUserEntity nxRestrauntUserEntity = res.getNxRestrauntUserEntity();
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getComPurchaseAppID() +
+				"&secret=" + myAPPIDConfig.getComPurchaseScreat() + "&js_code=" + userEntity.getNxRuCode() + "&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+
+		NxRestrauntUserEntity resUserEntities = nxRestrauntUserService.queryResUserByOpenId(openid);
+		if(resUserEntities != null){
+			return R.error(-1,"请直接登陆");
+
+		}else{
+			//添加新用户
+			userEntity.setNxRuWxOpenId(openid);
+			userEntity.setNxRuJoinDate(formatWhatDay(0));
+			nxRestrauntUserService.save(userEntity);
+			Integer restrauntUserId = userEntity.getNxRestrauntUserId();
+			Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restrauntUserId);
+			return R.ok().put("data",stringObjectMap);
+		}
+	}
+	@ResponseBody
+	@RequestMapping("/orderUserSave")
+	public R orderUserSave(@RequestBody NxRestrauntUserEntity nxRestrauntUserEntity){
+
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		String resAppID = myAPPIDConfig.getLiziDriverAppID();
+		String resScreat = myAPPIDConfig.getLiziDriverScreat();
+
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + resAppID + "&secret=" + resScreat + "&js_code=" + nxRestrauntUserEntity.getNxRuCode()+ "&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openid = jsonObject.get("openid").toString();
+
+		NxRestrauntUserEntity resUserEntities = nxRestrauntUserService.queryResUserByOpenId(openid);
+		if(resUserEntities != null){
+			return R.error(-1,"请直接登陆");
+
+		}else{
+			//添加新用户
+			nxRestrauntUserEntity.setNxRuWxOpenId(openid);
+			nxRestrauntUserEntity.setNxRuJoinDate(formatWhatDay(0));
+			nxRestrauntUserService.save(nxRestrauntUserEntity);
+			Integer restrauntUserId = nxRestrauntUserEntity.getNxRestrauntUserId();
+//			Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(nxDepartmentUserId);
+			Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restrauntUserId);
+			return R.ok().put("data",stringObjectMap);
+		}
+	}
 
 
 	@RequestMapping(value = "/deleteResUser/{userid}")
@@ -77,8 +182,8 @@ public class NxRestrauntUserController {
 			nxRestrauntUserService.save(nxRestrauntUserEntity);
 			Integer restrauntUserId = nxRestrauntUserEntity.getNxRestrauntUserId();
 //			Map<String, Object> stringObjectMap = nxDepartmentService.queryGroupAndUserInfo(nxDepartmentUserId);
-
-			return R.ok().put("data",restrauntUserId);
+			Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restrauntUserId);
+			return R.ok().put("data",stringObjectMap);
 		}
 	}
 
@@ -88,10 +193,16 @@ public class NxRestrauntUserController {
    @RequestMapping(value = "/getRestrauntUsers/{resId}")
    @ResponseBody
    public R getRestrauntUsers(@PathVariable Integer resId) {
-       List<NxRestrauntUserEntity> userEntities = nxRestrauntUserService.queryAllResUsersByResId(resId);
+       NxRestrauntEntity userEntities = nxRestrauntUserService.queryAllResUsersByResId(resId);
        return R.ok().put("data", userEntities);
    }
 
+	@RequestMapping(value = "/getRestrauntAndDepUsers/{resId}")
+	@ResponseBody
+	public R getRestrauntAndDepUsers(@PathVariable Integer resId) {
+		NxRestrauntEntity userEntities = nxRestrauntUserService.queryAllRestrauntAndDepUsersByResId(resId);
+		return R.ok().put("data", userEntities);
+	}
 
 
 
@@ -99,8 +210,9 @@ public class NxRestrauntUserController {
 	@RequestMapping(value = "/getResUserInfo/{userId}")
 	@ResponseBody
 	public R getResUserInfo(@PathVariable Integer userId) {
-		NxRestrauntUserEntity restaurantUserEntity = nxRestrauntUserService.queryObject(userId);
-		return R.ok().put("data", restaurantUserEntity);
+//		NxRestrauntUserEntity restaurantUserEntity = nxRestrauntUserService.queryObject(userId);
+		Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(userId);
+		return R.ok().put("data", stringObjectMap);
 	}
 
 	/**
@@ -154,31 +266,107 @@ public class NxRestrauntUserController {
 
 
 
-
-
-
 	@RequestMapping(value = "/restruanteUserLogin/{code}")
 	@ResponseBody
 	public R restruanteUserLogin(@PathVariable String code) {
 
 		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
-
+		System.out.println(code);
 
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getRestrauntAppID()
 				+ "&secret=" + myAPPIDConfig.getRestrauntScreat() + "&js_code=" + code +
 				"&grant_type=authorization_code";
 		// 发送请求，返回Json字符串
+		System.out.println(url);
 		String str = WeChatUtil.httpRequest(url, "GET", null);
+		System.out.println(str);
+		System.out.println("9999999999999");
 		// 转成Json对象 获取openid
 		JSONObject jsonObject = JSONObject.parseObject(str);
 
 		// 我们需要的openid，在一个小程序中，openid是唯一的
 		String openId = jsonObject.get("openid").toString();
-		System.out.println("");
+		System.out.println("restuanlerlogin:::" + openId);
 		if(openId != null){
 			NxRestrauntUserEntity restaurantUserEntity = nxRestrauntUserService.queryResUserByOpenId(openId);
 			System.out.println(restaurantUserEntity);
 			System.out.println("====---------");
+			if(restaurantUserEntity != null){
+				Integer restaurantUserId = restaurantUserEntity.getNxRestrauntUserId();
+				Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restaurantUserId);
+				return R.ok().put("data", stringObjectMap);
+			}else{
+				return R.error(-1,"请进行注册");
+			}
+
+		}else {
+			return R.error(-1,"请进行注册");
+		}
+	}
+
+//
+@RequestMapping(value = "/updateResManWithFile", produces = "text/html;charset=UTF-8")
+@ResponseBody
+public R updateResManWithFile(@RequestParam("file") MultipartFile file,
+							  @RequestParam("userName") String userName,
+							  @RequestParam("resName") String resName,
+							  @RequestParam("userId") Integer userId,
+							  @RequestParam("resId") Integer resId,
+							  HttpSession session) {
+	//1,上传图片
+	String newUploadName = "uploadImage";
+	String realPath = UploadFile.upload(session, newUploadName, file);
+
+	String filename = file.getOriginalFilename();
+	String filePath = newUploadName + "/" + filename;
+	NxRestrauntUserEntity nxRestrauntUserEntity = nxRestrauntUserService.queryObject(userId);
+	nxRestrauntUserEntity.setNxRuWxNickName(userName);
+	nxRestrauntUserEntity.setNxRuWxAvartraUrl(filePath);
+	nxRestrauntUserEntity.setNxRuUrlChange(1);
+	nxRestrauntUserService.update(nxRestrauntUserEntity);
+
+	NxRestrauntEntity nxRestrauntEntity = nxRestrauntService.queryObject(resId);
+	nxRestrauntEntity.setNxRestrauntName(resName);
+	nxRestrauntService.update(nxRestrauntEntity);
+
+
+	return R.ok();
+
+}
+	@RequestMapping(value = "/updateResMan", method = RequestMethod.POST)
+	@ResponseBody
+	public R updateResMan (String userName, String resName, Integer userId,  Integer resId) {
+		NxRestrauntUserEntity nxRestrauntUserEntity = nxRestrauntUserService.queryObject(userId);
+		nxRestrauntUserEntity.setNxRuWxNickName(userName);
+		nxRestrauntUserService.update(nxRestrauntUserEntity);
+
+		NxRestrauntEntity nxDepartmentEntity = nxRestrauntService.queryObject(resId);
+		nxDepartmentEntity.setNxRestrauntName(resName);
+		nxRestrauntService.update(nxDepartmentEntity);
+		return R.ok();
+	}
+//
+	@RequestMapping(value = "/chainResManLogin/{code}")
+	@ResponseBody
+	public R chainResManLogin(@PathVariable String code) {
+
+		MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+		System.out.println(code);
+
+		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getComPurchaseAppID()
+				+ "&secret=" + myAPPIDConfig.getComPurchaseScreat() + "&js_code=" + code +
+				"&grant_type=authorization_code";
+		// 发送请求，返回Json字符串
+		String str = WeChatUtil.httpRequest(url, "GET", null);
+
+		// 转成Json对象 获取openid
+		JSONObject jsonObject = JSONObject.parseObject(str);
+
+		// 我们需要的openid，在一个小程序中，openid是唯一的
+		String openId = jsonObject.get("openid").toString();
+		if(openId != null){
+			NxRestrauntUserEntity restaurantUserEntity = nxRestrauntUserService.queryResUserByOpenId(openId);
+
 			if(restaurantUserEntity != null){
 				Integer restaurantUserId = restaurantUserEntity.getNxRestrauntUserId();
 				Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(restaurantUserId);

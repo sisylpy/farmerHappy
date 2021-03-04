@@ -48,4 +48,6 @@ public interface NxDistributerGoodsDao extends BaseDao<NxDistributerGoodsEntity>
     List<NxDistributerGoodsEntity> queryDisGoodsQuickSearchPinyin(Map<String, Object> map2);
 
     List<NxDistributerGoodsEntity> queryDisGoodsByNxGoodsId(Integer nxSGoodsId);
+
+    List<NxDistributerGoodsEntity> queryDgSubNameByFatherId(Integer nxDistributerFatherGoodsId);
 }

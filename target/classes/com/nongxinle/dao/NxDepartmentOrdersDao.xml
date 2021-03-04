@@ -425,6 +425,7 @@
     </select>
 
 
+
     <insert id="save" parameterType="com.nongxinle.entity.NxDepartmentOrdersEntity">
         insert into nx_department_orders
         (`nx_department_orders_id`,

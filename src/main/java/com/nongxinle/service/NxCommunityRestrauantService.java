@@ -7,6 +7,7 @@ package com.nongxinle.service;
  * @date 11-30 15:31
  */
 
+import com.nongxinle.entity.NxCommunityEntity;
 import com.nongxinle.entity.NxCommunityRestrauantEntity;
 import com.nongxinle.entity.NxRestrauntEntity;
 
@@ -30,4 +31,8 @@ public interface NxCommunityRestrauantService {
 	void deleteBatch(Integer[] nxCommunityRestaruantIds);
 
     List<NxRestrauntEntity> queryRestrauntsByComId(Integer comId);
+
+    NxCommunityEntity queryCommunityByResId(Integer resId);
+
+    List<NxRestrauntEntity> queryRestrauntsByParams(Map<String, Object> map);
 }

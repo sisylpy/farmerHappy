@@ -71,6 +71,7 @@ public class NxRestrauntOrdersServiceImpl implements NxRestrauntOrdersService {
 			resComGoodsEntity.setNxRcgOrderStandard(nxRestrauntOrders.getNxRoStandard());
 			resComGoodsEntity.setNxRcgOrderRemark(nxRestrauntOrders.getNxRoRemark());
 			resComGoodsEntity.setNxRcgOrderDate(formatWhatDay(0));
+			resComGoodsEntity.setNxRcgOrderUserId(nxRestrauntOrders.getNxRoOrderUserId());
 			rcgService.save(resComGoodsEntity);
 			Integer nxDepartmentDisGoodsId = resComGoodsEntity.getNxRestrauntComGoodsId();
 			nxRestrauntOrders.setNxRoResComGoodsId(nxDepartmentDisGoodsId);
@@ -114,7 +115,7 @@ public class NxRestrauntOrdersServiceImpl implements NxRestrauntOrdersService {
 	}
 
     @Override
-    public List<NxRestrauntEntity> queryCommunityTodayRestruants(Map<String, Object> map1) {
+    public TreeSet<NxRestrauntEntity> queryCommunityTodayRestruants(Map<String, Object> map1) {
         return nxRestrauntOrdersDao.queryCommunityTodayRestruants(map1);
     }
 
@@ -147,9 +148,9 @@ public class NxRestrauntOrdersServiceImpl implements NxRestrauntOrdersService {
     }
 
     @Override
-    public List<NxSupplierEntity> queryResOrdersByComSupplierGoodsType(Map<String, Object> map2) {
+    public List<NxDistributerEntity> queryResOrdersByComDistributerGoodsType(Map<String, Object> map2) {
 
-		return nxRestrauntOrdersDao.queryResOrdersByComSupplierGoodsType(map2);
+		return nxRestrauntOrdersDao.queryResOrdersByComDistributerGoodsType(map2);
     }
 
     @Override
@@ -162,5 +163,66 @@ public class NxRestrauntOrdersServiceImpl implements NxRestrauntOrdersService {
 	public List<NxCommunityGoodsEntity> queryOrderGoodsByFatherId(Map<String, Object> map) {
 		return nxRestrauntOrdersDao.queryOrderGoodsByFatherId(map);
 	}
+
+    @Override
+    public List<NxRestrauntOrdersEntity> queryComDeliveryResOrdersByParams(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryComDeliveryResOrdersByParams(map);
+
+    }
+
+    @Override
+    public TreeSet<NxRestrauntEntity> queryDeliveryResByParams(Map<String, Object> map1) {
+
+		return nxRestrauntOrdersDao.queryDeliveryResByParams(map1);
+    }
+
+    @Override
+    public int queryOrderComGoodsTodayTotal(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryOrderComGoodsTodayTotal(map);
+    }
+
+    @Override
+    public TreeSet<NxRestrauntOrdersEntity> queryUnCostDate(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryUnCostDate(map);
+    }
+
+    @Override
+    public TreeSet<NxCommunityPurchaseBatchEntity> queryBuyingBatchGoods(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryBuyingBatchGoods(map);
+    }
+
+    @Override
+    public TreeSet<NxRestrauntEntity> queryTodayComRestrauant(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryTodayComRestrauant(map);
+    }
+
+    @Override
+    public List<NxDistributerGoodsEntity> queryDistributerGoodsWithResOrdersByParams(Map<String, Object> map3) {
+        return nxRestrauntOrdersDao.queryDistributerGoodsWithResOrdersByParams(map3);
+    }
+
+    @Override
+    public List<NxCommunityEntity> queryDistributerTodayCommunity(Map<String, Object> map3) {
+
+		return nxRestrauntOrdersDao.queryDistributerTodayCommunity(map3);
+    }
+
+    @Override
+    public List<NxRestrauntOrdersEntity> queryResChainOrdersByParams(Map<String, Object> map) {
+
+		return nxRestrauntOrdersDao.queryResChainOrdersByParams(map);
+    }
+
+//    @Override
+//    public List<NxDepartmentOrdersEntity> queryDepChainOrdersByParams(Map<String, Object> map) {
+//
+//		return nxRestrauntOrdersDao.queryDepChainOrdersByParams(map);
+//    }
+
 
 }

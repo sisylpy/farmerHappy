@@ -118,7 +118,11 @@ public class NxDistributerGoodsServiceImpl implements NxDistributerGoodsService 
 		return nxDistributerGoodsDao.queryDisGoodsByNxGoodsId(nxSGoodsId);
     }
 
+    @Override
+    public List<NxDistributerGoodsEntity> queryDgSubNameByFatherId(Integer nxDistributerFatherGoodsId) {
 
+		return nxDistributerGoodsDao.queryDgSubNameByFatherId(nxDistributerFatherGoodsId);
+    }
 
 
 }

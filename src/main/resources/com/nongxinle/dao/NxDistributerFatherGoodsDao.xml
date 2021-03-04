@@ -49,6 +49,7 @@
 		<id property="nxDistributerFatherGoodsId" column="greatGrand_nx_distributer_father_goods_id"/>
 		<result property="nxDfgFathersFatherId" column="greatGrand_nx_dfg_fathers_father_id"/>
 		<result property="nxDfgFatherGoodsName" column="greatGrand_nx_dfg_father_goods_name"/>
+		<result property="nxDfgFatherGoodsColor" column="greatGrand_nx_dfg_father_goods_color"/>
 		<collection property="fatherGoodsEntities" resultMap="grandDisGoods"/>
 	</resultMap>
 
@@ -66,7 +67,8 @@
 			   greatGrand.nx_distributer_father_goods_id 'greatGrand_nx_distributer_father_goods_id',
 			   greatGrand.nx_dfg_fathers_father_id 'greatGrand_nx_dfg_fathers_father_id',
 			   greatGrand.nx_dfg_father_goods_name 'greatGrand_nx_dfg_father_goods_name',
-			   greatGrand.nx_dfg_nx_goods_id 'greatGrand_nx_dfg_nx_goods_id'
+			   greatGrand.nx_dfg_nx_goods_id 'greatGrand_nx_dfg_nx_goods_id',
+			   greatGrand.nx_dfg_father_goods_color 'greatGrand_nx_dfg_father_goods_color'
 		from nx_distributer_father_goods as father
 		left join nx_distributer_father_goods as grand on  grand.nx_distributer_father_goods_id = father.nx_dfg_fathers_father_id
 		left join nx_distributer_father_goods as greatGrand on greatGrand.nx_distributer_father_goods_id = grand.nx_dfg_fathers_father_id
@@ -87,8 +89,8 @@
 		<if test="fathersFatherId != null">
 			and nx_dfg_fathers_father_id  = #{fathersFatherId}
 		</if>
-		<if test="fathersFatherId != null">
-			and nx_dfg_fathers_father_id  = #{fathersFatherId}
+		<if test="disFatherId != null">
+			and nx_distributer_father_goods_id  = #{disFatherId}
 		</if>
 	</where>
 	</select>

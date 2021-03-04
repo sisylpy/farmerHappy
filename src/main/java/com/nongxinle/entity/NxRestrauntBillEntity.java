@@ -47,7 +47,7 @@ public class NxRestrauntBillEntity implements Serializable {
 	/**
 	 *  
 	 */
-	private String nxRbTime;
+	private String nxRbProduceTime;
 	/**
 	 *  
 	 */
@@ -68,7 +68,17 @@ public class NxRestrauntBillEntity implements Serializable {
 	 *  
 	 */
 	private String nxRbTradeNo;
+	private String nxRbApplyPayTime;
+	private String nxRbPayTime;
 
-	List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
+
+
+	private String nxRbUserOpenId;
+
+
+	private String nxRbRestrauntName;
+
+	private List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
+	private NxRestrauntEntity nxRestrauntEntity;
 
 }

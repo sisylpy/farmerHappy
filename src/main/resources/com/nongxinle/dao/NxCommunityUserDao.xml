@@ -59,8 +59,8 @@
 			<if test="comId != null">
 				and nx_COU_community_id = #{comId}
 				</if>
-			<if test="status != null">
-				and nx_COU_working_status = #{status}
+			<if test="equalStatus != null">
+				and nx_COU_working_status = #{equalStatus}
 			</if>
 		</where>
 
@@ -95,7 +95,12 @@
 
 	</select>
 
-	<insert id="save" parameterType="com.nongxinle.entity.NxCommunityUserEntity" useGeneratedKeys="true"
+    <select id="getAdmainUserByComId" resultType="com.nongxinle.entity.NxCommunityUserEntity">
+		select * from nx_community_user where nx_COU_community_id = #{comId} and nx_COU_admin = 1
+	</select>
+
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxCommunityUserEntity" useGeneratedKeys="true"
 	 keyProperty="nxCommunityUserId">
 		insert into nx_community_user
 		(

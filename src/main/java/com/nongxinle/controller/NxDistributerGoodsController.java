@@ -50,6 +50,34 @@ public class NxDistributerGoodsController {
     private NxDepartmentDisGoodsService nxDepartmentDisGoodsService;
 
 
+    @RequestMapping(value = "/getDgGoodsSubNamesByFatherId/{fatherId}")
+    @ResponseBody
+    public R getDgGoodsSubNamesByFatherId(@PathVariable Integer fatherId) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("fathersFatherId", fatherId);
+
+        List<NxDistributerFatherGoodsEntity> goodsEntities1 = dgfService.queryDisFathersGoodsByParams(map);
+
+        List<NxDistributerFatherGoodsEntity> newList = new ArrayList<>();
+
+        for (NxDistributerFatherGoodsEntity fatherGoods : goodsEntities1) {
+            StringBuilder builder = new StringBuilder();
+
+            List<NxDistributerGoodsEntity> goodsEntities = dgService.queryDgSubNameByFatherId(fatherGoods.getNxDistributerFatherGoodsId());
+            for (NxDistributerGoodsEntity goods : goodsEntities) {
+                String nxGoodsName = goods.getNxDgGoodsName();
+                builder.append(nxGoodsName);
+                builder.append(',');
+            }
+            fatherGoods.setDgGoodsSubNames(builder.toString());
+            newList.add(fatherGoods);
+        }
+
+        return R.ok().put("data", newList);
+    }
+
+
     @RequestMapping(value = "/canclePostDgnGoods", method = RequestMethod.POST)
     @ResponseBody
     public R canclePostDgnGoods(Integer disGoodsId, Integer disGoodsFatherId, Integer disId) {
@@ -78,7 +106,7 @@ public class NxDistributerGoodsController {
                 mapGrand.put("fathersFatherId", grandId);
                 mapGrand.put("disId", disId);
                 //搜索grand有几个兄弟
-                List<NxDistributerFatherGoodsEntity> fatherGoodsEntities = dgfService.queryDisFatherGoodsByParams(mapGrand);
+                List<NxDistributerFatherGoodsEntity> fatherGoodsEntities = dgfService.queryDisFathersGoodsByParams(mapGrand);
                 if (fatherGoodsEntities.size() == 1) {
                     Integer nxDfgFathersFatherId = fatherGoodsEntities.get(0).getNxDfgFathersFatherId();
                     NxDistributerFatherGoodsEntity grandEntity = dgfService.queryObject(nxDfgFathersFatherId);
@@ -86,7 +114,7 @@ public class NxDistributerGoodsController {
                     Map<String, Object> map = new HashMap<>();
                     map.put("disId", disId);
                     map.put("fathersFatherId", greatGrandId);
-                    List<NxDistributerFatherGoodsEntity> grandGoodsEntities = dgfService.queryDisFatherGoodsByParams(map);
+                    List<NxDistributerFatherGoodsEntity> grandGoodsEntities = dgfService.queryDisFathersGoodsByParams(map);
 
                     //如果grandFather也是只有一个，则删除greatGrandFather
                     if (grandGoodsEntities.size() == 1) {
@@ -227,6 +255,7 @@ public class NxDistributerGoodsController {
             dgf.setNxDfgFatherGoodsName(cgnGoods.getNxDgNxFatherName());
             dgf.setNxDfgFatherGoodsLevel(2);
             dgf.setNxDfgGoodsAmount(1);
+            dgf.setNxDfgFatherGoodsImg(cgnGoods.getNxDgNxGoodsFatherImg());
             dgf.setNxDfgFatherGoodsColor(cgnGoods.getNxDgNxGoodsFatherColor());
             dgf.setNxDfgNxGoodsId(cgnGoods.getNxDgNxFatherId());
             dgfService.save(dgf);
@@ -252,6 +281,7 @@ public class NxDistributerGoodsController {
                 grand.setNxDfgFatherGoodsName(nxCgGrandFatherName);
                 grand.setNxDfgDistributerId(cgnGoods.getNxDgDistributerId());
                 grand.setNxDfgFatherGoodsLevel(1);
+                grand.setNxDfgFatherGoodsColor(cgnGoods.getNxDgNxGoodsFatherColor());
                 grand.setNxDfgNxGoodsId(cgnGoods.getNxDgNxGrandId());
                 dgfService.save(grand);
 
@@ -276,6 +306,7 @@ public class NxDistributerGoodsController {
                     greatGrand.setNxDfgFatherGoodsName(greatGrandName1);
                     greatGrand.setNxDfgDistributerId(cgnGoods.getNxDgDistributerId());
                     greatGrand.setNxDfgFatherGoodsLevel(0);
+                    greatGrand.setNxDfgFatherGoodsColor(cgnGoods.getNxDgNxGoodsFatherColor());
                     greatGrand.setNxDfgNxGoodsId(cgnGoods.getNxDgNxGreatGrandId());
                     dgfService.save(greatGrand);
                     grand.setNxDfgFathersFatherId(greatGrand.getNxDistributerFatherGoodsId());

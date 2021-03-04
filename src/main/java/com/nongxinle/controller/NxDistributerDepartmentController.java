@@ -57,11 +57,11 @@ public class NxDistributerDepartmentController {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("disId", disId);
-		map.put("type", 1);
+		map.put("type", 0);
 		List<NxDepartmentEntity> entities =  nxDistributerDepartmentService.queryDisDepartmentsBySettleType(map);
 		Map<String, Object> map1 = new HashMap<>();
 		map1.put("disId", disId);
-		map1.put("type", 2);
+		map1.put("type", 1);
 		List<NxDepartmentEntity> entities2 =  nxDistributerDepartmentService.queryDisDepartmentsBySettleType(map1);
 
 		Map<String, Object> mapData = new HashMap<>();

@@ -19,4 +19,5 @@ public interface NxRestrauntDao extends BaseDao<NxRestrauntEntity> {
     List<NxRestrauntEntity> queryPrepareDeliveryRestraunts(Integer comId);
 
     List<NxRestrauntEntity> queryDriverRestraunts(Integer userId);
+
 }

@@ -1,5 +1,6 @@
 package com.nongxinle.service.impl;
 
+import com.nongxinle.entity.NxCommunityEntity;
 import com.nongxinle.entity.NxRestrauntEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,18 @@ public class NxCommunityRestrauantServiceImpl implements NxCommunityRestrauantSe
     public List<NxRestrauntEntity> queryRestrauntsByComId(Integer comId) {
 
 		return nxCommunityRestrauantDao.queryRestrauntsByComId(comId);
+    }
+
+    @Override
+    public NxCommunityEntity queryCommunityByResId(Integer resId) {
+
+		return nxCommunityRestrauantDao.queryCommunityByResId(resId);
+    }
+
+    @Override
+    public List<NxRestrauntEntity> queryRestrauntsByParams(Map<String, Object> map) {
+
+		return nxCommunityRestrauantDao.queryRestrauntsByParams(map);
     }
 
 }

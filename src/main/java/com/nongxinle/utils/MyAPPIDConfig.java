@@ -19,6 +19,30 @@ import java.io.InputStream;
 
 public class MyAPPIDConfig  {
 
+
+
+    /**
+     * 用户名： lizipurchase@sina.com
+     * 密码： Lpy87176693
+     * @return AppId
+     */
+    public String getComPurchaseAppID() {
+        return "wx83df2ca148aa617b";
+    }
+    public String getComPurchaseScreat(){
+        return "fe54724ab5d2f260fe187f7dd5dd08cc";
+    }
+
+    public String getComResAppID() {
+        return "wxaf7057ece792633d";
+    }
+    public String getComResScreat(){
+        return "9a6a115766a6123f326ee3cd31629b75";
+    }
+
+
+
+
     /**
      * 用户名： lizipurchase@sina.com
      * 密码： Lpy87176693

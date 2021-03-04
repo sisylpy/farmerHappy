@@ -76,4 +76,16 @@ public class NxCommunityFatherGoodsServiceImpl implements NxCommunityFatherGoods
 		return nxCommunityFatherGoodsDao.queryComGoodsCata(map2);
     }
 
+    @Override
+    public List<NxCommunityFatherGoodsEntity> queryRankFatherGoods(Integer comId) {
+
+		return nxCommunityFatherGoodsDao.queryRankFatherGoods(comId);
+    }
+
+    @Override
+    public List<NxCommunityFatherGoodsEntity> queryComFathersGoodsByParams(Map<String, Object> map) {
+
+		return nxCommunityFatherGoodsDao.queryComFathersGoodsByParams(map);
+    }
+
 }

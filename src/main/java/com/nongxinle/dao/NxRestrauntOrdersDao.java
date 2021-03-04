@@ -1,7 +1,7 @@
 package com.nongxinle.dao;
 
 /**
- * 
+ *
  *
  * @author lpy
  * @date 12-01 07:19
@@ -16,7 +16,7 @@ import java.util.TreeSet;
 
 public interface NxRestrauntOrdersDao extends BaseDao<NxRestrauntOrdersEntity> {
 
-    List<NxRestrauntEntity> queryCommunityTodayRestruants(Map<String, Object> map1);
+    TreeSet<NxRestrauntEntity> queryCommunityTodayRestruants(Map<String, Object> map1);
 
     List<NxRestrauntOrdersEntity> queryResOrdersByParams(Map<String, Object> map3);
 
@@ -30,9 +30,28 @@ public interface NxRestrauntOrdersDao extends BaseDao<NxRestrauntOrdersEntity> {
 
     List<NxCommunityFatherGoodsEntity> queryResOrdersByComStockGoodsType(Map<String, Object> map2);
 
-    List<NxSupplierEntity> queryResOrdersByComSupplierGoodsType(Map<String, Object> map2);
+    List<NxDistributerEntity> queryResOrdersByComDistributerGoodsType(Map<String, Object> map2);
 
     List<NxCommunityFatherGoodsEntity> queryTodayComGoodsType(Map<String, Object> map1);
 
     List<NxCommunityGoodsEntity> queryOrderGoodsByFatherId(Map<String, Object> map);
+
+
+    List<NxRestrauntOrdersEntity> queryComDeliveryResOrdersByParams(Map<String, Object> map);
+
+    TreeSet<NxRestrauntEntity> queryDeliveryResByParams(Map<String, Object> map1);
+
+    int queryOrderComGoodsTodayTotal(Map<String, Object> map);
+
+    TreeSet<NxRestrauntOrdersEntity> queryUnCostDate(Map<String, Object> map);
+
+    TreeSet<NxCommunityPurchaseBatchEntity> queryBuyingBatchGoods(Map<String, Object> map);
+
+    TreeSet<NxRestrauntEntity> queryTodayComRestrauant(Map<String, Object> map);
+
+    List<NxDistributerGoodsEntity> queryDistributerGoodsWithResOrdersByParams(Map<String, Object> map3);
+
+    List<NxCommunityEntity> queryDistributerTodayCommunity(Map<String, Object> map3);
+
+    List<NxRestrauntOrdersEntity> queryResChainOrdersByParams(Map<String, Object> map);
 }

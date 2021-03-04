@@ -137,7 +137,7 @@ CREATE TABLE `nx_community_goods` (
   `nx_cg_buy_purchase_user_id` int(20) DEFAULT NULL COMMENT '供货商id',
   `nx_cg_buy_app_id` varchar(10) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '进价',
   `nx_cg_buy_status` int(20) DEFAULT NULL COMMENT '商品id',
-  `nx_cg_supplier_id` int(20) DEFAULT NULL COMMENT '商品库父类id',
+  `nx_cg_distributer_id` int(20) DEFAULT NULL COMMENT '商品库父类id',
   `nx_cg_buying_price` varchar(200) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品库image',
   `nx_cg_goods_type` tinyint(2) DEFAULT NULL COMMENT '0 供货商，1 社区库存，2 自采购 4 加工',
   `nx_cg_goods_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '商品名称',
@@ -225,7 +225,7 @@ CREATE TABLE `nx_community_orders_sub` (
   `nx_COS_buy_status` tinyint(2) DEFAULT NULL COMMENT '子订单商品进货状态',
   `nx_COS_order_user_id` int(20) DEFAULT NULL COMMENT '子订单订货用户id',
   `nx_COS_sub_weight` float(4,1) DEFAULT NULL COMMENT '子订单重量',
-  `nx_COS_sub_supplier_id` int(20) DEFAULT NULL COMMENT '子订单商品供货商id',
+  `nx_COS_sub_Distributer_id` int(20) DEFAULT NULL COMMENT '子订单商品供货商id',
   `nx_COS_community_id` int(20) DEFAULT NULL COMMENT '子订单社区id',
   `nx_COS_goods_type` tinyint(2) DEFAULT NULL COMMENT '子订单社区商品类型',
   PRIMARY KEY (`nx_community_orders_sub_id`)
@@ -1049,22 +1049,22 @@ INSERT INTO `nx_e_commerce_community` VALUES (3, 3, 1);
 COMMIT;
 
 -- ----------------------------
--- Table structure for nx_e_commerce_supplier
+-- Table structure for nx_e_commerce_Distributer
 -- ----------------------------
-DROP TABLE IF EXISTS `nx_e_commerce_supplier`;
-CREATE TABLE `nx_e_commerce_supplier` (
-  `nx_distributer_supplier_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商供货商id',
+DROP TABLE IF EXISTS `nx_e_commerce_Distributer`;
+CREATE TABLE `nx_e_commerce_Distributer` (
+  `nx_distributer_Distributer_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '批发商供货商id',
   `nx_DS_distributer_id` int(20) DEFAULT NULL COMMENT '批发商id',
-  `nx_DS_supplier_id` int(20) DEFAULT NULL COMMENT '供货商id',
-  PRIMARY KEY (`nx_distributer_supplier_id`)
+  `nx_DS_Distributer_id` int(20) DEFAULT NULL COMMENT '供货商id',
+  PRIMARY KEY (`nx_distributer_Distributer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
--- Records of nx_e_commerce_supplier
+-- Records of nx_e_commerce_Distributer
 -- ----------------------------
 BEGIN;
-INSERT INTO `nx_e_commerce_supplier` VALUES (1, 1, 1);
-INSERT INTO `nx_e_commerce_supplier` VALUES (2, 1, 2);
+INSERT INTO `nx_e_commerce_Distributer` VALUES (1, 1, 1);
+INSERT INTO `nx_e_commerce_Distributer` VALUES (2, 1, 2);
 COMMIT;
 
 -- ----------------------------
@@ -1840,7 +1840,7 @@ INSERT INTO `sys_menu` VALUES (52, 0, '次日达社区', NULL, NULL, 0, 'fa fa-c
 INSERT INTO `sys_menu` VALUES (53, 0, '供货商', NULL, NULL, 0, 'fa fa-cog', 6);
 INSERT INTO `sys_menu` VALUES (56, 52, '商品管理', 'communityGoodsData', NULL, 1, 'fa fa-user', 2);
 INSERT INTO `sys_menu` VALUES (57, 52, '订单', 'costControl', NULL, 1, 'fa fa-user', 2);
-INSERT INTO `sys_menu` VALUES (62, 53, '供应商品', 'supplier', 'cksupplier:list, cksupplier:info, cksupplier:save, cksupplier:update, cksupplier:delete', 1, 'fa fa-cog', 1);
+INSERT INTO `sys_menu` VALUES (62, 53, '供应商品', 'Distributer', 'ckDistributer:list, ckDistributer:info, ckDistributer:save, ckDistributer:update, ckDistributer:delete', 1, 'fa fa-cog', 1);
 INSERT INTO `sys_menu` VALUES (63, 40, '订单', 'storeList', 'ckstore:list, ckstore:info, ckstore:save, ckstore:update, ckstore:delete', 1, 'fa fa-cog', 3);
 INSERT INTO `sys_menu` VALUES (64, 40, '送货路线', 'ckLine', 'ckline:list, ckline:info, ckline:save, ckline:update, ckline:delete', 1, 'fa fa-cog', 6);
 INSERT INTO `sys_menu` VALUES (65, 40, '商品', 'goods', 'ckgoods:list, ckgoods:info, ckgoods:save, ckgoods:update, ckgoods:delete', 1, 'fa fa-cog', 1);
@@ -1855,8 +1855,8 @@ INSERT INTO `sys_menu` VALUES (75, 69, '日采商品', 'daily', 'ckinbill:list, 
 INSERT INTO `sys_menu` VALUES (76, 29, '拣货单录入', 'enterOutStock', 'ckstockrecord:list, ckstockrecord:info, ckstockrecord:save, ckstockrecord:update, ckapplys:delete', 1, NULL, 2);
 INSERT INTO `sys_menu` VALUES (77, -1, '出货', 'outGoods', NULL, 1, 'fa fa-user', 1);
 INSERT INTO `sys_menu` VALUES (78, 69, '订货', 'todayOrder', NULL, 1, 'fa fa-user', 0);
-INSERT INTO `sys_menu` VALUES (79, 53, '未付货款', 'supplier', 'cksupplier:list, cksupplier:info, cksupplier:save, cksupplier:update, cksupplier:delete', 1, 'fa fa-cog', 1);
-INSERT INTO `sys_menu` VALUES (80, 53, '已付货款', 'supplier', 'cksupplier:list, cksupplier:info, cksupplier:save, cksupplier:update, cksupplier:delete', 1, 'fa fa-cog', 1);
+INSERT INTO `sys_menu` VALUES (79, 53, '未付货款', 'Distributer', 'ckDistributer:list, ckDistributer:info, ckDistributer:save, ckDistributer:update, ckDistributer:delete', 1, 'fa fa-cog', 1);
+INSERT INTO `sys_menu` VALUES (80, 53, '已付货款', 'Distributer', 'ckDistributer:list, ckDistributer:info, ckDistributer:save, ckDistributer:update, ckDistributer:delete', 1, 'fa fa-cog', 1);
 INSERT INTO `sys_menu` VALUES (81, 52, '配送', 'communityDelivery', NULL, 1, 'fa fa-user', 3);
 INSERT INTO `sys_menu` VALUES (82, 69, '供货商商品', 'outGoods', 'ckinbill:list, ckinbill:info, ckinbill:save, ckinbill:update, ckinbill:delete', 1, 'fa fa-user', 1);
 INSERT INTO `sys_menu` VALUES (83, 52, '库存商品', 'communityStock', NULL, 1, 'fa fa-user', 2);
@@ -1950,24 +1950,24 @@ INSERT INTO `sys_user_role` VALUES (1, 2, 1);
 COMMIT;
 
 -- ----------------------------
--- Table structure for zzz_nx_supplier
+-- Table structure for zzz_nx_Distributer
 -- ----------------------------
-DROP TABLE IF EXISTS `zzz_nx_supplier`;
-CREATE TABLE `zzz_nx_supplier` (
-  `nx_supplier_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '供货商id',
-  `nx_supplier_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
-  `nx_supplier_father_goods_id` int(20) DEFAULT NULL COMMENT '供货商商品类别id',
-  `nx_supplier_payment_type` tinyint(2) DEFAULT NULL COMMENT '供货商结算类别1现金，2记账',
-  `nx_supplier_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
-  PRIMARY KEY (`nx_supplier_id`)
+DROP TABLE IF EXISTS `zzz_nx_Distributer`;
+CREATE TABLE `zzz_nx_Distributer` (
+  `nx_Distributer_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '供货商id',
+  `nx_Distributer_name` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商名称',
+  `nx_Distributer_father_goods_id` int(20) DEFAULT NULL COMMENT '供货商商品类别id',
+  `nx_Distributer_payment_type` tinyint(2) DEFAULT NULL COMMENT '供货商结算类别1现金，2记账',
+  `nx_Distributer_date` varchar(20) CHARACTER SET utf16 COLLATE utf16_czech_ci DEFAULT NULL COMMENT '供货商加入时间',
+  PRIMARY KEY (`nx_Distributer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 -- ----------------------------
--- Records of zzz_nx_supplier
+-- Records of zzz_nx_Distributer
 -- ----------------------------
 BEGIN;
-INSERT INTO `zzz_nx_supplier` VALUES (1, '蔬菜李国树', NULL, NULL, NULL);
-INSERT INTO `zzz_nx_supplier` VALUES (2, '牛肉张', NULL, NULL, NULL);
+INSERT INTO `zzz_nx_Distributer` VALUES (1, '蔬菜李国树', NULL, NULL, NULL);
+INSERT INTO `zzz_nx_Distributer` VALUES (2, '牛肉张', NULL, NULL, NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

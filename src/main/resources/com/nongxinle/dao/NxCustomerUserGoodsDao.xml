@@ -31,11 +31,9 @@
 		<result property="nxGoodsFatherId" column="nx_goods_father_id"/>
 		<result property="nxGoodsDetail" column="nx_goods_detail"/>
 	</resultMap>
+
 	<resultMap id="disGoods" type="NxCommunityGoodsEntity">
 		<id property="nxCommunityGoodsId" column="nx_community_goods_id"/>
-		<result property="nxCgGoodsId" column="nx_cg_goods_id"/>
-		<result property="nxCgGoodsFatherId" column="nx_cg_goods_father_id"/>
-		<result property="nxCgGoodsFatherName" column="nx_cg_goods_father_name"/>
 		<result property="nxCgGoodsPrice" column="nx_cg_goods_price"/>
 		<result property="nxCgGoodsPriceDecimal" column="nx_cg_goods_price_decimal"/>
 		<result property="nxCgGoodsIsWeight" column="nx_cg_goods_is_weight"/>
@@ -43,9 +41,7 @@
 		<result property="nxCgPurchaseQuantity" column="nx_cg_purchase_quantity"/>
 		<result property="nxCgGoodsTotalHits" column="nx_cg_goods_total_hits"/>
 		<result property="nxCgGoodsSellType" column="nx_cg_goods_sell_type"/>
-		<result property="nxCgGoodsFilePath" column="nx_cg_goods_file_path"/>
 		<association property="nxGoodsEntity" resultMap="nxGoods"/>
-
 	</resultMap>
 
 	<resultMap id="customerGoods" type="NxCustomerUserGoodsEntity">

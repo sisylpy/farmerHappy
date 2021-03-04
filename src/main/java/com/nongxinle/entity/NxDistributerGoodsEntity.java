@@ -91,6 +91,8 @@ public class NxDistributerGoodsEntity implements Serializable, Comparable  {
 
 	private String nxDgNxGoodsFatherColor;
 
+
+
 	//private Integer nxDgGoodsStock;
 
 //	private Integer nxFatherId;
@@ -109,8 +111,10 @@ public class NxDistributerGoodsEntity implements Serializable, Comparable  {
 	private Integer isDownload;
 
 	private List<NxDepartmentOrdersEntity> nxDepartmentOrdersEntities;
+	private List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities;
 
 	private NxDepartmentDisGoodsEntity departmentDisGoodsEntity;
+	private NxCommunityGoodsEntity nxCommunityGoodsEntity;
 
 	@Override
 	public int compareTo(Object o) {

@@ -274,10 +274,7 @@ public class NxCommunityOrdersController {
     @ResponseBody
     public R getOrderDetail(@PathVariable Integer orderId) {
 
-
         NxCommunityOrdersEntity ordersEntity = nxCommunityOrdersService.queryObject(orderId);
-
-
         return R.ok().put("data", ordersEntity);
     }
 

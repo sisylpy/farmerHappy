@@ -82,4 +82,36 @@ public class NxRestrauntComGoodsServiceImpl implements NxRestrauntComGoodsServic
 		return nxRestrauntComGoodsDao.queryHistoryGoods(map);
     }
 
+    @Override
+    public List<NxRestrauntComGoodsEntity> queryHistoryGoodsQuickSearchStr(Map<String, Object> map1) {
+
+		return nxRestrauntComGoodsDao.queryHistoryGoodsQuickSearchStr(map1);
+    }
+
+    @Override
+    public List<NxCommunityFatherGoodsEntity> queryOrderUserGoods(Map<String, Object> map) {
+
+		return nxRestrauntComGoodsDao.queryOrderUserGoods(map);
+    }
+
+	@Override
+	public List<NxCommunityFatherGoodsEntity> queryOrderResGoods(Map<String, Object> map) {
+		return nxRestrauntComGoodsDao.queryOrderResGoods(map);
+	}
+
+    @Override
+    public List<NxRestrauntComGoodsEntity> orderUserQueryResComGoodsQuickSearchStr(Map<String, Object> map) {
+        return nxRestrauntComGoodsDao.orderUserQueryResComGoodsQuickSearchStr(map);
+    }
+
+    @Override
+    public List<NxRestrauntComGoodsEntity> ordreUserQueryHistoryGoodsQuickSearchStr(Map<String, Object> map1) {
+        return nxRestrauntComGoodsDao.ordreUserQueryHistoryGoodsQuickSearchStr(map1);
+    }
+
+    @Override
+    public void deleteResComGoods(Map<String, Object> map1) {
+         nxRestrauntComGoodsDao.deleteResComGoods(map1);
+    }
+
 }

@@ -7,6 +7,7 @@ package com.nongxinle.service;
  * @date 06-21 21:51
  */
 
+import com.nongxinle.entity.NxCommunityEntity;
 import com.nongxinle.entity.NxDepartmentEntity;
 import com.nongxinle.entity.NxDepartmentOrdersEntity;
 import com.nongxinle.entity.NxDistributerFatherGoodsEntity;
@@ -43,4 +44,7 @@ public interface NxDepartmentOrdersService {
 	int queryTotalByParams(Map<String, Object> deliverymap);
 
 	void saveIndependent(NxDepartmentOrdersEntity nxDepartmentOrders);
+
+//    List<NxDepartmentOrdersEntity> queryDepChainOrdersByParams(Map<String, Object> map);
+
 }

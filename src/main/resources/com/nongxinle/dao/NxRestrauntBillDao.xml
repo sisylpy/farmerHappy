@@ -8,8 +8,8 @@
 	<resultMap id="billWithApplys" type="NxRestrauntBillEntity">
 		<result property="nxRestrauntBillId" column="nx_restraunt_bill_id"/>
 		<result property="nxRbTotal" column="nx_rb_total"/>
-		<result property="nxRbTime" column="nx_rb_time"/>
-		<result property="nxRbDate" column="nx_rb_time"/>
+		<result property="nxRbProduceTime" column="nx_RB_produce_time"/>
+		<result property="nxRbDate" column="nx_RB_produce_time"/>
 		<result property="nxRbMonth" column="nx_rb_month"/>
 		<result property="nxRbTradeNo" column="nx_rb_trade_no"/>
 		<collection property="nxRestrauntOrdersEntities" resultMap="applys"/>
@@ -79,8 +79,37 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from nx_restraunt_bill 
 	</select>
-    <select id="queryRestrauntBillsByParams" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
-		select * from nx_restraunt_bill
+
+	<resultMap id="restraunt" type="NxRestrauntEntity">
+		<id property="nxRestrauntId" column="nx_restraunt_id"/>
+		<result property="nxRestrauntName" column="nx_restraunt_name"/>
+		<result property="nxRestrauntFatherId" column="nx_restraunt_father_id"/>
+		<result property="nxRestrauntIsGroupDep" column="nx_restraunt_is_group_dep"/>
+		<result property="nxRestrauntComId" column="nx_restraunt_com_id"/>
+		<result property="nxRestrauntType" column="nx_restraunt_type"/>
+		<result property="nxRestrauntNumber" column="nx_restraunt_number"/>
+		<result property="nxRestrauntSettleType" column="nx_restraunt_settle_type"/>
+		<result property="nxRestrauntAttrName" column="nx_restraunt_attr_name"/>
+	</resultMap>
+
+	<resultMap id="billWithResEntity" type="NxRestrauntBillEntity">
+		<id property="nxRestrauntBillId" column="nx_restraunt_bill_id"/>
+		<result property="nxRbDate" column="nx_RB_date"/>
+		<result property="nxRbMonth" column="nx_RB_month"/>
+		<result property="nxRbPayTime" column="nx_RB_time"/>
+		<result property="nxRbWeek" column="nx_RB_week"/>
+		<result property="nxRbTotal" column="nx_RB_total"/>
+		<result property="nxRbProduceTime" column="nx_RB_produce_time"/>
+		<result property="nxRbApplyPayTime" column="nx_RB_apply_pay_time"/>
+		<result property="nxRbPayTime" column="nx_RB_pay_time"/>
+		<result property="nxRbStatus" column="nx_RB_status"/>
+		<result property="nxRbTradeNo" column="nx_RB_trade_no"/>
+		<association property="nxRestrauntEntity" resultMap="restraunt"/>
+
+	</resultMap>
+    <select id="queryRestrauntBillsByParams" resultMap="billWithResEntity">
+		select * from nx_restraunt_bill as rb
+		left join nx_restraunt as r on r.nx_restraunt_id = rb.nx_RB_restraunt_id
 		<where>
 			<if test="resId != null">
 				nx_RB_restraunt_id = #{resId}
@@ -97,16 +126,21 @@
 			<if test="month != null ">
 				and nx_RB_month = #{month}
 			</if>
-
+			<if test="resIds != null">
+				and nx_RB_restraunt_id in
+				<foreach item="id" collection="resIds" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
 		</where>
-		order by nx_RB_time DESC
+		order by nx_RB_produce_time DESC
 	</select>
 
 	<select id="queryTotalRestrauntBillByParams" resultType="java.lang.Integer">
 		select count(*) from nx_restraunt_bill
 		<where>
-			<if test="resFatherId != null ">
-				and nx_RB_restraunt_id = #{resFatherId}
+			<if test="resId != null ">
+				and nx_RB_restraunt_id = #{resId}
 			</if>
 			<if test="comId != null ">
 				and nx_RB_com_id = #{comId}
@@ -117,10 +151,23 @@
 			<if test="statusEqual != null ">
 				and nx_RB_status = #{statusEqual}
 			</if>
+			<if test="resIds != null">
+				and nx_RB_restraunt_id in
+				<foreach item="id" collection="resIds" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
 
 		</where>
 	</select>
-	<insert id="save" parameterType="com.nongxinle.entity.NxRestrauntBillEntity">
+    <select id="queryRestrauntBillByTradeNo" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
+		select * from nx_restraunt_bill where nx_RB_trade_no = #{ordersSn}
+	</select>
+    <select id="queryUnPayRestrauntBill" resultType="com.nongxinle.entity.NxRestrauntBillEntity">
+		select * from nx_restraunt_bill where nx_RB_restraunt_id = #{resId} and nx_Rb_status = #{equalStatus}
+	</select>
+    <insert id="save" parameterType="com.nongxinle.entity.NxRestrauntBillEntity" useGeneratedKeys="true"
+	  keyProperty="nxRestrauntBillId">
 		insert into nx_restraunt_bill
 		(
 			`nx_restraunt_bill_id`, 
@@ -129,12 +176,14 @@
 			`nx_RB_driver_user_id`, 
 			`nx_RB_total`, 
 			`nx_RB_status`, 
-			`nx_RB_time`, 
+			`nx_RB_produce_time`, 
 			`nx_RB_issue_user_id`, 
 			`nx_RB_date`, 
 			`nx_RB_month`, 
 			`nx_RB_week`, 
-			`nx_RB_trade_no`
+			`nx_RB_trade_no`,
+		 	`nx_RB_apply_pay_time`,
+		 	`nx_RB_pay_time`
 		)
 		values
 		(
@@ -144,12 +193,15 @@
 			#{nxRbDriverUserId}, 
 			#{nxRbTotal}, 
 			#{nxRbStatus}, 
-			#{nxRbTime}, 
+			#{nxRbProduceTime}, 
 			#{nxRbIssueUserId}, 
 			#{nxRbDate}, 
 			#{nxRbMonth}, 
 			#{nxRbWeek}, 
-			#{nxRbTradeNo}
+			#{nxRbTradeNo},
+		 	#{nxRbApplyPayTime},
+		 	#{nxRbPayTime}
+
 		)
 	</insert>
 	 
@@ -161,10 +213,12 @@
 			<if test="nxRbDriverUserId != null">`nx_RB_driver_user_id` = #{nxRbDriverUserId}, </if>
 			<if test="nxRbTotal != null">`nx_RB_total` = #{nxRbTotal}, </if>
 			<if test="nxRbStatus != null">`nx_RB_status` = #{nxRbStatus}, </if>
-			<if test="nxRbTime != null">`nx_RB_time` = #{nxRbTime}, </if>
+			<if test="nxRbProduceTime != null">`nx_RB_produce_time` = #{nxRbProduceTime}, </if>
 			<if test="nxRbIssueUserId != null">`nx_RB_issue_user_id` = #{nxRbIssueUserId}, </if>
 			<if test="nxRbDate != null">`nx_RB_date` = #{nxRbDate}, </if>
 			<if test="nxRbMonth != null">`nx_RB_month` = #{nxRbMonth}, </if>
+			<if test="nxRbWeek != null">`nx_RB_week` = #{nxRbWeek}, </if>
+			<if test="nxRbApplyPayTime != null">`nx_RB_apply_pay_time` = #{nxRbApplyPayTime}, </if>
 			<if test="nxRbWeek != null">`nx_RB_week` = #{nxRbWeek}, </if>
 			<if test="nxRbTradeNo != null">`nx_RB_trade_no` = #{nxRbTradeNo}</if>
 		</set>

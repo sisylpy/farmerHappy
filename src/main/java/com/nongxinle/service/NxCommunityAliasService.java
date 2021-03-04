@@ -27,4 +27,6 @@ public interface NxCommunityAliasService {
 	void delete(Integer nxCommunityAliasId);
 	
 	void deleteBatch(Integer[] nxCommunityAliasIds);
+
+	List<NxCommunityAliasEntity> queryComAliasByComGoodsId(Integer comGoodsId);
 }

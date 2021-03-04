@@ -3,8 +3,35 @@
 
 <mapper namespace="com.nongxinle.dao.NxRestrauntDao">
 
-	<select id="queryObject" resultType="com.nongxinle.entity.NxRestrauntEntity">
-		select * from nx_restraunt where nx_restraunt_id = #{value}
+
+	<resultMap id="restruant" type="NxRestrauntEntity">
+		<id property="nxRestrauntId" column="nx_restraunt_id"/>
+		<result property="nxRestrauntName" column="nx_restraunt_name"/>
+		<result property="nxRestrauntAttrName" column="nx_restraunt_attr_name"/>
+		<result property="nxRestrauntFatherId" column="nx_restraunt_father_id"/>
+		<result property="nxRestrauntIsGroupDep" column="nx_restraunt_is_group_dep"/>
+		<result property="nxRestrauntComId" column="nx_restraunt_com_id"/>
+		<result property="nxRestrauntType" column="nx_restraunt_type"/>
+		<result property="nxRestrauntNumber" column="nx_restraunt_number"/>
+		<result property="nxRestrauntServiceLevel" column="nx_restraunt_service_level"/>
+		<result property="nxRestrauntSettleType" column="nx_restraunt_settle_type"/>
+		<result property="nxRestrauntOweBoxNumber" column="nx_restraunt_owe_box_number"/>
+		<result property="nxRestrauntDeliveryBoxNumber" column="nx_restraunt_delivery_box_number"/>
+		<result property="nxRestrauntMaxTime" column="nx_restraunt_max_time"/>
+		<result property="nxRestrauntMixTime" column="nx_restraunt_mix_time"/>
+		<result property="nxRestrauntDeliveryCost" column="nx_restraunt_delivery_cost"/>
+		<result property="nxRestrauntDeliveryLimit" column="nx_restraunt_delivery_limit"/>
+		<result property="nxRestrauntUnPayTotal" column="nx_restraunt_unPay_total"/>
+		<result property="nxRestrauntWorkingStatus" column="nx_restraunt_working_status"/>
+		<result property="nxRestrauntSubAmount" column="nx_restraunt_sub_amount"/>
+		<association property="nxCommunityUserEntity" resultMap="driver"/>
+	</resultMap>
+
+
+	<select id="queryObject" resultMap="restruant">
+		select * from nx_restraunt as nr
+		left join nx_community_user as cu on cu.nx_community_user_id = nr.nx_restraunt_driver_id
+		where nx_restraunt_id = #{value}
 	</select>
 
 	<select id="queryList" resultType="com.nongxinle.entity.NxRestrauntEntity">
@@ -34,11 +61,31 @@
 		<result property="nxRestrauntMixTime" column="f_nx_restraunt_mix_time"/>
 		<result property="nxRestrauntDeliveryCost" column="f_nx_restraunt_delivery_cost"/>
 		<result property="nxRestrauntDeliveryLimit" column="f_nx_restraunt_delivery_limit"/>
-
+		<result property="nxRestrauntUnPayTotal" column="f_nx_restraunt_unPay_total"/>
+		<result property="nxRestrauntSubAmount" column="f_nx_restruant_sub_amount"/>
 	</resultMap>
+
 	<resultMap id="community" type="NxCommunityEntity">
 		<id property="nxCommunityId" column="nx_community_id"/>
 		<result property="nxCommunityName" column="nx_community_name"/>
+	</resultMap>
+	<resultMap id="grandSubReses" type="NxRestrauntEntity">
+		<id property="nxRestrauntId" column="grandSub_nx_restraunt_id"/>
+		<result property="nxRestrauntName" column="grandSub_nx_restraunt_name"/>
+		<result property="nxRestrauntFatherId" column="grandSub_nx_restraunt_father_id"/>
+		<result property="nxRestrauntIsGroupDep" column="grandSub_nx_restraunt_is_group_dep"/>
+		<result property="nxRestrauntComId" column="grandSub_nx_restraunt_com_id"/>
+		<result property="nxRestrauntType" column="grandSub_nx_restraunt_type"/>
+		<result property="nxRestrauntNumber" column="grandSub_nx_restraunt_number"/>
+		<result property="nxRestrauntServiceLevel" column="grandSub_nx_restraunt_service_level"/>
+		<result property="nxRestrauntSettleType" column="grandSub_nx_restraunt_settle_type"/>
+		<result property="nxRestrauntOweBoxNumber" column="grandSub_nx_restraunt_owe_box_number"/>
+		<result property="nxRestrauntDeliveryBoxNumber" column="grandSub_nx_restraunt_delivery_box_number"/>
+		<result property="nxRestrauntDeliveryCost" column="grandSub_nx_restraunt_delivery_cost"/>
+		<result property="nxRestrauntDeliveryLimit" column="grandSub_nx_restraunt_delivery_limit"/>
+		<result property="nxRestrauntUnPayTotal" column="grandSub_nx_restraunt_unPay_total"/>
+		<result property="nxRestrauntSubAmount" column="grandSub_nx_restraunt_sub_amount"/>
+		<result property="nxRestrauntWorkingStatus" column="grandSub_nx_restraunt_working_status"/>
 	</resultMap>
 	<resultMap id="subReses" type="NxRestrauntEntity">
 		<id property="nxRestrauntId" column="subs_nx_restraunt_id"/>
@@ -52,13 +99,26 @@
 		<result property="nxRestrauntSettleType" column="subs_nx_restraunt_settle_type"/>
 		<result property="nxRestrauntOweBoxNumber" column="subs_nx_restraunt_owe_box_number"/>
 		<result property="nxRestrauntDeliveryBoxNumber" column="subs_nx_restraunt_delivery_box_number"/>
-		<result property="nxRestrauntDeliveryCost" column="f_nx_restraunt_delivery_cost"/>
-		<result property="nxRestrauntDeliveryLimit" column="f_nx_restraunt_delivery_limit"/>
-
+		<result property="nxRestrauntDeliveryCost" column="subs_nx_restraunt_delivery_cost"/>
+		<result property="nxRestrauntDeliveryLimit" column="subs_nx_restraunt_delivery_limit"/>
+		<result property="nxRestrauntUnPayTotal" column="subs_nx_restraunt_unPay_total"/>
+		<result property="nxRestrauntSubAmount" column="subs_nx_restraunt_sub_amount"/>
+		<result property="nxRestrauntWorkingStatus" column="subs_nx_restraunt_working_status"/>
+		<collection property="nxSubRestraunts" resultMap="grandSubReses"/>
 	</resultMap>
+
+
+	<resultMap id="driver" type="NxCommunityUserEntity">
+		<id property="nxCommunityUserId" column="nx_community_user_id"/>
+		<result property="nxCouWxAvartraUrl" column="nx_COU_wx_avartra_url"/>
+		<result property="nxCouWxNickName" column="nx_COU_wx_nick_name"/>
+		<result property="nxCouWxPhone" column="nx_COU_wx_phone"/>
+	</resultMap>
+
 	<resultMap id="restruantInfo" type="NxRestrauntEntity">
 		<id property="nxRestrauntId" column="r_nx_restraunt_id"/>
 		<result property="nxRestrauntName" column="r_nx_restraunt_name"/>
+		<result property="nxRestrauntAttrName" column="r_nx_restraunt_attr_name"/>
 		<result property="nxRestrauntFatherId" column="r_nx_restraunt_father_id"/>
 		<result property="nxRestrauntIsGroupDep" column="r_nx_restraunt_is_group_dep"/>
 		<result property="nxRestrauntComId" column="r_nx_restraunt_com_id"/>
@@ -76,14 +136,18 @@
 		<result property="nxRestrauntNavigationAddress" column="r_nx_restraunt_navigation_address"/>
 		<result property="nxRestrauntLat" column="r_nx_restraunt_lat"/>
 		<result property="nxRestrauntLng" column="r_nx_restraunt_lng"/>
-		<association property="fathernxRestraunt" resultMap="fatherRes"/>
-		<association property="nxCommunityEntity" resultMap="community"/>
+		<result property="nxRestrauntUnPayTotal" column="r_nx_restraunt_unPay_total"/>
+		<result property="nxRestrauntSubAmount" column="r_nx_restraunt_sub_amount"/>
+		<result property="nxRestrauntWorkingStatus" column="r_nx_restraunt_working_status"/>
+<!--		<association property="nxCommunityEntity" resultMap="community"/>-->
+<!--		<association property="nxCommunityUserEntity" resultMap="driver"/>-->
 		<collection property="nxRestrauntEntities" resultMap="subReses"/>
 	</resultMap>
 
 	<select id="queryResInfo" resultMap="restruantInfo">
 		select r.nx_restraunt_id 'r_nx_restraunt_id',
 		       r.nx_restraunt_name 'r_nx_restraunt_name',
+		       r.nx_restraunt_attr_name 'r_nx_restraunt_attr_name',
 			   r.nx_restraunt_father_id 'r_nx_restraunt_father_id',
 			   r.nx_restraunt_is_group_dep 'r_nx_restraunt_is_group_dep',
 			   r.nx_restraunt_com_id 'r_nx_restraunt_com_id',
@@ -100,44 +164,50 @@
 		       r.nx_restraunt_navigation_address 'r_nx_restraunt_navigation_address',
 		       r.nx_restraunt_lat 'r_nx_restraunt_lat',
 		       r.nx_restraunt_lng 'r_nx_restraunt_lng',
-			   f.nx_restraunt_id 'f_nx_restraunt_id',
-			   f.nx_restraunt_name 'f_nx_restraunt_name',
-			   f.nx_restraunt_father_id 'f_nx_restraunt_father_id',
-			   f.nx_restraunt_is_group_dep 'f_nx_restraunt_is_group_dep',
-			   f.nx_restraunt_com_id 'f_nx_restraunt_com_id',
-			   f.nx_restraunt_sub_amount 'f_nx_restraunt_sub_amount',
-			   f.nx_restraunt_type 'f_nx_restraunt_type',
-			   f.nx_restraunt_settle_type 'f_nx_restraunt_settle_type',
-		       f.nx_restraunt_number 'f_nx_restraunt_number',
-		       f.nx_restraunt_service_level 'f_nx_restraunt_service_level',
-		       f.nx_restraunt_owe_box_number 'f_nx_restraunt_owe_box_number',
-		       f.nx_restraunt_delivery_box_number 'f_nx_restraunt_delivery_box_number',
-		       f.nx_restraunt_mix_time 'f_nx_restraunt_mix_time',
-		       f.nx_restraunt_max_time 'f_nx_restraunt_max_time',
- 			   subsd.nx_restraunt_id 'subs_nx_restraunt_id',
+		       r.nx_restraunt_unPay_total 'r_nx_restraunt_unPay_total',
+		       r.nx_restraunt_working_status 'r_nx_restraunt_working_status',
+  			   subsd.nx_restraunt_id 'subs_nx_restraunt_id',
 			   subsd.nx_restraunt_name 'subs_nx_restraunt_name',
 			   subsd.nx_restraunt_father_id 'subs_nx_restraunt_father_id',
 			   subsd.nx_restraunt_is_group_dep 'subs_nx_restraunt_is_group_dep',
-			   subsd.nx_restraunt_com_id 'subs_nx_drestraunt_com_id',
+			   subsd.nx_restraunt_com_id 'subs_nx_restraunt_com_id',
 			   subsd.nx_restraunt_sub_amount 'subs_nx_restraunt_sub_amount',
 		       subsd.nx_restraunt_number 'subs_nx_restraunt_number',
-			   com.nx_community_id,
-			   com.nx_community_name
+		       subsd.nx_restraunt_unPay_total 'subs_nx_restraunt_unPay_total',
+			   subsd.nx_restraunt_working_status 'subs_nx_restraunt_working_status',
+			   grandSub.nx_restraunt_id 'grandSub_nx_restraunt_id',
+			   grandSub.nx_restraunt_name 'grandSub_nx_restraunt_name',
+			   grandSub.nx_restraunt_father_id 'grandSub_nx_restraunt_father_id',
+			   grandSub.nx_restraunt_is_group_dep 'grandSub_nx_restraunt_is_group_dep',
+			   grandSub.nx_restraunt_com_id 'grandSub_nx_restraunt_com_id',
+			   grandSub.nx_restraunt_sub_amount 'grandSub_nx_restraunt_sub_amount',
+			   grandSub.nx_restraunt_type 'grandSub_nx_restraunt_type',
+			   grandSub.nx_restraunt_settle_type 'grandSub_nx_restraunt_settle_type',
+			   grandSub.nx_restraunt_number 'grandSub_nx_restraunt_number',
+			   grandSub.nx_restraunt_service_level 'grandSub_nx_restraunt_service_level',
+			   grandSub.nx_restraunt_owe_box_number 'grandSub_nx_restraunt_owe_box_number',
+			   grandSub.nx_restraunt_delivery_box_number 'grandSub_nx_restraunt_delivery_box_number',
+			   grandSub.nx_restraunt_mix_time 'grandSub_nx_restraunt_mix_time',
+			   grandSub.nx_restraunt_max_time 'grandSub_nx_restraunt_max_time',
+			   grandSub.nx_restraunt_unPay_total 'grandSub_nx_restraunt_unPay_total',
+			   grandSub.nx_restraunt_sub_amount 'grandSub_nx_restraunt_sub_amount',
+		       grandSub.nx_restraunt_working_status 'grandSub_nx_restraunt_working_status'
+
 		from nx_restraunt as r
-				 left join nx_restraunt as f on r.nx_restraunt_father_id = f.nx_restraunt_id
 				 left join nx_restraunt as subsd on subsd.nx_restraunt_father_id = r.nx_restraunt_id
-				 left join nx_community as com on com.nx_community_id = f.nx_restraunt_com_id
+				 left join nx_restraunt as grandSub on grandSub.nx_restraunt_father_id = subsd.nx_restraunt_id
 		where r.nx_restraunt_id = #{restaurantId}
 	</select>
 	<select id="queryPrepareDeliveryRestraunts" resultType="com.nongxinle.entity.NxRestrauntEntity">
-		select * from  nx_restraunt where nx_restraunt_com_id = #{comId} and nx_restraunt_working_status = 1
+		select * from  nx_restraunt where nx_restraunt_com_id = #{comId} and nx_restraunt_working_status &gt; 0
 	</select>
 	<select id="queryDriverRestraunts" resultType="com.nongxinle.entity.NxRestrauntEntity">
 		select * from nx_restraunt where nx_restraunt_driver_id = #{userId}
 	</select>
 
 
-	<insert id="save" parameterType="com.nongxinle.entity.NxRestrauntEntity" useGeneratedKeys="true"
+
+    <insert id="save" parameterType="com.nongxinle.entity.NxRestrauntEntity" useGeneratedKeys="true"
             keyProperty="nxRestrauntId">
 		insert into nx_restraunt
 		(
@@ -166,7 +236,8 @@
 		 	`nx_restraunt_mix_time`,
 		 	`nx_restraunt_max_time`,
 		 	`nx_restraunt_delivery_cost`,
-		 	`nx_restraunt_delivery_limit`
+		 	`nx_restraunt_delivery_limit`,
+		 	`nx_restraunt_unPay_total`
 		)
 		values
 		(
@@ -195,7 +266,8 @@
 		 	#{nxRestrauntMixTime},
 		 	#{nxRestrauntMaxTime},
 		 	#{nxRestrauntDeliveryCost},
-		 	#{nxRestrauntDeliveryLimit}
+		 	#{nxRestrauntDeliveryLimit},
+		 	#{nxRestrauntUnPayTotal}
 		)
 	</insert>
 
@@ -227,6 +299,7 @@
 			<if test="nxRestrauntMaxTime != null">`nx_restraunt_max_time` = #{nxRestrauntMaxTime}, </if>
 			<if test="nxRestrauntDeliveryCost != null">`nx_restraunt_delivery_cost` = #{nxRestrauntDeliveryCost}, </if>
 			<if test="nxRestrauntDeliveryLimit != null">`nx_restraunt_delivery_limit` = #{nxRestrauntDeliveryLimit}, </if>
+			<if test="nxRestrauntUnPayTotal != null">`nx_restraunt_unPay_total` = #{nxRestrauntUnPayTotal}, </if>
 			<if test="nxRestrauntAttrName != null">`nx_restraunt_attr_name` = #{nxRestrauntAttrName}</if>
 		</set>
 		where nx_restraunt_id = #{nxRestrauntId}

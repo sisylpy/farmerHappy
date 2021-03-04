@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nongxinle.utils.R;
 
+import static com.nongxinle.utils.DateUtils.formatWhatDay;
 
 
 @RestController
@@ -42,27 +44,44 @@ public class NxRestrauntController {
 
     private static final String KEY = "C5HBZ-KEIW2-JXXUJ-COLGS-FQO47-WWFAK";
 
-    
+
+    @RequestMapping(value = "/getResAndUserInfo/{userId}")
+    @ResponseBody
+    public R getResAndUserInfo(@PathVariable Integer userId) {
+        NxRestrauntUserEntity nxRestrauntUserEntity = nxRestrauntUserService.queryObject(userId);
+        Integer restaurantId = nxRestrauntUserEntity.getNxRuRestaurantId();
+        NxRestrauntEntity restrauntEntity = nxRestrauntService.queryResInfo(restaurantId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("resInfo",restrauntEntity );
+        map.put("userInfo", nxRestrauntUserEntity);
+
+        return R.ok().put("data", map);
+    }
+
+    @RequestMapping(value = "/getResInfo/{resId}")
+    @ResponseBody
+    public R getResInfo(@PathVariable String resId) {
+        NxRestrauntEntity restrauntEntity = nxRestrauntService.queryResInfo(Integer.valueOf(resId));
+        return R.ok().put("data",restrauntEntity);
+    }
 
 
     @RequestMapping(value = "/deliveryCompleteRestraunt", method = RequestMethod.POST)
     @ResponseBody
     public R deliveryCompleteRestraunt (@RequestBody NxRestrauntEntity restraunt ) {
+
         //更新订单
         Integer nxRestrauntId = restraunt.getNxRestrauntId();
         Map<String, Object> map = new HashMap<>();
         map.put("resId", nxRestrauntId);
-        map.put("statusEqual", 3);
+        map.put("equalStatus", 3);
         List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities = nxRestrauntOrdersService.queryResOrdersByParams(map);
         for (NxRestrauntOrdersEntity ordersEntity: nxRestrauntOrdersEntities){
             ordersEntity.setNxRoStatus(4);
+            ordersEntity.setNxRoDeliveryDate(formatWhatDay(0));
             nxRestrauntOrdersService.update(ordersEntity);
         }
-        //更新司机
-        Integer nxRestrauntDriverId = restraunt.getNxRestrauntDriverId();
-        NxCommunityUserEntity nxCommunityUserEntity = nxCommunityUserService.queryObject(nxRestrauntDriverId);
-        nxCommunityUserEntity.setNxCouWorkingStatus(0);
-        nxCommunityUserService.update(nxCommunityUserEntity);
+
         //更新餐馆
         nxRestrauntService.update(restraunt);
         return R.ok();
@@ -162,32 +181,175 @@ public class NxRestrauntController {
     }
 
 
-    @RequestMapping(value = "/deliveryRestraunts", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancleDeliveryRestraunt/{resId}")
     @ResponseBody
-    public R deliveryRestraunts (@RequestBody List<NxRestrauntEntity> restraunts) {
-        //更新司机状态
-        NxRestrauntEntity nxRestrauntEntity = restraunts.get(0);
-        Integer nxRestrauntDriverId = nxRestrauntEntity.getNxRestrauntDriverId();
-        NxCommunityUserEntity nxCommunityUserEntity = nxCommunityUserService.queryObject(nxRestrauntDriverId);
-        nxCommunityUserEntity.setNxCouWorkingStatus(1);
-        nxCommunityUserService.update(nxCommunityUserEntity);
-        //修改餐馆状态
-        for (NxRestrauntEntity res : restraunts) {
-            nxRestrauntService.update(res);
+    public R cancleDeliveryRestraunt(@PathVariable Integer resId) {
+        NxRestrauntEntity res = nxRestrauntService.queryObject(resId);
+        res.setNxRestrauntDriverId(-1);
+        res.setNxRestrauntWorkingStatus(1);
+        nxRestrauntService.update(res);
+        Map<String, Object> map = new HashMap<>();
+        map.put("resFatherId", resId);
+        map.put("equalStatus", 3);
+        List<NxRestrauntOrdersEntity> entities = nxRestrauntOrdersService.queryResOrdersByParams(map);
+        for (NxRestrauntOrdersEntity ordersEntity :entities) {
+            ordersEntity.setNxRoStatus(2);
+            nxRestrauntOrdersService.update(ordersEntity);
         }
         return R.ok();
     }
 
+
+    /**
+     * 给司机分派送货餐馆
+     * @param restraunts
+     * @return
+     */
+    @RequestMapping(value = "/deliveryRestraunts", method = RequestMethod.POST)
+    @ResponseBody
+    public R deliveryRestraunts (@RequestBody List<NxRestrauntEntity> restraunts) {
+        //更新司机状态
+//        NxRestrauntEntity nxRestrauntEntity = restraunts.get(0);
+//        Integer nxRestrauntDriverId = nxRestrauntEntity.getNxRestrauntDriverId();
+//        NxCommunityUserEntity nxCommunityUserEntity = nxCommunityUserService.queryObject(nxRestrauntDriverId);
+//        nxCommunityUserEntity.setNxCouWorkingStatus(1);
+//        nxCommunityUserService.update(nxCommunityUserEntity);
+        //修改餐馆状态
+        for (NxRestrauntEntity res : restraunts) {
+            res.setNxRestrauntWorkingStatus(2);
+            nxRestrauntService.update(res);
+            Integer nxRestrauntId = res.getNxRestrauntId();
+            Map<String, Object> map = new HashMap<>();
+            map.put("resFatherId", nxRestrauntId);
+            map.put("equalStatus", 2);
+            List<NxRestrauntOrdersEntity> entities = nxRestrauntOrdersService.queryResOrdersByParams(map);
+            for (NxRestrauntOrdersEntity ordersEntity :entities) {
+                ordersEntity.setNxRoStatus(3);
+                nxRestrauntOrdersService.update(ordersEntity);
+            }
+        }
+        return R.ok();
+    }
+
+
     @RequestMapping(value = "/saveDeliveryGoods", method = RequestMethod.POST)
     @ResponseBody
     public R saveDeliveryGoods (@RequestBody NxRestrauntEntity restraunt) {
-        nxRestrauntService.update(restraunt);
+
+        //1,update orders and make newBill
         List<NxRestrauntOrdersEntity> nxRestrauntOrdersEntities = restraunt.getNxRestrauntOrdersEntities();
+        float total = 0;
+
         for (NxRestrauntOrdersEntity orders : nxRestrauntOrdersEntities) {
-            orders.setNxRoStatus(3);
+            orders.setNxRoStatus(2);
             nxRestrauntOrdersService.update(orders);
+//            String nxRoSubtotal = orders.getNxRoSubtotal();
+//            float sub =Float.parseFloat(nxRoSubtotal);
+//            total = total + sub;
+
         }
+
+        // 2,update restraunt
+//        String nxRestrauntUnPayTotalTotal = restraunt.getNxRestrauntUnPayTotal();
+//        float v = Float.parseFloat(nxRestrauntUnPayTotalTotal); //
+//        float totalToday =  v + total;
+//
+//        DecimalFormat decimalFormat=new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+//        String todayTotal = decimalFormat.format(totalToday);
+//
+//        restraunt.setNxRestrauntUnPayTotal(todayTotal);
+        //如果餐馆是第一次分拣
+        System.out.println(restraunt.getNxRestrauntWorkingStatus() + "statusssss");
+            if(restraunt.getNxRestrauntWorkingStatus() == 0){
+                restraunt.setNxRestrauntWorkingStatus(1);
+            }
+
+
+        nxRestrauntService.update(restraunt);
+
+
         return R.ok();
+    }
+
+    /**
+     * PURCHASE
+     * 采购员注册
+     * @param res 订货群
+     * @return 群信息
+     */
+    @RequestMapping(value = "/resManRegisterNewRestraunt", method = RequestMethod.POST)
+    @ResponseBody
+    public R resManRegisterNewRestraunt(@RequestBody NxRestrauntEntity res) {
+//wxApp
+        MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+
+        NxRestrauntUserEntity nxRestrauntUserEntity = res.getNxRestrauntUserEntity();
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getComPurchaseAppID() +
+                "&secret=" + myAPPIDConfig.getComPurchaseScreat() + "&js_code=" + nxRestrauntUserEntity.getNxRuCode() + "&grant_type=authorization_code";
+        // 发送请求，返回Json字符串
+        String str = WeChatUtil.httpRequest(url, "GET", null);
+        // 转成Json对象 获取openid
+        JSONObject jsonObject = JSONObject.parseObject(str);
+
+        // 我们需要的openid，在一个小程序中，openid是唯一的
+        String openid = jsonObject.get("openid").toString();
+        NxRestrauntUserEntity nxResUserEntity = nxRestrauntUserService.queryResUserByOpenId(openid);
+
+        if (nxResUserEntity == null) {
+            res.getNxRestrauntUserEntity().setNxRuWxOpenId(openid);
+            Integer resUserId = nxRestrauntService.saveNewRestraunt(res);
+
+            if (resUserId != null) {
+                Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(resUserId);
+                return R.ok().put("data", stringObjectMap);
+            }
+            return R.error(-1, "注册失败");
+        } else {
+            return R.error(-1, "此微信号已注册过采购员");
+        }
+    }
+
+    /**
+     * PURCHASE
+     * 采购员注册
+     * @param res 订货群
+     * @return 群信息
+     */
+    @RequestMapping(value = "/chainResManRegisterNewRestraunt", method = RequestMethod.POST)
+    @ResponseBody
+    public R chainResManRegisterNewRestraunt(@RequestBody NxRestrauntEntity res) {
+//wxApp
+        MyAPPIDConfig myAPPIDConfig = new MyAPPIDConfig();
+
+        NxRestrauntUserEntity nxRestrauntUserEntity = res.getNxRestrauntUserEntity();
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + myAPPIDConfig.getComPurchaseAppID() +
+                "&secret=" + myAPPIDConfig.getComPurchaseScreat() + "&js_code=" + nxRestrauntUserEntity.getNxRuCode() + "&grant_type=authorization_code";
+        // 发送请求，返回Json字符串
+        String str = WeChatUtil.httpRequest(url, "GET", null);
+        // 转成Json对象 获取openid
+        JSONObject jsonObject = JSONObject.parseObject(str);
+
+        // 我们需要的openid，在一个小程序中，openid是唯一的
+        String openid = jsonObject.get("openid").toString();
+        NxRestrauntUserEntity nxResUserEntity = nxRestrauntUserService.queryResUserByOpenId(openid);
+
+        if (nxResUserEntity == null) {
+            res.getNxRestrauntUserEntity().setNxRuWxOpenId(openid);
+            Integer resUserId = nxRestrauntService.saveNewChainRestraunt(res);
+
+            if (resUserId != null) {
+                Map<String, Object> stringObjectMap = nxRestrauntService.queryResAndUserInfo(resUserId);
+                return R.ok().put("data", stringObjectMap);
+            }
+            return R.error(-1, "注册失败");
+        } else {
+            return R.error(-1, "此微信号已注册过采购员");
+        }
+    }
+    @RequestMapping(value = "/AQEj8E6gAq.txt")
+    @ResponseBody
+    public String chainResManRes( ) {
+        return "8fb2fd84cc1d93eff75db801df3d1040";
     }
 
     /**
@@ -226,7 +388,6 @@ public class NxRestrauntController {
         } else {
             return R.error(-1, "此微信号已注册过采购员");
         }
-
     }
 
 
@@ -245,7 +406,15 @@ public class NxRestrauntController {
     @RequestMapping(value = "/updateRestraunt", method = RequestMethod.POST)
     @ResponseBody
     public R updateRestraunt (@RequestBody NxRestrauntEntity restruant ) {
+
+        System.out.println(restruant);
         nxRestrauntService.update(restruant);
+
+        if(restruant.getNxRestrauntSubAmount() > 0){
+            for (NxRestrauntEntity subs : restruant.getNxRestrauntEntities()) {
+                nxRestrauntService.update(subs);
+            }
+        }
         return R.ok();
     }
 
